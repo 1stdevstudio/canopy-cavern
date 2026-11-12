@@ -1,0 +1,171 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 3,
+              "min": 1
+            }
+          },
+          "name": "minecraft:diamond",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 6,
+              "min": 2
+            }
+          },
+          "name": "minecraft:amethyst_shard",
+          "weight": 14
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 5,
+              "min": 2
+            }
+          },
+          "name": "minecraft:gold_ingot",
+          "weight": 14
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 5,
+              "min": 1
+            }
+          },
+          "name": "minecraft:emerald",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 8,
+              "min": 3
+            }
+          },
+          "name": "minecraft:redstone",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 6,
+              "min": 2
+            }
+          },
+          "name": "minecraft:lapis_lazuli",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:enchant_with_levels",
+            "levels": {
+              "type": "minecraft:uniform",
+              "max": 30,
+              "min": 18
+            },
+            "options": "#minecraft:on_random_loot"
+          },
+          "name": "minecraft:book",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:enchant_with_levels",
+            "levels": {
+              "type": "minecraft:uniform",
+              "max": 30,
+              "min": 18
+            },
+            "options": "#minecraft:on_random_loot"
+          },
+          "name": "minecraft:diamond_pickaxe",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple",
+          "weight": 5
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 6,
+        "min": 4
+      }
+    },
+    {
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 6,
+              "min": 2
+            }
+          },
+          "name": "minecraft:glow_berries",
+          "weight": 14
+        },
+        {
+          "type": "minecraft:item",
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4,
+              "min": 1
+            }
+          },
+          "name": "minecraft:moss_block",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:name_tag",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:soul_lantern",
+          "weight": 10
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3,
+        "min": 2
+      }
+    }
+  ],
+  "random_sequence": "canopycavern:chests/cavern_shrine"
+}

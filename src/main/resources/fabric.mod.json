@@ -20,12 +20,16 @@
 		],
 		"client": [
 			"com.yogi.canopycavern.client.CanopyCavernClient"
+		],
+		"terrablender": [
+			"com.yogi.canopycavern.worldgen.CanopyTerraBlender"
 		]
 	},
 	"depends": {
 		"fabricloader": ">=0.20.1",
 		"minecraft": "~26.3",
 		"java": ">=25",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"terrablender": ">=26.3.0.0.9"
 	}
 }

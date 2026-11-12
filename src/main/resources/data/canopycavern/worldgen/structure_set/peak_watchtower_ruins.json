@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 73491284,
+    "separation": 7,
+    "spacing": 18
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:peak_watchtower_ruin",
+      "weight": 1
+    }
+  ]
+}

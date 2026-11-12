@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:whispering_peaks",
+    "canopycavern:mossy_canopy",
+    "minecraft:meadow",
+    "minecraft:stony_peaks",
+    "minecraft:windswept_hills",
+    "minecraft:old_growth_pine_taiga"
+  ]
+}
