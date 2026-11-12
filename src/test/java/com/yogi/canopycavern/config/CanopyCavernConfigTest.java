@@ -39,4 +39,27 @@ class CanopyCavernConfigTest {
 		CanopyCavernConfig loaded = CanopyCavernConfig.loadOrCreate(path, logger);
 		assertEquals(CanopyCavernConfig.defaults(), loaded);
 	}
+
+	@Test
+	void migratesLegacySixFieldJsonToEnableV03Defaults(@TempDir Path tempDir) throws Exception {
+		Path path = tempDir.resolve("legacy.json");
+		Files.writeString(path, """
+			{
+			  "surfaceOverhaulEnabled": true,
+			  "caveOverhaulEnabled": false,
+			  "removeAbstractSurfaceLava": true,
+			  "clientHudEnabled": true,
+			  "clientAtmosphereParticlesEnabled": true,
+			  "useCelsius": false
+			}
+			""");
+		var logger = LoggerFactory.getLogger(CanopyCavernConfigTest.class);
+
+		CanopyCavernConfig loaded = CanopyCavernConfig.loadOrCreate(path, logger);
+		assertFalse(loaded.caveOverhaulEnabled());
+		assertFalse(loaded.useCelsius());
+		assertTrue(loaded.climateSurvivalEnabled());
+		assertTrue(loaded.starterFieldGuideEnabled());
+		assertTrue(loaded.dynamicAmbienceEnabled());
+	}
 }

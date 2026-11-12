@@ -1,6 +1,10 @@
 package com.yogi.canopycavern;
 
 import com.yogi.canopycavern.config.CanopyCavernConfig;
+import com.yogi.canopycavern.entity.ModEntities;
+import com.yogi.canopycavern.item.ModItems;
+import com.yogi.canopycavern.network.ModNetworking;
+import com.yogi.canopycavern.world.PlayerClimateHandler;
 import com.yogi.canopycavern.worldgen.WorldOverhaulRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -24,12 +28,17 @@ public final class CanopyCavernMod implements ModInitializer {
 	public void onInitialize() {
 		Path configPath = configPath();
 		config = CanopyCavernConfig.loadOrCreate(configPath, LOGGER);
+		ModItems.register();
+		ModEntities.register();
+		ModNetworking.register();
+		PlayerClimateHandler.register();
 		WorldOverhaulRegistry.register(config);
 		LOGGER.info(
-			"Canopy Cavern initialized (surfaceOverhaul={}, caveOverhaul={}, surfaceLavaCleanup={})",
+			"Canopy Cavern initialized (surfaceOverhaul={}, caveOverhaul={}, surfaceLavaCleanup={}, climateSurvival={})",
 			config.surfaceOverhaulEnabled(),
 			config.caveOverhaulEnabled(),
-			config.removeAbstractSurfaceLava()
+			config.removeAbstractSurfaceLava(),
+			config.climateSurvivalEnabled()
 		);
 	}
 

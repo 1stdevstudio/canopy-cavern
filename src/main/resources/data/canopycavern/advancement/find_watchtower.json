@@ -1,0 +1,36 @@
+{
+  "parent": "canopycavern:enter_peaks",
+  "display": {
+    "icon": {
+      "id": "minecraft:spyglass"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.find_watchtower.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.find_watchtower.description"
+    }
+  },
+  "criteria": {
+    "found": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:peak_watchtower_ruin"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "found"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

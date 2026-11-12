@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 91827364,
+    "separation": 8,
+    "spacing": 22
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:canopy_treetop_bastion",
+      "weight": 1
+    }
+  ]
+}

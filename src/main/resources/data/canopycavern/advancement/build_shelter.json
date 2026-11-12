@@ -1,0 +1,26 @@
+{
+  "parent": "canopycavern:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:campfire"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.build_shelter.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.build_shelter.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "built_shelter": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "built_shelter"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

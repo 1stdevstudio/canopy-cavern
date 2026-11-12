@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "canopycavern:peak_thermal"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "canopycavern:peak_thermal"
+      }
+    ]
+  }
+}

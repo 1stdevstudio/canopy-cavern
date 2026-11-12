@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:conquer_shrine",
+  "display": {
+    "icon": {
+      "id": "canopycavern:grotto_crystal_pickaxe"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.conquer_mineshaft.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.conquer_mineshaft.description"
+    },
+    "frame": "challenge"
+  },
+  "criteria": {
+    "found": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:echoing_mineshaft_hub"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "found"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

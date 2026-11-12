@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:find_crystal_steppe",
+  "display": {
+    "icon": {
+      "id": "minecraft:iron_sword"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.visit_village_sentinel.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.visit_village_sentinel.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "found": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "#canopycavern:villages"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "found"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:amber_caverns",
+    "canopycavern:verdant_grotto",
+    "#minecraft:is_overworld"
+  ]
+}

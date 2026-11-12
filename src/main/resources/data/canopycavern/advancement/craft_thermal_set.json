@@ -1,0 +1,109 @@
+{
+  "parent": "canopycavern:root",
+  "display": {
+    "icon": {
+      "id": "canopycavern:thermal_parka"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.craft_thermal_set.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.craft_thermal_set.description"
+    }
+  },
+  "criteria": {
+    "thermal_hood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:thermal_hood"
+          }
+        ]
+      }
+    },
+    "thermal_parka": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:thermal_parka"
+          }
+        ]
+      }
+    },
+    "thermal_leggings": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:thermal_leggings"
+          }
+        ]
+      }
+    },
+    "thermal_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:thermal_boots"
+          }
+        ]
+      }
+    },
+    "mossweave_cap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:mossweave_cap"
+          }
+        ]
+      }
+    },
+    "mossweave_tunic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:mossweave_tunic"
+          }
+        ]
+      }
+    },
+    "mossweave_trousers": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:mossweave_trousers"
+          }
+        ]
+      }
+    },
+    "mossweave_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:mossweave_boots"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "thermal_hood",
+      "thermal_parka",
+      "thermal_leggings",
+      "thermal_boots",
+      "mossweave_cap",
+      "mossweave_tunic",
+      "mossweave_trousers",
+      "mossweave_boots"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

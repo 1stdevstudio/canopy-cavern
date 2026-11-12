@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 56473829,
+    "separation": 9,
+    "spacing": 24
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:echoing_mineshaft_hub",
+      "weight": 1
+    }
+  ]
+}

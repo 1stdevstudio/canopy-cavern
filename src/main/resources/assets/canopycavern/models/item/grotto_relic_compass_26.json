@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "canopycavern:item/grotto_relic_compass_26"
+  }
+}

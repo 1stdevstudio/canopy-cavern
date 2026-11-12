@@ -1,0 +1,36 @@
+{
+  "parent": "canopycavern:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:amethyst_cluster"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.find_crystal_steppe.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.find_crystal_steppe.description"
+    }
+  },
+  "criteria": {
+    "in_steppe": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:crystal_steppe"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_steppe"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

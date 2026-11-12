@@ -18,9 +18,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BiomeAndStructureDataTest {
 	@Test
-	void exposesThreeCohesiveCustomBiomes() {
-		assertEquals(3, ModBiomes.ALL_BIOMES.size());
-		List<String> expected = List.of("whispering_peaks", "mossy_canopy", "verdant_grotto");
+	void exposesFiveCohesiveCustomBiomes() {
+		assertEquals(5, ModBiomes.ALL_BIOMES.size());
+		List<String> expected = List.of(
+			"whispering_peaks",
+			"mossy_canopy",
+			"verdant_grotto",
+			"crystal_steppe",
+			"amber_caverns"
+		);
 		List<String> actual = ModBiomes.ALL_BIOMES.stream().map(k -> k.identifier().getPath()).toList();
 		assertEquals(expected, actual);
 
@@ -41,6 +47,8 @@ class BiomeAndStructureDataTest {
 		assertTrue(raw.contains("canopycavern:whispering_peaks"));
 		assertTrue(raw.contains("canopycavern:mossy_canopy"));
 		assertTrue(raw.contains("canopycavern:verdant_grotto"));
+		assertTrue(raw.contains("canopycavern:crystal_steppe"));
+		assertTrue(raw.contains("canopycavern:amber_caverns"));
 
 		JsonObject mountainTag = readJson("data/minecraft/tags/worldgen/biome/is_mountain.json");
 		assertTrue(mountainTag.getAsJsonArray("values").toString().contains("canopycavern:whispering_peaks"));
@@ -63,6 +71,52 @@ class BiomeAndStructureDataTest {
 			"underground_structures",
 			"canopycavern:chests/cavern_shrine"
 		);
+		assertStructureBundle(
+			"canopy_treetop_bastion",
+			"canopy_treetop_bastions",
+			"surface_structures",
+			"canopycavern:chests/canopy_bastion"
+		);
+		assertStructureBundle(
+			"echoing_mineshaft_hub",
+			"echoing_mineshaft_hubs",
+			"underground_structures",
+			"canopycavern:chests/echoing_mineshaft"
+		);
+	}
+
+	@Test
+	void configuresFourThemedVillagerCivilizationsAndSentinels() throws IOException {
+		JsonObject villageSet = readJson("data/canopycavern/worldgen/structure_set/villages.json");
+		String setJson = villageSet.toString();
+		for (String villageId : List.of("crystal_citadel", "peak_citadel", "canopy_village", "grotto_outpost_town")) {
+			assertTrue(setJson.contains("canopycavern:" + villageId));
+			JsonObject structure = readJson("data/canopycavern/worldgen/structure/" + villageId + ".json");
+			assertEquals("minecraft:jigsaw", structure.get("type").getAsString());
+			assertEquals("canopycavern:" + villageId + "/start", structure.get("start_pool").getAsString());
+
+			String centerPath = "data/canopycavern/structure/" + villageId + "/town_center.nbt";
+			byte[] rawCenter;
+			try (GZIPInputStream gzip = new GZIPInputStream(new ByteArrayInputStream(readBytes(centerPath)))) {
+				rawCenter = gzip.readAllBytes();
+			}
+			String centerAscii = new String(rawCenter, StandardCharsets.ISO_8859_1);
+			assertTrue(centerAscii.contains("canopycavern:common/village_sentinel"), centerPath + " must summon Village Sentinels");
+
+			String guardPath = "data/canopycavern/structure/" + villageId + "/guardhouse.nbt";
+			byte[] rawGuard;
+			try (GZIPInputStream gzip = new GZIPInputStream(new ByteArrayInputStream(readBytes(guardPath)))) {
+				rawGuard = gzip.readAllBytes();
+			}
+			String guardAscii = new String(rawGuard, StandardCharsets.ISO_8859_1);
+			assertTrue(guardAscii.contains("canopycavern:chests/village_supply"), guardPath + " missing supply chest loot");
+		}
+
+		byte[] rawSentinel;
+		try (GZIPInputStream gzip = new GZIPInputStream(new ByteArrayInputStream(readBytes("data/canopycavern/structure/common/village_sentinel.nbt")))) {
+			rawSentinel = gzip.readAllBytes();
+		}
+		assertTrue(new String(rawSentinel, StandardCharsets.ISO_8859_1).contains("canopycavern:village_sentinel"));
 	}
 
 	private static void assertStructureBundle(

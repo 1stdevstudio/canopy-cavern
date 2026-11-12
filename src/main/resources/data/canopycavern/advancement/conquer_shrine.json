@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:craft_thermal_set",
+  "display": {
+    "icon": {
+      "id": "canopycavern:glow_lantern"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.conquer_shrine.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.conquer_shrine.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "found": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:cavern_shrine"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "found"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

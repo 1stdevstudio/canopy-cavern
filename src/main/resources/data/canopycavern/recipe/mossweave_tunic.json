@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "L L",
+    "MAM",
+    "MLM"
+  ],
+  "key": {
+    "M": "minecraft:moss_block",
+    "L": "minecraft:leather",
+    "A": "minecraft:amethyst_shard"
+  },
+  "result": {
+    "id": "canopycavern:mossweave_tunic",
+    "count": 1
+  }
+}

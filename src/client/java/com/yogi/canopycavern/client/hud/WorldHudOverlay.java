@@ -1,10 +1,14 @@
 package com.yogi.canopycavern.client.hud;
 
 import com.yogi.canopycavern.CanopyCavernMod;
+import com.yogi.canopycavern.client.ClientClimateCache;
 import com.yogi.canopycavern.client.ClientEnvironmentSampler;
 import com.yogi.canopycavern.client.ClientEnvironmentSampler.SampledEnvironment;
 import com.yogi.canopycavern.config.CanopyCavernConfig;
+import com.yogi.canopycavern.core.ClimateSimulation.ClimateStatus;
+import com.yogi.canopycavern.core.ClimateSimulation.MicroWeather;
 import com.yogi.canopycavern.core.EnvironmentTelemetry;
+import com.yogi.canopycavern.network.ModNetworking.ClimateSyncPayload;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -12,90 +16,76 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 /**
- * Renders a compact top-left ambient world telemetry card showing depth zone, biome,
- * apparent temperature, and surface/cave atmospheric condition.
+ * Compact top-left environmental HUD showing biome, depth zone, live climate & humidity telemetry,
+ * micro-weather condition, campfire/shelter buffer, and armor protection percentages.
  */
 public final class WorldHudOverlay {
-	private static final int MARGIN_X = 8;
-	private static final int MARGIN_Y = 8;
-	private static final int PADDING = 6;
-	private static final int LINE_GAP = 2;
-	private static final int BG_COLOR = 0xAA11161C;
-	private static final int BORDER_COLOR = 0xCC334455;
-	private static final int TEXT_MUTED = 0xFFB8C4D0;
+
+	private static final int CARD_X = 8;
+	private static final int CARD_Y = 8;
+	private static final int CARD_WIDTH = 192;
+	private static final int CARD_HEIGHT = 68;
 
 	private WorldHudOverlay() {
 	}
 
-	/** Renders the telemetry panel when enabled and a sampled client environment is available. */
 	public static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
-		CanopyCavernConfig config = CanopyCavernMod.getConfig();
-		if (!config.clientHudEnabled()) {
-			return;
-		}
-
 		Minecraft client = Minecraft.getInstance();
-		if (client.player == null || client.level == null) {
+		CanopyCavernConfig config = CanopyCavernMod.getConfig();
+		if (!config.clientHudEnabled() || client.player == null || client.level == null) {
+			return;
+		}
+		if (client.gui.screen() != null) {
 			return;
 		}
 
-		ClientEnvironmentSampler.latest().ifPresent(sample -> drawPanel(graphics, client.font, sample, config));
+		SampledEnvironment sample = ClientEnvironmentSampler.latest().orElse(null);
+		if (sample == null) {
+			return;
+		}
+		ClimateSyncPayload climate = ClientClimateCache.latest();
+		drawPanel(graphics, client.font, sample, climate, config.useCelsius());
 	}
 
 	private static void drawPanel(
 		GuiGraphicsExtractor graphics,
 		Font font,
 		SampledEnvironment sample,
-		CanopyCavernConfig config
+		ClimateSyncPayload climate,
+		boolean useCelsius
 	) {
+		graphics.fill(CARD_X, CARD_Y, CARD_X + CARD_WIDTH, CARD_Y + CARD_HEIGHT, 0xA60E1614);
+		graphics.outline(CARD_X, CARD_Y, CARD_WIDTH, CARD_HEIGHT, 0xFF4AA87F);
+
 		var snapshot = sample.snapshot();
-		Component zoneLine = Component.translatable(snapshot.depthZone().translationKey());
-		Component biomeLine = Component.literal(sample.biomeName());
+		String biomeLabel = sample.biomeName();
+		graphics.text(font, biomeLabel, CARD_X + 7, CARD_Y + 6, 0xFFE8F5EE, false);
 
-		String tempText = EnvironmentTelemetry.formatTemperature(snapshot.apparentCelsius(), config.useCelsius());
-		Component thermalLabel = Component.translatable(snapshot.thermalBand().translationKey());
-		Component conditionLabel = resolveCondition(sample);
-		Component statsLine = Component.literal(tempText + " · ")
-			.append(thermalLabel)
-			.append(" · ")
-			.append(conditionLabel);
+		Component zone = Component.translatable(snapshot.depthZone().translationKey());
+		graphics.text(font, zone, CARD_X + 7, CARD_Y + 18, snapshot.depthZone().accentColor(), false);
 
-		int contentWidth = Math.max(
-			font.width(zoneLine),
-			Math.max(font.width(biomeLine), font.width(statsLine))
+		String tempStr = EnvironmentTelemetry.formatTemperature(climate.perceivedCelsius(), useCelsius);
+		Component weatherComp = Component.translatable("hud.canopycavern.weather." + MicroWeather.fromId(climate.microWeatherId()).id());
+		String line3 = tempStr + "  |  " + climate.humidityPercent() + "% RH  |  " + weatherComp.getString();
+		graphics.text(font, line3, CARD_X + 7, CARD_Y + 30, snapshot.thermalBand().accentColor(), false);
+
+		ClimateStatus status = ClimateStatus.fromId(climate.climateStatusId());
+		Component statusComp = Component.translatable("hud.canopycavern.status." + status.id());
+		int statusColor = switch (status) {
+			case FREEZING -> 0xFF7FD7FF;
+			case CHILLY -> 0xFFB0E4FF;
+			case OVERHEATED -> 0xFFFF7D6B;
+			case HUMID -> 0xFF9DF0B8;
+			case SHELTERED -> 0xFFFFD885;
+			case COMFORTABLE -> 0xFFD9E8E0;
+		};
+		graphics.text(font, statusComp, CARD_X + 7, CARD_Y + 42, statusColor, false);
+
+		Component gearLine = Component.translatable(
+			"hud.canopycavern.protection",
+			climate.thermalInsulationPercent(),
+			climate.cavernCoolingPercent()
 		);
-		int boxWidth = contentWidth + (PADDING * 2) + 4;
-		int boxHeight = (font.lineHeight * 3) + (LINE_GAP * 2) + (PADDING * 2);
-
-		int x1 = MARGIN_X;
-		int y1 = MARGIN_Y;
-		int x2 = x1 + boxWidth;
-		int y2 = y1 + boxHeight;
-
-		graphics.fill(x1 - 1, y1 - 1, x2 + 1, y2 + 1, BORDER_COLOR);
-		graphics.fill(x1, y1, x2, y2, BG_COLOR);
-		graphics.fill(x1, y1, x1 + 3, y2, snapshot.depthZone().accentColor());
-
-		int textX = x1 + PADDING + 2;
-		int row1Y = y1 + PADDING;
-		int row2Y = row1Y + font.lineHeight + LINE_GAP;
-		int row3Y = row2Y + font.lineHeight + LINE_GAP;
-
-		graphics.text(font, zoneLine, textX, row1Y, snapshot.depthZone().accentColor(), true);
-		graphics.text(font, biomeLine, textX, row2Y, TEXT_MUTED, true);
-		graphics.text(font, statsLine, textX, row3Y, snapshot.thermalBand().accentColor(), true);
-	}
-
-	private static Component resolveCondition(SampledEnvironment sample) {
-		if (sample.snapshot().dampCave()) {
-			return Component.translatable("hud.canopycavern.condition.damp_cave");
-		}
-		if (sample.raining()) {
-			return Component.translatable("hud.canopycavern.condition.rain");
-		}
-		if (sample.night()) {
-			return Component.translatable("hud.canopycavern.condition.night");
-		}
-		return Component.translatable("hud.canopycavern.condition.clear");
+		graphics.text(font, gearLine, CARD_X + 7, CARD_Y + 54, 0xFFAABDB4, false);
 	}
 }

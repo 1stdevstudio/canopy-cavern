@@ -1,0 +1,36 @@
+{
+  "parent": "canopycavern:root",
+  "display": {
+    "icon": {
+      "id": "canopycavern:alpine_climbing_pick"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.enter_peaks.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.enter_peaks.description"
+    }
+  },
+  "criteria": {
+    "in_peaks": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:whispering_peaks"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_peaks"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

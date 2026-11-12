@@ -1,0 +1,26 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 42081519,
+    "separation": 7,
+    "spacing": 22
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:crystal_citadel",
+      "weight": 2
+    },
+    {
+      "structure": "canopycavern:peak_citadel",
+      "weight": 2
+    },
+    {
+      "structure": "canopycavern:canopy_village",
+      "weight": 2
+    },
+    {
+      "structure": "canopycavern:grotto_outpost_town",
+      "weight": 1
+    }
+  ]
+}

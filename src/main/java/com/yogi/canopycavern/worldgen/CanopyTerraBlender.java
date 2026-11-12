@@ -10,7 +10,7 @@ import terrablender.api.TerraBlenderApi;
  * and surface material rules.
  */
 public final class CanopyTerraBlender implements TerraBlenderApi {
-	public static final int OVERWORLD_REGION_WEIGHT = 5;
+	public static final int OVERWORLD_REGION_WEIGHT = 7;
 
 	@Override
 	public void onTerraBlenderInitialized() {

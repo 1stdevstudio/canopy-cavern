@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:moss_block"
+  ],
+  "result": {
+    "id": "canopycavern:canopy_field_guide",
+    "count": 1
+  }
+}

@@ -46,6 +46,36 @@ public final class WorldOverhaulRegistry {
 				WorldOverhaulKeys.PLAINS_FIELDSTONE
 			);
 			BiomeModifications.addFeature(
+				BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.BADLANDS, Biomes.ERODED_BADLANDS, Biomes.WOODED_BADLANDS),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.DESERT_OASIS_BOULDER
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.tag(BiomeTags.IS_SAVANNA),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.SAVANNA_ACACIA_BOULDER
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.includeByKey(Biomes.SWAMP, Biomes.MANGROVE_SWAMP),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.SWAMP_PEAT_PATCH
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.tag(BiomeTags.IS_BEACH),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.BEACH_DRIFT_PEBBLE
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.includeByKey(ModBiomes.CRYSTAL_STEPPE),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.CRYSTAL_STEPPE_OUTCROP
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.includeByKey(Biomes.END_HIGHLANDS, Biomes.END_MIDLANDS),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.END_CHORUS_OUTCROP
+			);
+			BiomeModifications.addFeature(
 				BiomeSelectors.tag(BiomeTags.IS_FOREST),
 				GenerationStep.Decoration.VEGETAL_DECORATION,
 				WorldOverhaulKeys.FOREST_FALLEN_OAK
@@ -58,6 +88,21 @@ public final class WorldOverhaulRegistry {
 		}
 
 		if (config.caveOverhaulEnabled()) {
+			BiomeModifications.addFeature(
+				BiomeSelectors.foundInOverworld(),
+				GenerationStep.Decoration.UNDERGROUND_ORES,
+				WorldOverhaulKeys.STRATIFIED_COPPER_VEIN
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.tag(BiomeTags.IS_MOUNTAIN),
+				GenerationStep.Decoration.UNDERGROUND_ORES,
+				WorldOverhaulKeys.STRATIFIED_EMERALD_SEAM
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.foundInOverworld(),
+				GenerationStep.Decoration.UNDERGROUND_ORES,
+				WorldOverhaulKeys.DEEP_AMETHYST_POCKET
+			);
 			BiomeModifications.addFeature(
 				BiomeSelectors.foundInOverworld(),
 				GenerationStep.Decoration.UNDERGROUND_DECORATION,
@@ -82,6 +127,11 @@ public final class WorldOverhaulRegistry {
 				BiomeSelectors.foundInOverworld(),
 				GenerationStep.Decoration.UNDERGROUND_DECORATION,
 				WorldOverhaulKeys.CAVE_DRIPSTONE_ACCENT
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.foundInTheNether(),
+				GenerationStep.Decoration.UNDERGROUND_DECORATION,
+				WorldOverhaulKeys.NETHER_BASALT_ACCENT
 			);
 		}
 	}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:block_blob",
+  "can_place_on": {
+    "type": "minecraft:matching_blocks",
+    "blocks": "minecraft:end_stone"
+  },
+  "state": "minecraft:crying_obsidian"
+}

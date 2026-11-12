@@ -1,0 +1,32 @@
+{
+  "parent": "canopycavern:root",
+  "display": {
+    "icon": {
+      "id": "canopycavern:grotto_relic_compass"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.attune_compass.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.attune_compass.description"
+    }
+  },
+  "criteria": {
+    "crafted": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:grotto_relic_compass"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "crafted"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

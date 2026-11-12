@@ -23,6 +23,10 @@ public final class CanopyMaterialRules {
 	private static final MaterialRule MOSS_BLOCK = stateRule(Blocks.MOSS_BLOCK);
 	private static final MaterialRule GRANITE = stateRule(Blocks.GRANITE);
 	private static final MaterialRule TUFF = stateRule(Blocks.TUFF);
+	private static final MaterialRule CALCITE = stateRule(Blocks.CALCITE);
+	private static final MaterialRule SMOOTH_BASALT = stateRule(Blocks.SMOOTH_BASALT);
+	private static final MaterialRule TERRACOTTA = stateRule(Blocks.TERRACOTTA);
+	private static final MaterialRule DRIPSTONE_BLOCK = stateRule(Blocks.DRIPSTONE_BLOCK);
 
 	private CanopyMaterialRules() {
 	}
@@ -93,6 +97,48 @@ public final class CanopyMaterialRules {
 			)
 		);
 
+		MaterialRule crystalSteppeSurface = MaterialRules.sequence(
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, false, CaveSurface.FLOOR),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.steep(), CALCITE),
+					MaterialRules.ifTrue(
+						MaterialRules.waterBlockCheck(-1, 0),
+						MaterialRules.sequence(
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.42D, 1.8D), CALCITE),
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, 0.28D, 1.8D), MOSS_BLOCK),
+							GRASS_BLOCK
+						)
+					)
+				)
+			),
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, true, CaveSurface.FLOOR),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.42D, 1.8D), SMOOTH_BASALT),
+					DIRT
+				)
+			)
+		);
+
+		MaterialRule amberCavernsSurface = MaterialRules.sequence(
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, false, CaveSurface.FLOOR),
+				MaterialRules.ifTrue(
+					MaterialRules.waterBlockCheck(0, 0),
+					MaterialRules.sequence(
+						MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.25D, 1.8D), TERRACOTTA),
+						MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, -0.25D, 0.35D), DRIPSTONE_BLOCK),
+						TUFF
+					)
+				)
+			),
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, false, CaveSurface.CEILING),
+				MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, -0.1D, 1.8D), DRIPSTONE_BLOCK)
+			)
+		);
+
 		return MaterialRules.ifTrue(
 			MaterialRules.yBlockCheck(VerticalAnchor.aboveBottom(8), 0),
 			MaterialRules.sequence(
@@ -100,12 +146,17 @@ public final class CanopyMaterialRules {
 					MaterialRules.abovePreliminarySurface(),
 					MaterialRules.sequence(
 						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.WHISPERING_PEAKS), peaksFloorSurface),
-						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.MOSSY_CANOPY), mossyCanopyFloorSurface)
+						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.MOSSY_CANOPY), mossyCanopyFloorSurface),
+						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.CRYSTAL_STEPPE), crystalSteppeSurface)
 					)
 				),
 				MaterialRules.ifTrue(
 					MaterialRules.isBiome(biomes, ModBiomes.VERDANT_GROTTO),
 					verdantGrottoSurface
+				),
+				MaterialRules.ifTrue(
+					MaterialRules.isBiome(biomes, ModBiomes.AMBER_CAVERNS),
+					amberCavernsSurface
 				)
 			)
 		);

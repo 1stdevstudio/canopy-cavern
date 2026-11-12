@@ -28,6 +28,7 @@ public final class ClientEnvironmentSampler {
 	/** Combined client snapshot ready for HUD presentation and ambient particle triggers. */
 	public record SampledEnvironment(
 		AmbientSnapshot snapshot,
+		String biomeId,
 		String biomeName,
 		boolean forestBiome,
 		boolean raining,
@@ -72,7 +73,7 @@ public final class ClientEnvironmentSampler {
 		String biomeName = EnvironmentTelemetry.formatBiomeName(rawBiomeKey);
 		boolean forest = biomeHolder.is(BiomeTags.IS_FOREST) || biomeHolder.is(BiomeTags.IS_TAIGA);
 
-		latestSample = new SampledEnvironment(snapshot, biomeName, forest, raining, night);
+		latestSample = new SampledEnvironment(snapshot, rawBiomeKey, biomeName, forest, raining, night);
 	}
 
 	/** Returns the most recent environmental sample, if in-world. */

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:compass",
+    "minecraft:amethyst_shard",
+    "minecraft:amethyst_shard",
+    "minecraft:glow_berries"
+  ],
+  "result": {
+    "id": "canopycavern:grotto_relic_compass",
+    "count": 1
+  }
+}

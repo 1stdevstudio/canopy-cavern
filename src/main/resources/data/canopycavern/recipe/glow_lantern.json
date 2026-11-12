@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:lantern",
+    "minecraft:glow_berries",
+    "minecraft:glow_berries",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "id": "canopycavern:glow_lantern",
+    "count": 1
+  }
+}

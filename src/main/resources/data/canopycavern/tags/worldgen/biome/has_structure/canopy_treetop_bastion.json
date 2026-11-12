@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:mossy_canopy",
+    "#minecraft:is_forest"
+  ]
+}

@@ -27,7 +27,17 @@ class WorldOverhaulDataTest {
 		"cave_moss_ceiling",
 		"cave_boulder_cluster",
 		"cave_glow_lichen_accent",
-		"cave_dripstone_accent"
+		"cave_dripstone_accent",
+		"desert_oasis_boulder",
+		"savanna_acacia_boulder",
+		"swamp_peat_patch",
+		"beach_drift_pebble",
+		"crystal_steppe_outcrop",
+		"stratified_copper_vein",
+		"stratified_emerald_seam",
+		"deep_amethyst_pocket",
+		"nether_basalt_accent",
+		"end_chorus_outcrop"
 	);
 
 	private static final List<String> REQUIRED_CUSTOM_FEATURES = List.of(
@@ -39,7 +49,17 @@ class WorldOverhaulDataTest {
 		"cave_moss_floor",
 		"cave_moss_ceiling",
 		"cave_boulder_cluster",
-		"cave_glow_lichen_accent"
+		"cave_glow_lichen_accent",
+		"desert_oasis_boulder",
+		"savanna_acacia_boulder",
+		"swamp_peat_patch",
+		"beach_drift_pebble",
+		"crystal_steppe_outcrop",
+		"stratified_copper_vein",
+		"stratified_emerald_seam",
+		"deep_amethyst_pocket",
+		"nether_basalt_accent",
+		"end_chorus_outcrop"
 	);
 
 	@Test

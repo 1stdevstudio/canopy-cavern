@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:torch",
+    "minecraft:torch",
+    "minecraft:glowstone_dust"
+  ],
+  "result": {
+    "id": "canopycavern:flare_torch",
+    "count": 4
+  }
+}

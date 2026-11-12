@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:cavern_shrine",
+    "canopycavern:echoing_mineshaft_hub",
+    "canopycavern:canopy_treetop_bastion"
+  ]
+}

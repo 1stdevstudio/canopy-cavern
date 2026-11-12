@@ -1,59 +1,93 @@
 {
   "type": "minecraft:chest",
+  "random_sequence": "canopycavern:chests/peak_watchtower",
   "pools": [
     {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 4,
+        "max": 7
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": {
-              "type": "minecraft:uniform",
-              "max": 6,
-              "min": 2
-            }
-          },
           "name": "minecraft:iron_ingot",
-          "weight": 15
-        },
-        {
-          "type": "minecraft:item",
+          "weight": 16,
           "modifier": {
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4,
-              "min": 1
+              "min": 2,
+              "max": 6
             }
-          },
+          }
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:emerald",
-          "weight": 10
-        },
-        {
-          "type": "minecraft:item",
+          "weight": 12,
           "modifier": {
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 5,
-              "min": 2
+              "min": 1,
+              "max": 5
             }
-          },
+          }
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:bread",
-          "weight": 18
-        },
-        {
-          "type": "minecraft:item",
+          "weight": 16,
           "modifier": {
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4,
-              "min": 1
+              "min": 2,
+              "max": 6
             }
-          },
+          }
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:cooked_mutton",
-          "weight": 14
+          "weight": 14,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 5
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:flare_torch",
+          "weight": 12,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 2,
+              "max": 6
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:alpine_climbing_pick",
+          "weight": 7
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:thermal_hood",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:thermal_boots",
+          "weight": 5
         },
         {
           "type": "minecraft:item",
@@ -62,97 +96,47 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:compass",
-          "weight": 8
-        },
-        {
-          "type": "minecraft:item",
-          "modifier": {
-            "type": "minecraft:enchant_with_levels",
-            "levels": {
-              "type": "minecraft:uniform",
-              "max": 20,
-              "min": 10
-            },
-            "options": "#minecraft:on_random_loot"
-          },
           "name": "minecraft:iron_pickaxe",
-          "weight": 6
-        },
-        {
-          "type": "minecraft:item",
+          "weight": 6,
           "modifier": {
             "type": "minecraft:enchant_with_levels",
             "levels": {
               "type": "minecraft:uniform",
-              "max": 20,
-              "min": 10
+              "min": 10,
+              "max": 20
             },
             "options": "#minecraft:on_random_loot"
-          },
-          "name": "minecraft:iron_sword",
-          "weight": 5
+          }
         }
-      ],
-      "rolls": {
-        "type": "minecraft:uniform",
-        "max": 6,
-        "min": 4
-      }
+      ]
     },
     {
+      "rolls": 1,
       "entries": [
         {
           "type": "minecraft:item",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": {
-              "type": "minecraft:uniform",
-              "max": 8,
-              "min": 3
-            }
-          },
-          "name": "minecraft:torch",
-          "weight": 15
+          "name": "canopycavern:thermal_parka",
+          "weight": 1
         },
         {
           "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 2,
           "modifier": {
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4,
-              "min": 1
+              "min": 1,
+              "max": 3
             }
-          },
-          "name": "minecraft:spruce_sapling",
-          "weight": 12
-        },
-        {
-          "type": "minecraft:item",
-          "modifier": {
-            "type": "minecraft:set_count",
-            "count": {
-              "type": "minecraft:uniform",
-              "max": 6,
-              "min": 2
-            }
-          },
-          "name": "minecraft:sweet_berries",
-          "weight": 12
+          }
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:golden_apple",
-          "weight": 4
+          "weight": 2
         }
-      ],
-      "rolls": {
-        "type": "minecraft:uniform",
-        "max": 3,
-        "min": 2
-      }
+      ]
     }
-  ],
-  "random_sequence": "canopycavern:chests/peak_watchtower"
+  ]
 }

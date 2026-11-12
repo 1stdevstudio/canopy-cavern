@@ -2,12 +2,7 @@
   "replace": false,
   "values": [
     "canopycavern:verdant_grotto",
-    "minecraft:lush_caves",
-    "minecraft:dripstone_caves",
-    "minecraft:plains",
-    "minecraft:forest",
-    "minecraft:meadow",
-    "canopycavern:mossy_canopy",
-    "canopycavern:whispering_peaks"
+    "canopycavern:amber_caverns",
+    "#minecraft:is_overworld"
   ]
 }

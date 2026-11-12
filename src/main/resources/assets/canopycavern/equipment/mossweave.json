@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "canopycavern:mossweave"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "canopycavern:mossweave"
+      }
+    ]
+  }
+}
