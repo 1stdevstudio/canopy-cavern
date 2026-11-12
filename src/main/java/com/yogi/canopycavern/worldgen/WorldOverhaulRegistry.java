@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
 /**
@@ -24,6 +25,7 @@ public final class WorldOverhaulRegistry {
 					var gen = context.getGenerationSettings();
 					gen.removeFeature(GenerationStep.Decoration.LAKES, MiscOverworldPlacements.LAKE_LAVA_SURFACE);
 					gen.removeFeature(GenerationStep.Decoration.FLUID_SPRINGS, MiscOverworldPlacements.SPRING_LAVA);
+					gen.removeFeature(GenerationStep.Decoration.FLUID_SPRINGS, MiscOverworldPlacements.SPRING_LAVA_FROZEN);
 				});
 		}
 
@@ -37,6 +39,11 @@ public final class WorldOverhaulRegistry {
 				BiomeSelectors.tag(BiomeTags.IS_MOUNTAIN),
 				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
 				WorldOverhaulKeys.MOUNTAIN_OUTCROP
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.includeByKey(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.MEADOW),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.PLAINS_FIELDSTONE
 			);
 			BiomeModifications.addFeature(
 				BiomeSelectors.tag(BiomeTags.IS_FOREST),

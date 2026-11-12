@@ -3,7 +3,7 @@
 	"id": "canopycavern",
 	"version": "${version}",
 	"name": "Canopy Cavern",
-	"description": "Client-first foundation and surface-to-cave world overhaul for Minecraft 26.3, designed to make terrain, caves, and ambient atmosphere feel grounded and cohesive.",
+	"description": "Client-first world overhaul for Minecraft 26.3: eliminates floating terrain and chaotic cave gashes across the Overworld, Nether, and End with grounded surface features, structured caves, and an ambient telemetry HUD.",
 	"authors": [
 		"Yogi Iskandar (1stdevstudio)"
 	],

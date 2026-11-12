@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:add",
+  "left": "minecraft:end/islands",
+  "right": {
+    "type": "minecraft:mul",
+    "left": {
+      "type": "minecraft:clamp",
+      "input": "minecraft:end/base_3d_noise",
+      "max": 0.5,
+      "min": -0.5
+    },
+    "right": 0.35
+  }
+}
