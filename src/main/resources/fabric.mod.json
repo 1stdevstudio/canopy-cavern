@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "canopycavern",
+	"version": "${version}",
+	"name": "Canopy Cavern",
+	"description": "Client-first foundation and surface-to-cave world overhaul for Minecraft 26.3, designed to make terrain, caves, and ambient atmosphere feel grounded and cohesive.",
+	"authors": [
+		"Yogi Iskandar (1stdevstudio)"
+	],
+	"contact": {
+		"homepage": "https://github.com/1stdevstudio/canopy-cavern",
+		"sources": "https://github.com/1stdevstudio/canopy-cavern"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/canopycavern/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.yogi.canopycavern.CanopyCavernMod"
+		],
+		"client": [
+			"com.yogi.canopycavern.client.CanopyCavernClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

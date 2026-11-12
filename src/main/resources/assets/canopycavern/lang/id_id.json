@@ -1,0 +1,21 @@
+{
+  "key.category.canopycavern.general": "Canopy Cavern",
+  "key.canopycavern.toggle_hud": "Aktif/Nonaktifkan HUD Atmosfer",
+  "hud.canopycavern.zone.high_ridge": "Puncak Tinggi",
+  "hud.canopycavern.zone.surface": "Permukaan",
+  "hud.canopycavern.zone.shallow_cave": "Goa Dangkal",
+  "hud.canopycavern.zone.deep_cavern": "Goa Dalam",
+  "hud.canopycavern.zone.abyssal_depths": "Jurang Bawah",
+  "hud.canopycavern.thermal.freezing": "Membeku",
+  "hud.canopycavern.thermal.cold": "Dingin",
+  "hud.canopycavern.thermal.cool": "Sejuk",
+  "hud.canopycavern.thermal.comfortable": "Nyaman",
+  "hud.canopycavern.thermal.warm": "Hangat",
+  "hud.canopycavern.thermal.scorching": "Terik",
+  "hud.canopycavern.condition.damp_cave": "Goa Lembap",
+  "hud.canopycavern.condition.rain": "Hujan",
+  "hud.canopycavern.condition.night": "Malam",
+  "hud.canopycavern.condition.clear": "Cerah",
+  "message.canopycavern.hud_enabled": "Canopy Cavern HUD: AKTIF",
+  "message.canopycavern.hud_disabled": "Canopy Cavern HUD: NONAKTIF"
+}

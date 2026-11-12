@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:block_blob",
+  "can_place_on": {
+    "type": "minecraft:matching_block_tag",
+    "tag": "minecraft:base_stone_overworld"
+  },
+  "state": "minecraft:tuff"
+}

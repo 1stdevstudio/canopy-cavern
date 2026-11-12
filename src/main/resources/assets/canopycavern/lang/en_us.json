@@ -1,0 +1,21 @@
+{
+  "key.category.canopycavern.general": "Canopy Cavern",
+  "key.canopycavern.toggle_hud": "Toggle Ambient World HUD",
+  "hud.canopycavern.zone.high_ridge": "High Ridge",
+  "hud.canopycavern.zone.surface": "Surface",
+  "hud.canopycavern.zone.shallow_cave": "Shallow Cave",
+  "hud.canopycavern.zone.deep_cavern": "Deep Cavern",
+  "hud.canopycavern.zone.abyssal_depths": "Abyssal Depths",
+  "hud.canopycavern.thermal.freezing": "Freezing",
+  "hud.canopycavern.thermal.cold": "Cold",
+  "hud.canopycavern.thermal.cool": "Crisp",
+  "hud.canopycavern.thermal.comfortable": "Mild",
+  "hud.canopycavern.thermal.warm": "Warm",
+  "hud.canopycavern.thermal.scorching": "Scorching",
+  "hud.canopycavern.condition.damp_cave": "Damp Cave",
+  "hud.canopycavern.condition.rain": "Rain",
+  "hud.canopycavern.condition.night": "Night",
+  "hud.canopycavern.condition.clear": "Clear",
+  "message.canopycavern.hud_enabled": "Canopy Cavern HUD: ON",
+  "message.canopycavern.hud_disabled": "Canopy Cavern HUD: OFF"
+}
