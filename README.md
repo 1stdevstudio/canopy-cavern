@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.4.2`** adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, serta revamp kota desa vanilla & desa berpenjaga) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.1`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, serta revamp kota desa vanilla & desa berpenjaga) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -41,12 +41,14 @@
 - **Enam desa baru berdasarkan biome:** Jungle Canopy Hamlet, Mangrove Marsh Village, Badlands Pueblo, Cherry Grove Hamlet, Mushroom Island Outpost, dan Frozen Ridge Village. Setiap permukiman punya tema blok sendiri, empat rumah dengan villager dan tempat kerja, tempat tidur, plaza, bell, Village Sentinel, serta Iron Golem.
 - **Underground Hollow Village:** pemukiman beratap dan terlindung di gua, empat kios berpenghuni dengan profesi, bed, penerangan, dan penjaga.
 - **Abandoned Mega Village:** empat rumah terbengkalai, plaza rusak, cobweb, zombie villager, dan peti penjelajahan. Tidak spawn villager hidup.
+- **Frontier Pillager Outpost:** struktur langka terpisah dari Pillager Outpost vanilla, dengan menara bertingkat, tangga, kamp, peti jarahan dan kandang Iron Golem.
 - **Grotto Outpost Town yang sudah ada:** pool rumah/forge disesuaikan, pilihan tinggi bawah tanah lebih luas, dan penyebaran menjangkau lush/dripstone caves.
 - **Penyebaran kota lama diperbaiki:** crystal, peak, canopy, dan grotto memakai structure-set independen, tidak saling berebut satu weighted set pada biome yang berbeda.
 
 Uji perintah (dengan cheats aktif, **world baru atau chunk yang belum dibuka**):
 
 ```mcfunction
+/locate structure canopycavern:frontier_pillager_outpost
 /locate structure canopycavern:abandoned_mega_village
 /locate structure canopycavern:underground_hollow_village
 /locate structure canopycavern:grotto_outpost_town
@@ -98,4 +100,4 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build tersedia di `build/libs/canopycavern-0.4.2.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.1.jar`.

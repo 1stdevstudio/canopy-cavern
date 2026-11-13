@@ -61,8 +61,15 @@ jobs:
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" "${jars[@]}" --clobber
           else
-            gh release create "$TAG" "${jars[@]}" \
-              --title "Canopy Cavern ${TAG} (Minecraft 26.3)" \
-              --generate-notes \
-              --latest
+            if [[ "$TAG" == *-* ]]; then
+              gh release create "$TAG" "${jars[@]}" \
+                --title "Canopy Cavern ${TAG} (Minecraft 26.3) — Beta" \
+                --generate-notes \
+                --prerelease
+            else
+              gh release create "$TAG" "${jars[@]}" \
+                --title "Canopy Cavern ${TAG} (Minecraft 26.3)" \
+                --generate-notes \
+                --latest
+            fi
           fi

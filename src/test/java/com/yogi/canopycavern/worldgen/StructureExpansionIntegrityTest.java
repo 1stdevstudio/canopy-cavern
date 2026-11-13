@@ -204,6 +204,62 @@ class StructureExpansionIntegrityTest {
         }
     }
 
+
+    @Test
+    void frontierPillagerOutpostHasFunctionalTemplateAndDoesNotReplaceVanillaOutpost() throws Exception {
+        String id = "frontier_pillager_outpost";
+        JsonObject def = json(ROOT.resolve("canopycavern/worldgen/structure/" + id + ".json"));
+        JsonObject set = json(ROOT.resolve("canopycavern/worldgen/structure_set/" + id + ".json"));
+        JsonObject tag = json(ROOT.resolve("canopycavern/tags/worldgen/biome/has_structure/" + id + ".json"));
+        JsonObject pool = json(ROOT.resolve("canopycavern/worldgen/template_pool/" + id + "/start.json"));
+        assertEquals("minecraft:jigsaw", def.get("type").getAsString());
+        assertEquals("surface_structures", def.get("step").getAsString());
+        assertEquals("canopycavern:" + id + "/start", def.get("start_pool").getAsString());
+        assertTrue(set.getAsJsonArray("structures").toString().contains("canopycavern:" + id));
+        assertEquals("canopycavern:" + id + "/center",
+            pool.getAsJsonArray("elements").get(0).getAsJsonObject()
+                .getAsJsonObject("element").get("location").getAsString());
+        assertTrue(tag.getAsJsonArray("values").size() >= 4);
+        assertFalse(Files.exists(ROOT.resolve("minecraft/worldgen/structure/pillager_outpost.json")),
+            "Do not overwrite vanilla Pillager Outpost's structure definition");
+
+        Map<String,Object> nbt = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/center.nbt"));
+        assertEquals(5023, nbt.get("DataVersion"));
+        List<?> palette = list(nbt, "palette"), blocks = list(nbt, "blocks"), entities = list(nbt, "entities");
+        assertFalse(blocks.isEmpty());
+        Set<String> locations = new HashSet<>();
+        int ladders = 0, ironBars = 0, lootChests = 0;
+        for (Object o : blocks) {
+            Map<String,Object> block = map(o);
+            List<?> p = list(block, "pos");
+            assertTrue(locations.add(p.get(0) + ":" + p.get(1) + ":" + p.get(2)), "duplicate outpost coordinate");
+            int state = (int)block.get("state");
+            assertTrue(state >= 0 && state < palette.size());
+            String blockId = String.valueOf(map(palette.get(state)).get("id"));
+            if (blockId.equals("minecraft:ladder")) ladders++;
+            if (blockId.equals("minecraft:iron_bars")) ironBars++;
+            if (blockId.equals("minecraft:chest")) {
+                lootChests++;
+                assertEquals("canopycavern:chests/frontier_pillager_outpost",
+                    map(block.get("nbt")).get("LootTable"));
+            }
+        }
+        assertTrue(ladders >= 8, "Watchtower needs climbable access");
+        assertTrue(ironBars >= 10, "Golem cage should be physically present");
+        assertTrue(lootChests >= 1);
+        long pillagers = entities.stream().filter(o ->
+            "minecraft:pillager".equals(map(map(o).get("nbt")).get("id"))).count();
+        long golems = entities.stream().filter(o ->
+            "minecraft:iron_golem".equals(map(map(o).get("nbt")).get("id"))).count();
+        long villagers = entities.stream().filter(o ->
+            "minecraft:villager".equals(map(map(o).get("nbt")).get("id"))).count();
+        assertTrue(pillagers >= 3);
+        assertTrue(golems >= 1);
+        assertEquals(0, villagers, "This is a hostile Pillager outpost, not a village");
+        JsonObject loot = json(ROOT.resolve("canopycavern/loot_table/chests/" + id + ".json"));
+        assertEquals("minecraft:chest", loot.get("type").getAsString());
+    }
+
     private static List<String> allNewStructures() {
         List<String> all = new ArrayList<>(NEW_VILLAGES);
         all.add(ABANDONED);
