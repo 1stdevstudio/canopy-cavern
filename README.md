@@ -1,12 +1,14 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.4.1`** adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, serta revamp kota desa vanilla & desa berpenjaga) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.4.2`** adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, serta revamp kota desa vanilla & desa berpenjaga) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
 ---
 
-## Fitur Utama / Key Features (`v0.4.1`)
+## Fitur Utama / Key Features (`v0.4.2`)
+
+**Perbaikan v0.4.2:** auto-shelter menghitung kebutuhan bahan dari blok final, melindungi blok bernilai dan block entity dari penimpaan, menutup pintu kabin, serta membangun struktur dengan urutan yang lebih aman. Termasuk pengujian regresi blueprint. Perbaikan dunia dan struktur v0.4.1 tetap dipertahankan.
 
 ### 1. Tiga Mega-Struktur Samudra & Monumen Bawah Tanah Megah (*Ocean & Subterranean Centers*)
 - **Sunken Citadel Vault** (`canopycavern:sunken_citadel_vault`): Kompleks kuil benteng samudra dalam bersayap ganda dari *dark prismarine*, tembaga teroksidasi, serta **Sanctum Vault** kedap air (kering) di dalamnya yang dijaga *Guardian* dan *Elder Guardian* dengan peti harta `chests/sunken_citadel` (struktur terbenam alami di air samudra tanpa memotong kotak udara).
@@ -16,7 +18,7 @@
 
 ### 2. Revamp Menyeluruh 5 Desa Vanilla + Integrasi `Village Sentinel` di Plaza Terbuka
 - Seluruh **5 tema desa vanilla** (`plains`, `desert`, `savanna`, `snowy`, `taiga`) dirombak menjadi pemukiman megah (`grand_town_center`, `grand_manor`, `guild_smithy`, `sanctuary_library`, `market_pavilion`, dan `bastion_gatehouse` berlengkung terbuka) melalui *template pool override* resmi sambil mempertahankan varian langka *zombie village*.
-- **Penjaga, Tangga & Interior Terpadu (`v0.4.1`)**:
+- **Penjaga, Tangga & Interior Terpadu (`v0.4.2`)**:
   - **Grand Town Center** menampung **9 `canopycavern:village_sentinel` + 2 `Iron Golem` + 5 `Villager` bertipe bioma** di plaza batu terbuka bagian bawah agar tidak terkurung ruangan.
   - Seluruh kaca jendela (`glass_pane`, `stained_glass_pane`), `iron_bars`, pagar, dan tembok kini tersambung penuh di dalam file `.nbt`, dan rumah 2 lantai memiliki tangga padat menuju lantai atas lengkap dengan perabot, penerangan lentera gantung, dan pagar pengaman.
   - **AI Perilaku `Village Sentinel`**: Bersenjata pedang besi, membantu *Iron Golem* menyerang monster hostile, dapat membuka pintu kayu (`OpenDoorGoal`), dan **membalas serta memperingatkan penjaga lain (`HurtByTargetGoal#setAlertOthers`) bila dipukul**.
