@@ -260,6 +260,39 @@ class StructureExpansionIntegrityTest {
         assertEquals("minecraft:chest", loot.get("type").getAsString());
     }
 
+    @Test
+    void allExistingAndRevampedStructureTemplatesHaveValidCoordinatesAndPalettes() throws Exception {
+        Path root = ROOT.resolve("canopycavern/structure");
+        int inspected = 0;
+        try (Stream<Path> files = Files.walk(root)) {
+            for (Path file : files.filter(p -> p.toString().endsWith(".nbt")).toList()) {
+                Map<String,Object> nbt = readNbt(file);
+                List<?> dimensions = list(nbt, "size");
+                assertEquals(3, dimensions.size(), file.toString());
+                int width = (int) dimensions.get(0);
+                int height = (int) dimensions.get(1);
+                int depth = (int) dimensions.get(2);
+                assertTrue(width > 0 && height > 0 && depth > 0, file + " invalid dimensions");
+                assertTrue(width <= 128 && height <= 128 && depth <= 128,
+                    file + " suspicious template size");
+                List<?> palette = list(nbt, "palette");
+                assertFalse(palette.isEmpty(), file + " empty palette");
+                for (Object entry : list(nbt, "blocks")) {
+                    Map<String,Object> block = map(entry);
+                    List<?> pos = list(block, "pos");
+                    assertEquals(3, pos.size(), file.toString());
+                    int x = (int)pos.get(0), y = (int)pos.get(1), z = (int)pos.get(2);
+                    assertTrue(x >= 0 && x < width && y >= 0 && y < height && z >= 0 && z < depth,
+                        file + " block outside template at " + pos);
+                    int state = (int) block.get("state");
+                    assertTrue(state >= 0 && state < palette.size(), file + " invalid palette state " + state);
+                }
+                inspected++;
+            }
+        }
+        assertTrue(inspected >= 70, "Expected existing vanilla revamps and custom world structures");
+    }
+
     private static List<String> allNewStructures() {
         List<String> all = new ArrayList<>(NEW_VILLAGES);
         all.add(ABANDONED);
