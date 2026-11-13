@@ -58,7 +58,7 @@ public final class BlueprintBuilderService {
 	/** Validates materials, verifies clear build site ahead of player, consumes items, and constructs shelter. */
 	public static void handleBuildRequest(ServerPlayer player, String blueprintId) {
 		BlueprintDefinition blueprint = ShelterBlueprints.findBlueprint(blueprintId);
-		if (blueprint == null || !(player.level() instanceof ServerLevel level)) {
+		if (blueprint == null || player.isSpectator() || !(player.level() instanceof ServerLevel level)) {
 			return;
 		}
 
@@ -74,7 +74,9 @@ public final class BlueprintBuilderService {
 
 		for (BlockSpec spec : blueprint.blocks()) {
 			BlockPos targetPos = transformOffset(origin, forward, right, spec);
-			if (!level.isInWorldBounds(targetPos) || !isSafeToPlace(level, targetPos, spec.dy())) {
+			if (!level.isInWorldBounds(targetPos)
+				|| !level.getWorldBorder().isWithinBounds(targetPos)
+				|| !isSafeToPlace(level, targetPos, spec.dy())) {
 				player.sendSystemMessage(Component.translatable("canopycavern.builder.obstructed"), false);
 				return;
 			}
@@ -105,14 +107,40 @@ public final class BlueprintBuilderService {
 
 	private static boolean isSafeToPlace(ServerLevel level, BlockPos pos, int localY) {
 		BlockState existing = level.getBlockState(pos);
-		if (existing.isAir() || existing.canBeReplaced() || existing.is(BlockTags.LEAVES) || existing.is(BlockTags.FLOWERS)) {
+		// Even a replaceable-looking block can carry persistent player data.
+		if (level.getBlockEntity(pos) != null) {
+			return false;
+		}
+		if (existing.isAir() || existing.canBeReplaced()
+			|| existing.is(BlockTags.LEAVES) || existing.is(BlockTags.FLOWERS)) {
 			return true;
 		}
-		if (localY < 0) {
-			// Foundation layer may reinforce soft soil, snow, or stone while respecting tile entities & unbreakable blocks
-			return existing.getDestroySpeed(level, pos) >= 0.0F && level.getBlockEntity(pos) == null;
+		if (localY >= 0) {
+			return false;
 		}
-		return false;
+		// Foundation can replace ordinary terrain, but never ores, player containers,
+		// obsidian, machinery or arbitrary breakable construction.
+		return existing.is(Blocks.STONE)
+			|| existing.is(Blocks.DEEPSLATE)
+			|| existing.is(Blocks.TUFF)
+			|| existing.is(Blocks.CALCITE)
+			|| existing.is(Blocks.GRANITE)
+			|| existing.is(Blocks.DIORITE)
+			|| existing.is(Blocks.ANDESITE)
+			|| existing.is(Blocks.DIRT)
+			|| existing.is(Blocks.GRASS_BLOCK)
+			|| existing.is(Blocks.COARSE_DIRT)
+			|| existing.is(Blocks.ROOTED_DIRT)
+			|| existing.is(Blocks.PODZOL)
+			|| existing.is(Blocks.MOSS_BLOCK)
+			|| existing.is(Blocks.MUD)
+			|| existing.is(Blocks.CLAY)
+			|| existing.is(Blocks.GRAVEL)
+			|| existing.is(Blocks.SAND)
+			|| existing.is(Blocks.RED_SAND)
+			|| existing.is(Blocks.SANDSTONE)
+			|| existing.is(Blocks.RED_SANDSTONE)
+			|| existing.is(Blocks.SNOW_BLOCK);
 	}
 
 	private static void consumeMaterials(Inventory inventory, List<MaterialCost> costs) {
@@ -138,20 +166,33 @@ public final class BlueprintBuilderService {
 		Direction right,
 		List<BlockSpec> blocks
 	) {
-		List<BlockSpec> deferredDoors = new java.util.ArrayList<>();
+		// The last specification for a coordinate wins. This prevents intermediate
+		// interior-air specs from deleting subsequently placed furniture.
+		Map<BlockPos, BlockSpec> finalPlacements = new java.util.LinkedHashMap<>();
 		for (BlockSpec spec : blocks) {
-			BlockPos pos = transformOffset(origin, forward, right, spec);
+			finalPlacements.put(transformOffset(origin, forward, right, spec), spec);
+		}
+
+		List<Map.Entry<BlockPos, BlockSpec>> deferredAir = new java.util.ArrayList<>();
+		List<Map.Entry<BlockPos, BlockSpec>> deferredDoors = new java.util.ArrayList<>();
+		// Build floor, walls and roof before clearing underwater interiors.
+		for (var entry : finalPlacements.entrySet()) {
+			BlockSpec spec = entry.getValue();
 			Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(spec.blockId()));
 			if (block instanceof DoorBlock) {
-				deferredDoors.add(spec);
-				continue;
+				deferredDoors.add(entry);
+			} else if (block == Blocks.AIR) {
+				deferredAir.add(entry);
+			} else {
+				level.setBlock(entry.getKey(), configureBlockState(block, forward, spec), Block.UPDATE_ALL);
 			}
-			BlockState state = configureBlockState(block, forward);
-			level.setBlock(pos, state, Block.UPDATE_ALL);
 		}
-		for (BlockSpec doorSpec : deferredDoors) {
-			BlockPos pos = transformOffset(origin, forward, right, doorSpec);
-			Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(doorSpec.blockId()));
+		for (var entry : deferredAir) {
+			level.setBlock(entry.getKey(), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+		}
+		for (var entry : deferredDoors) {
+			BlockPos pos = entry.getKey();
+			Block block = BuiltInRegistries.BLOCK.getValue(Identifier.parse(entry.getValue().blockId()));
 			BlockState lower = block.defaultBlockState()
 				.setValue(DoorBlock.FACING, forward.getOpposite())
 				.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER);
@@ -161,10 +202,13 @@ public final class BlueprintBuilderService {
 		}
 	}
 
-	private static BlockState configureBlockState(Block block, Direction forward) {
+	private static BlockState configureBlockState(Block block, Direction forward, BlockSpec spec) {
 		BlockState state = block.defaultBlockState();
 		if (block instanceof CampfireBlock) {
 			return state.setValue(CampfireBlock.LIT, true);
+		}
+		if (block instanceof net.minecraft.world.level.block.LanternBlock && spec.dy() >= 2) {
+			return state.setValue(net.minecraft.world.level.block.LanternBlock.HANGING, true);
 		}
 		if (block instanceof ChestBlock) {
 			return state.setValue(ChestBlock.FACING, forward.getOpposite());
