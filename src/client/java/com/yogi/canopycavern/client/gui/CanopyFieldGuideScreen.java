@@ -58,10 +58,10 @@ public class CanopyFieldGuideScreen extends Screen {
 			}).bounds(left + 14, top + PANEL_HEIGHT - 30, 22, 20).build());
 			prevBtn.active = guidePage > 0;
 			Button nextBtn = this.addRenderableWidget(Button.builder(Component.literal(">"), b -> {
-				guidePage = Math.min(1, guidePage + 1);
+				guidePage = Math.min(2, guidePage + 1);
 				this.init();
 			}).bounds(left + 40, top + PANEL_HEIGHT - 30, 22, 20).build());
-			nextBtn.active = guidePage < 1;
+			nextBtn.active = guidePage < 2;
 		} else if (activeTab == 1) {
 			Button prevGear = this.addRenderableWidget(Button.builder(Component.literal("<"), b -> {
 				equipmentScroll = Math.max(0, equipmentScroll - 4);
@@ -161,29 +161,38 @@ public class CanopyFieldGuideScreen extends Screen {
 		int x = left + 16;
 		int y = top + 58;
 		int wrapWidth = PANEL_WIDTH - 32;
-		String[] keys = guidePage == 0
-			? new String[] {
+		String[] keys = switch (guidePage) {
+			case 0 -> new String[] {
 				"guide.canopycavern.section.basics",
 				"guide.canopycavern.section.climate",
 				"guide.canopycavern.section.gear",
 				"guide.canopycavern.section.world"
-			}
-			: new String[] {
+			};
+			case 1 -> new String[] {
 				"guide.canopycavern.section.oceans",
 				"guide.canopycavern.section.ocean_gear",
 				"guide.canopycavern.section.airlock",
 				"guide.canopycavern.section.villages"
 			};
-		int[] colors = guidePage == 0
-			? new int[] {0xFFAEE8A8, 0xFF9CD4FF, 0xFFF3C677, 0xFFC5A3FF}
-			: new int[] {0xFF66E2D5, 0xFF8CC8FF, 0xFFF4B860, 0xFFAEE8A8};
+			default -> new String[] {
+				"guide.canopycavern.section.sanctuary_hub",
+				"guide.canopycavern.section.sanctuary_routes",
+				"guide.canopycavern.section.sanctuary_safety",
+				"guide.canopycavern.section.sanctuary_admin"
+			};
+		};
+		int[] colors = switch (guidePage) {
+			case 0 -> new int[] {0xFFAEE8A8, 0xFF9CD4FF, 0xFFF3C677, 0xFFC5A3FF};
+			case 1 -> new int[] {0xFF66E2D5, 0xFF8CC8FF, 0xFFF4B860, 0xFFAEE8A8};
+			default -> new int[] {0xFFAEE8A8, 0xFF66E2D5, 0xFF9CD4FF, 0xFFF3C677};
+		};
 		for (int i = 0; i < keys.length; i++) {
 			graphics.text(this.font, Component.translatable(keys[i] + ".title"), x, y, colors[i], false);
 			y += 12;
 			graphics.textWithWordWrap(this.font, Component.translatable(keys[i] + ".body"), x, y, wrapWidth, 0xFFD9E6DF, false);
 			y += 30;
 		}
-		graphics.text(this.font, Component.literal((guidePage + 1) + " / 2"), left + 68, top + PANEL_HEIGHT - 24, 0xFF9FB8AD, false);
+		graphics.text(this.font, Component.literal((guidePage + 1) + " / 3"), left + 68, top + PANEL_HEIGHT - 24, 0xFF9FB8AD, false);
 	}
 
 	private void renderGearTab(GuiGraphicsExtractor graphics, int left, int top) {

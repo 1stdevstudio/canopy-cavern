@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.1`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, serta revamp kota desa vanilla & desa berpenjaga) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.24`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,4 +100,46 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.1.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.24.jar`.
+
+---
+
+## Canopy Sanctuary — Optional Server Spawn Hub (`v0.5.0-beta.24`)
+
+Canopy Sanctuary adalah kompleks **Server Spawn Hub** modular (`24` template `.nbt`, amplop `191x65x191`, total `156,359` blok non-air) yang terintegrasi penuh di Fabric (`26.3`) dan **nonaktif secara default** (`"spawnHubEnabled": false` di `config/canopycavern.json`) sehingga tidak pernah mengubah chunk dunia lama maupun worldgen alami tanpa perintah eksplisit admin.
+
+### Area Hub (`191 x 65 x 191`)
+- **Central Spawn Plaza (`49x49`) & Safe Arrival Pad (`13x13`)**: Ruang kedatangan beratap terbuka dengan petunjuk arah empat mata angin dan lectern pengenalan *Canopy Field Guide*.
+- **Giant Heartroot Tree (`SE`)**: Pohon raksasa berlapis batang tembaga/akar kuno dan tajuk bercahaya shroomlight.
+- **North Expedition Gate, East Adventurer Guild Hall, West Nature Garden, South Trading Pavilion**: Fasilitas orientasi pemain tanpa teleport paksa maupun paywall.
+- **Cavern Descent & Crystal Grotto Gallery (`Y -34`)**: Akses aman ke gua kristal bawah tanah lengkap dengan tiga tangga naik kembali (*north*, *east*, *south-west*) agar pemain selalu memiliki jalur pulang.
+
+### Alur Kerja Admin (*Fail-Closed*)
+Seluruh subperintah `/canopy sanctuary ...` diverifikasi di sisi server (Vanilla Admin / `PermissionLevel.ADMINS` atau node LuckPerms `canopycavern.command.sanctuary`, dan bypass bangunan `canopycavern.sanctuary.bypass` hanya untuk admin di mode *Creative*):
+
+1. Aktifkan `"spawnHubEnabled": true` di `config/canopycavern.json`.
+2. Buat cadangan dunia terverifikasi ke `world/backups/`:
+   ```mcfunction
+   /canopy sanctuary backup
+   ```
+3. Evaluasi medan, cairan, lereng, border dunia, batas ketinggian, block entity, dan tumpang-tindih struktur secara *read-only* (tanpa mengubah blok):
+   ```mcfunction
+   /canopy sanctuary preflight [x y z] [NONE|CLOCKWISE_90|CLOCKWISE_180|COUNTERCLOCKWISE_90]
+   /canopy sanctuary preview [x y z] [rotation]
+   ```
+4. Tempatkan hub secara bertahap multi-tick ringan (29 bounded ticks):
+   ```mcfunction
+   /canopy sanctuary install [x y z] [rotation]
+   ```
+5. Secara opsional pindahkan *Overworld spawn* ke Arrival Pad setelah instalasi selesai (ranjang, respawn anchor, dan inventaris pemain tetap utuh):
+   ```mcfunction
+   /canopy sanctuary set-spawn
+   ```
+6. Pemeriksaan status, proteksi hub & supresi mob hostile/ledakan:
+   ```mcfunction
+   /canopy sanctuary status
+   /canopy sanctuary protection <true|false>
+   /canopy sanctuary reset-failed
+   ```
+
+Laporan QA rilis beta tersedia di `docs/qa/2026-11-13/canopy-sanctuary-qa.md`.
