@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 39,
+    "separation": 13,
+    "salt": 6741075
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:frontier_pillager_outpost",
+      "weight": 1
+    }
+  ]
+}
