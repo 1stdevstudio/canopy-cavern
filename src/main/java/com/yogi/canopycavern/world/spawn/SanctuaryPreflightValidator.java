@@ -255,7 +255,7 @@ public final class SanctuaryPreflightValidator {
 			"WORLD_BORDER",
 			withinWorldBorder,
 			withinWorldBorder
-				? "Full 191x191 envelope lies within active WorldBorder"
+				? "Full " + envelope.getXSpan() + "x" + envelope.getZSpan() + " envelope lies within active WorldBorder"
 				: "Hub footprint intersects or crosses active WorldBorder"
 		));
 
@@ -473,10 +473,10 @@ public final class SanctuaryPreflightValidator {
 			}
 		}
 
-		// Also check Arrival Pad corners & center + surface road corridor ends at +-88 so roads don't cross open ocean/lava.
+		// Also check Arrival Pad corners & center + compact hub edge road outlets at +-38 so trails don't exit into open ocean/lava.
 		int[][] criticalSurfacePoints = {
 			{0, 0}, {-6, -6}, {6, -6}, {-6, 6}, {6, 6},
-			{0, -40}, {0, 40}, {-40, 0}, {40, 0}, {0, -88}, {0, 88}, {-88, 0}, {88, 0}
+			{0, -20}, {0, 20}, {-20, 0}, {20, 0}, {0, -38}, {0, 38}, {-38, 0}, {38, 0}
 		};
 		for (int[] rel : criticalSurfacePoints) {
 			BlockPos wp = SanctuaryManifest.toWorldPos(center, rel[0], 0, rel[1], rotation);

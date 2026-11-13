@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.24`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.25`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,19 +100,19 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.24.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.25.jar`.
 
 ---
 
-## Canopy Sanctuary — Optional Server Spawn Hub (`v0.5.0-beta.24`)
+## Canopy Sanctuary — Optional Server Spawn Hub (`v0.5.0-beta.25`)
 
-Canopy Sanctuary adalah kompleks **Server Spawn Hub** modular (`24` template `.nbt`, amplop `191x65x191`, total `156,359` blok non-air) yang terintegrasi penuh di Fabric (`26.3`) dan **nonaktif secara default** (`"spawnHubEnabled": false` di `config/canopycavern.json`) sehingga tidak pernah mengubah chunk dunia lama maupun worldgen alami tanpa perintah eksplisit admin.
+Canopy Sanctuary adalah kompleks **Server Spawn Hub** modular ringkas (`10` template `.nbt`, amplop `81x59x81`, total `41,110` blok non-air) yang terintegrasi penuh di Fabric (`26.3`) dan **nonaktif secara default** (`"spawnHubEnabled": false` di `config/canopycavern.json`) sehingga tidak pernah mengubah chunk dunia lama maupun worldgen alami tanpa perintah eksplisit admin.
 
-### Area Hub (`191 x 65 x 191`)
-- **Central Spawn Plaza (`49x49`) & Safe Arrival Pad (`13x13`)**: Ruang kedatangan beratap terbuka dengan petunjuk arah empat mata angin dan lectern pengenalan *Canopy Field Guide*.
-- **Giant Heartroot Tree (`SE`)**: Pohon raksasa berlapis batang tembaga/akar kuno dan tajuk bercahaya shroomlight.
-- **North Expedition Gate, East Adventurer Guild Hall, West Nature Garden, South Trading Pavilion**: Fasilitas orientasi pemain tanpa teleport paksa maupun paywall.
-- **Cavern Descent & Crystal Grotto Gallery (`Y -34`)**: Akses aman ke gua kristal bawah tanah lengkap dengan tiga tangga naik kembali (*north*, *east*, *south-west*) agar pemain selalu memiliki jalur pulang.
+### Area Hub (`81 x 59 x 81`)
+- **Central Spawn Plaza (`31x31`) & Safe Arrival Pad (`13x13`)**: Ruang kedatangan beratap terbuka dengan petunjuk arah empat mata angin dan lectern pengenalan *Canopy Field Guide*.
+- **Heartroot Tree (`SE`)**: Pohon Heartroot berpijar shroomlight dengan teras akar lumut & mata air mini di sudut tenggara.
+- **North Expedition Gate, East Adventurer Guild Hall, West Nature Garden, South Rest Pavilion**: Keempat sayap terhubung langsung ke Plaza tanpa lorong panjang yang melebar, sehingga mudah dijelajahi dari titik kedatangan.
+- **Cavern Descent & Crystal Grotto Gallery (`Y -24`)**: Akses aman ke galeri kristal ametis bawah tanah lengkap dengan tangga masuk kembar dan tiga jalur naik kembali (*barat*, *timur*, dan *tangga langsung ke cahaya selatan*) agar pemain selalu memiliki jalan pulang.
 
 ### Alur Kerja Admin (*Fail-Closed*)
 Seluruh subperintah `/canopy sanctuary ...` diverifikasi di sisi server (Vanilla Admin / `PermissionLevel.ADMINS` atau node LuckPerms `canopycavern.command.sanctuary`, dan bypass bangunan `canopycavern.sanctuary.bypass` hanya untuk admin di mode *Creative*):
