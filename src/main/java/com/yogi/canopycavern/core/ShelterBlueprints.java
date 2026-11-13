@@ -89,8 +89,13 @@ public final class ShelterBlueprints {
 	 * Air is used to clear interior space and does not cost inventory items.
 	 */
 	private static List<MaterialCost> materialsForBlocks(List<BlockSpec> blocks) {
-		Map<String, Integer> totals = new LinkedHashMap<>();
+		Map<String, BlockSpec> finalPlacements = new LinkedHashMap<>();
 		for (BlockSpec spec : blocks) {
+			String key = spec.dx() + ":" + spec.dy() + ":" + spec.dz();
+			finalPlacements.put(key, spec);
+		}
+		Map<String, Integer> totals = new LinkedHashMap<>();
+		for (BlockSpec spec : finalPlacements.values()) {
 			if (!"minecraft:air".equals(spec.blockId())) {
 				totals.merge(spec.blockId(), 1, Integer::sum);
 			}
@@ -183,6 +188,9 @@ public final class ShelterBlueprints {
 				}
 			}
 		}
+		// The cabin requires a real door; leaving a two-block opening is not an enclosed shelter.
+		blocks.add(new BlockSpec(0, 0, 1, "minecraft:spruce_door"));
+		blocks.add(new BlockSpec(0, 1, 1, "minecraft:air"));
 		// Gable roof (dy = 3 & 4)
 		for (int dz = 1; dz <= 5; dz++) {
 			for (int dx = -2; dx <= 2; dx++) {
