@@ -9,6 +9,7 @@ import com.yogi.canopycavern.core.EnvironmentTelemetry.AmbientInput;
 import com.yogi.canopycavern.item.ExpeditionEnchantments;
 import com.yogi.canopycavern.item.ModItems;
 import com.yogi.canopycavern.network.ModNetworking.ClimateSyncPayload;
+import com.yogi.canopycavern.world.spawn.SpawnSanctuaryProtection;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -112,6 +113,7 @@ public final class PlayerClimateHandler {
 			}
 		}
 		boolean enclosedShelter = isEnclosedShelter(level, pos);
+		boolean inSanctuarySafeZone = SpawnSanctuaryProtection.isInsideArrivalClimateSafeZone(level, pos, CanopyCavernMod.getConfig());
 
 		int thermalCount = ModItems.countThermalArmor(player);
 		int mossCount = ModItems.countMossweaveArmor(player);
@@ -133,8 +135,8 @@ public final class PlayerClimateHandler {
 			mossCount,
 			glowLantern,
 			nearCampfire,
-			enclosedShelter,
-			nearLava,
+			enclosedShelter || inSanctuarySafeZone,
+			!inSanctuarySafeZone && nearLava,
 			level.getGameTime(),
 			ExpeditionEnchantments.level(player, ExpeditionEnchantments.THERMAL_WEAVE, EquipmentSlot.CHEST),
 			ExpeditionEnchantments.level(player, ExpeditionEnchantments.SPORE_FILTER, EquipmentSlot.HEAD)
@@ -147,17 +149,17 @@ public final class PlayerClimateHandler {
 			snapshot.thermalInsulationPercent(),
 			snapshot.cavernCoolingPercent(),
 			snapshot.perceivedCelsius(),
-			snapshot.frostPenaltyActive(),
-			snapshot.heatPenaltyActive(),
+			!inSanctuarySafeZone && snapshot.frostPenaltyActive(),
+			!inSanctuarySafeZone && snapshot.heatPenaltyActive(),
 			snapshot.warmthRecoveryActive(),
 			nearCampfire,
-			enclosedShelter
+			enclosedShelter || inSanctuarySafeZone
 		);
 		if (CLIMATE_UPDATES.shouldSend(player.getUUID(), player, payload, level.getServer().getTickCount())) {
 			ServerPlayNetworking.send(player, payload);
 		}
 
-		applySurvivalEffects(player, level, snapshot, mossCount, nearCampfire);
+		applySurvivalEffects(player, level, snapshot, mossCount, nearCampfire, inSanctuarySafeZone);
 		pulseReactiveCaveFlora(level, pos, snapshot, biomeId);
 	}
 
@@ -198,7 +200,8 @@ public final class PlayerClimateHandler {
 		ServerLevel level,
 		ClimateSnapshot snapshot,
 		int mossCount,
-		boolean nearCampfire
+		boolean nearCampfire,
+		boolean inSanctuarySafeZone
 	) {
 		if (!player.isCreative() && !player.isSpectator() && ModItems.hasSeaGlassCharm(player) && player.isInWater()) {
 			player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 45, 0, true, false, false));
@@ -206,6 +209,13 @@ public final class PlayerClimateHandler {
 
 		CanopyCavernConfig config = CanopyCavernMod.getConfig();
 		if (!config.climateSurvivalEnabled() || player.isCreative() || player.isSpectator()) {
+			return;
+		}
+
+		if (inSanctuarySafeZone) {
+			if (player.getTicksFrozen() > 0) {
+				player.setTicksFrozen(Math.max(0, player.getTicksFrozen() - 35));
+			}
 			return;
 		}
 

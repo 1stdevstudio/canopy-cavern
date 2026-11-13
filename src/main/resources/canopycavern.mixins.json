@@ -3,7 +3,10 @@
   "minVersion": "0.8",
   "package": "com.yogi.canopycavern.mixin",
   "mixins": [
-    "DeepFocusPlayerMixin"
+    "DeepFocusPlayerMixin",
+    "LecternMenuMixin",
+    "NaturalSpawnerMixin",
+    "ServerExplosionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

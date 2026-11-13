@@ -61,5 +61,32 @@ class CanopyCavernConfigTest {
 		assertTrue(loaded.climateSurvivalEnabled());
 		assertTrue(loaded.starterFieldGuideEnabled());
 		assertTrue(loaded.dynamicAmbienceEnabled());
+		assertFalse(loaded.spawnHubEnabled());
+		assertEquals(CanopyCavernConfig.DEFAULT_SPAWN_SAFE_RADIUS, loaded.spawnHubArrivalSafeRadius());
+		assertTrue(loaded.spawnHubClimateSafeZoneEnabled());
+		assertTrue(loaded.spawnHubRequireBackupConfirmation());
+	}
+
+	@Test
+	void clampsSpawnHubSafeRadiusAndPersistsToggle(@TempDir Path tempDir) {
+		Path path = tempDir.resolve("spawn.json");
+		var logger = LoggerFactory.getLogger(CanopyCavernConfigTest.class);
+
+		CanopyCavernConfig defaults = CanopyCavernConfig.defaults();
+		assertFalse(defaults.spawnHubEnabled());
+
+		CanopyCavernConfig custom = new CanopyCavernConfig(
+			true, true, true, true, true, true, true, true, true,
+			true, 999, false, true
+		);
+		assertEquals(CanopyCavernConfig.MAX_SPAWN_SAFE_RADIUS, custom.spawnHubArrivalSafeRadius());
+		CanopyCavernConfig.save(path, custom, logger);
+
+		CanopyCavernConfig reloaded = CanopyCavernConfig.loadOrCreate(path, logger);
+		assertTrue(reloaded.spawnHubEnabled());
+		assertEquals(CanopyCavernConfig.MAX_SPAWN_SAFE_RADIUS, reloaded.spawnHubArrivalSafeRadius());
+		assertFalse(reloaded.spawnHubClimateSafeZoneEnabled());
+		assertTrue(reloaded.spawnHubRequireBackupConfirmation());
+		assertFalse(reloaded.withSpawnHubEnabled(false).spawnHubEnabled());
 	}
 }

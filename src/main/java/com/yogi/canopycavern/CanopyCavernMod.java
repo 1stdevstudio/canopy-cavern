@@ -7,6 +7,9 @@ import com.yogi.canopycavern.item.ExpeditionGearActions;
 
 import com.yogi.canopycavern.network.ModNetworking;
 import com.yogi.canopycavern.world.PlayerClimateHandler;
+import com.yogi.canopycavern.world.spawn.SanctuaryCommands;
+import com.yogi.canopycavern.world.spawn.SanctuaryPlacementService;
+import com.yogi.canopycavern.world.spawn.SpawnSanctuaryProtection;
 import com.yogi.canopycavern.worldgen.WorldOverhaulRegistry;
 import com.yogi.canopycavern.worldgen.MiningCityStructure;
 
@@ -40,13 +43,17 @@ public final class CanopyCavernMod implements ModInitializer {
 		PlayerClimateHandler.register();
 		WorldOverhaulRegistry.register(config);
 		MiningCityStructure.register();
+		SanctuaryPlacementService.registerLifecycle();
+		SpawnSanctuaryProtection.registerEvents();
+		SanctuaryCommands.register();
 
 		LOGGER.info(
-			"Canopy Cavern initialized (surfaceOverhaul={}, caveOverhaul={}, surfaceLavaCleanup={}, climateSurvival={})",
+			"Canopy Cavern initialized (surfaceOverhaul={}, caveOverhaul={}, surfaceLavaCleanup={}, climateSurvival={}, spawnHubEnabled={})",
 			config.surfaceOverhaulEnabled(),
 			config.caveOverhaulEnabled(),
 			config.removeAbstractSurfaceLava(),
-			config.climateSurvivalEnabled()
+			config.climateSurvivalEnabled(),
+			config.spawnHubEnabled()
 		);
 	}
 
