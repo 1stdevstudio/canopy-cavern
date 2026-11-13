@@ -141,7 +141,7 @@ public record SanctuaryManifest(
 		return BoundingBox.fromCorners(cornerMin, cornerMax);
 	}
 
-	/** Computes the inclusive world-space bounding box of the full ~191x65x191 rotated hub envelope. */
+	/** Computes the inclusive world-space bounding box of the full compact 81x59x81 rotated hub envelope. */
 	public BoundingBox envelopeBoundingBoxWorld(BlockPos center, Rotation rotation) {
 		BlockPos pMin = toWorldPos(center, envelopeMin[0], envelopeMin[1], envelopeMin[2], rotation);
 		BlockPos pMax = toWorldPos(center, envelopeMax[0], envelopeMax[1], envelopeMax[2], rotation);

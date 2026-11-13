@@ -41,6 +41,20 @@ Tested on dedicated Fabric `26.3` server with `fabric-api`, `TerraBlender`, and 
 ## 3. Client-Server Connection & Observed Scope Limits
 
 - Connected real Fabric `26.3` client (`./gradlew runClient`) as `QATester` and `FreshJoinQA` to `127.0.0.1:25566`: OpenGL terrain & shader atlases compiled, `canopycavern:canopy_field_guide` granted on join, zero Mixin/networking disconnects.
-- **Unverified / Environment Limits**:
+- **Unverified / Environment Limits (`v0.5.0-beta.24`)**:
   - `screencapture` from background agent shells on macOS is gated by Screen Recording TCC permission (`could not create image from window`/`display`), so visual screenshots were not captured automatically by the agent; day/night structural & clearance checks were instead performed via live client+server connection and targeted world-block queries.
   - Only the isolated local QA server (`/Users/yogi/mcfebric`) received test deployment; `/Users/yogi/Downloads/febricserver` was left untouched and no production server rollout was executed.
+
+## 4. Compact Hub Update Verification (`v0.5.0-beta.25`)
+
+Following live player feedback in `/Users/yogi/mcfebric` requesting a tighter, less sprawling arrival footprint:
+- **Branch & Target:** `feat/compact-canopy-sanctuary-20261113` -> prerelease `v0.5.0-beta.25`.
+- **Compacted Geometry (`tools/spawn_sanctuary/generate_sanctuary_nbt.py`):**
+  - Consolidated `24` modules (`191x65x191`, `156,359` non-air blocks) into **`10` modules** spanning **`81x59x81`** (`[-40..40, -29..29, -40..40]`, `41,110` non-air blocks) with zero pairwise AABB overlaps and all `19` localized signs + `3` lecterns intact and structurally supported.
+  - All 4 cardinal wings (`north_expedition_gate`, `east_guild_hall`, `west_nature_garden`, `south_trading_pavilion`) attach flush to `plaza_core` (`31x31`), while `cavern_descent_upper` and `crystal_grotto_gallery` preserve twin descent stairs plus all 3 daylight return staircases.
+- **Automated Test Verification:** `./gradlew clean test build --no-daemon --console=plain` -> **`60 / 60` JUnit 5 tests passed (`0 fail, 0 err, 0 skip`)** across `12` test suites, including `CanopySanctuarySuiteTest` (`7` tests) and `CanopyCavernConfigTest` (`4` tests).
+- **Live Dedicated Server (`/Users/yogi/mcfebric`, `*:25565`) Re-Verification:**
+  - Restored pre-install world from `world/backups/canopy-sanctuary-20261113-115024.zip`, updated server & Modrinth client (`Fabulously Optimized`) mods to `canopycavern-0.5.0-beta.25.jar`.
+  - Executed `canopy sanctuary backup` (`canopy-sanctuary-20261113-130227.zip`), `preflight -336 116 1380 NONE` (`PASS | relief=15`), `preview`, `install -336 116 1380 NONE` (completed in **`312 ms` across `10` bounded ticks**), and `set-spawn` (`-336, 117, 1380`, `yaw=180`).
+  - Verified `Status=INSTALLED`, `piecesPlaced=10/10`, `protection=true`, waxed glowing signs (`welcome` at `-340 118 1373`, `grotto_exit` at `-333 94 1397`), resolved lectern books (`-332 117 1387`, `-312 117 1376`), Grotto floor/headroom (`-336 92 1414`), Pavilion Bell (`-339 118 1402`), Daylight Escape Stair endpoints, and `/tick query` (`0.2 ms/tick` avg, `20.0 TPS`).
+- **Remaining Unverified Limits:** Same macOS TCC Screen Recording restriction applies to background `screencapture` (no agent-taken PNG screenshots); `/Users/yogi/Downloads/febricserver` (`beta.23`) and earlier GitHub releases remained untouched.

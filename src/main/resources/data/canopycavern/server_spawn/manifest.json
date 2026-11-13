@@ -11,14 +11,14 @@
   "safePadRadius": 6,
   "safeZoneDefaultRadius": 48,
   "envelopeMin": [
-    -95,
-    -34,
-    -95
+    -40,
+    -29,
+    -40
   ],
   "envelopeMax": [
-    95,
-    30,
-    95
+    40,
+    29,
+    40
   ],
   "supportedRotations": [
     "NONE",
@@ -43,8 +43,8 @@
       ],
       "excavateBelow": false,
       "foundationSkirt": 8,
-      "nonAirBlocks": 5251,
-      "sha256Prefix": "8f130fe47654a8e4",
+      "nonAirBlocks": 5009,
+      "sha256Prefix": "a1256c350930da20",
       "connections": [
         {
           "name": "north",
@@ -85,9 +85,9 @@
         {
           "name": "heartroot_collar",
           "offset": [
-            11,
+            10,
             7,
-            11
+            10
           ],
           "direction": "up"
         }
@@ -123,9 +123,9 @@
         },
         {
           "offset": [
-            8,
+            7,
             2,
-            -7
+            -4
           ],
           "glowing": true,
           "lines": [
@@ -137,9 +137,9 @@
         },
         {
           "offset": [
-            -8,
+            -7,
             2,
-            7
+            -4
           ],
           "glowing": true,
           "lines": [
@@ -153,7 +153,7 @@
           "offset": [
             -4,
             2,
-            8
+            7
           ],
           "glowing": true,
           "lines": [
@@ -167,163 +167,13 @@
       "lecterns": [
         {
           "offset": [
-            -5,
+            4,
             1,
-            -7
+            7
           ],
           "bookKey": "canopy_sanctuary_welcome"
         }
       ]
-    },
-    {
-      "id": "plaza_ring_north",
-      "template": "canopycavern:server_spawn/plaza_ring_north",
-      "role": "arrival_plaza",
-      "offset": [
-        -15,
-        -4,
-        -24
-      ],
-      "size": [
-        31,
-        12,
-        9
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 1485,
-      "sha256Prefix": "6ef942301140646f",
-      "connections": [
-        {
-          "name": "to_gate",
-          "offset": [
-            0,
-            0,
-            -24
-          ],
-          "direction": "north"
-        }
-      ],
-      "signs": [],
-      "lecterns": []
-    },
-    {
-      "id": "plaza_ring_south",
-      "template": "canopycavern:server_spawn/plaza_ring_south",
-      "role": "arrival_plaza",
-      "offset": [
-        -15,
-        -4,
-        16
-      ],
-      "size": [
-        31,
-        12,
-        9
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 1485,
-      "sha256Prefix": "1c2f2270855d26af",
-      "connections": [
-        {
-          "name": "to_pavilion",
-          "offset": [
-            0,
-            0,
-            24
-          ],
-          "direction": "south"
-        }
-      ],
-      "signs": [],
-      "lecterns": []
-    },
-    {
-      "id": "plaza_ring_west",
-      "template": "canopycavern:server_spawn/plaza_ring_west",
-      "role": "arrival_plaza",
-      "offset": [
-        -24,
-        -4,
-        -24
-      ],
-      "size": [
-        9,
-        12,
-        40
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 1908,
-      "sha256Prefix": "5d7617b76a6f5eec",
-      "connections": [
-        {
-          "name": "to_west",
-          "offset": [
-            -24,
-            0,
-            0
-          ],
-          "direction": "west"
-        }
-      ],
-      "signs": [],
-      "lecterns": []
-    },
-    {
-      "id": "plaza_ring_sw",
-      "template": "canopycavern:server_spawn/plaza_ring_sw",
-      "role": "arrival_plaza",
-      "offset": [
-        -24,
-        -4,
-        16
-      ],
-      "size": [
-        9,
-        12,
-        9
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 415,
-      "sha256Prefix": "74abdfbe0bf0e50b",
-      "connections": [],
-      "signs": [],
-      "lecterns": []
-    },
-    {
-      "id": "plaza_ring_east",
-      "template": "canopycavern:server_spawn/plaza_ring_east",
-      "role": "arrival_plaza",
-      "offset": [
-        16,
-        -4,
-        -24
-      ],
-      "size": [
-        9,
-        12,
-        40
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 1907,
-      "sha256Prefix": "dbbd14f8635540e2",
-      "connections": [
-        {
-          "name": "to_east",
-          "offset": [
-            24,
-            0,
-            0
-          ],
-          "direction": "east"
-        }
-      ],
-      "signs": [],
-      "lecterns": []
     },
     {
       "id": "heartroot_lower_se",
@@ -332,17 +182,17 @@
       "offset": [
         16,
         -4,
-        16
+        13
       ],
       "size": [
-        9,
         12,
-        9
+        12,
+        15
       ],
       "excavateBelow": false,
       "foundationSkirt": 8,
-      "nonAirBlocks": 422,
-      "sha256Prefix": "f27c9409ceae9ead",
+      "nonAirBlocks": 963,
+      "sha256Prefix": "c8e2610fbfe41428",
       "connections": [],
       "signs": [],
       "lecterns": []
@@ -352,39 +202,20 @@
       "template": "canopycavern:server_spawn/heartroot_trunk",
       "role": "landmark",
       "offset": [
-        3,
+        4,
         8,
-        3
+        4
       ],
       "size": [
-        19,
+        12,
         11,
-        19
+        12
       ],
       "excavateBelow": false,
       "foundationSkirt": 0,
-      "nonAirBlocks": 244,
-      "sha256Prefix": "ff80f9e5197a23f2",
-      "connections": [
-        {
-          "name": "base",
-          "offset": [
-            11,
-            8,
-            11
-          ],
-          "direction": "down"
-        },
-        {
-          "name": "crown",
-          "offset": [
-            11,
-            18,
-            11
-          ],
-          "direction": "up"
-        }
-      ],
+      "nonAirBlocks": 170,
+      "sha256Prefix": "77c8e73195d8ccd5",
+      "connections": [],
       "signs": [],
       "lecterns": []
     },
@@ -393,19 +224,19 @@
       "template": "canopycavern:server_spawn/heartroot_canopy",
       "role": "landmark",
       "offset": [
-        -8,
+        -6,
         19,
-        -8
+        -6
       ],
       "size": [
-        37,
-        12,
-        37
+        32,
+        11,
+        32
       ],
       "excavateBelow": false,
       "foundationSkirt": 0,
-      "nonAirBlocks": 3244,
-      "sha256Prefix": "19d69454b4015347",
+      "nonAirBlocks": 3684,
+      "sha256Prefix": "b1bc4e8dce54d4f6",
       "connections": [],
       "signs": [],
       "lecterns": []
@@ -413,37 +244,37 @@
     {
       "id": "north_expedition_gate",
       "template": "canopycavern:server_spawn/north_expedition_gate",
-      "role": "gate",
+      "role": "north_gate",
       "offset": [
-        -15,
+        -13,
         -4,
-        -49
+        -40
       ],
       "size": [
-        31,
-        23,
+        27,
+        22,
         25
       ],
       "excavateBelow": false,
       "foundationSkirt": 8,
-      "nonAirBlocks": 5538,
-      "sha256Prefix": "18ef6177942a04e4",
+      "nonAirBlocks": 4119,
+      "sha256Prefix": "1fedf8672e1cc8db",
       "connections": [
         {
-          "name": "south_plaza",
+          "name": "south",
           "offset": [
             0,
             0,
-            -25
+            -16
           ],
           "direction": "south"
         },
         {
-          "name": "north_trail",
+          "name": "north_wilds",
           "offset": [
             0,
             0,
-            -49
+            -40
           ],
           "direction": "north"
         }
@@ -451,9 +282,9 @@
       "signs": [
         {
           "offset": [
-            -5,
+            -4,
             2,
-            -32
+            -23
           ],
           "glowing": true,
           "lines": [
@@ -462,54 +293,12 @@
             "sign.canopycavern.north_gate.3",
             "sign.canopycavern.north_gate.4"
           ]
-        }
-      ],
-      "lecterns": []
-    },
-    {
-      "id": "north_trail_outpost",
-      "template": "canopycavern:server_spawn/north_trail_outpost",
-      "role": "road_connector",
-      "offset": [
-        -11,
-        -4,
-        -95
-      ],
-      "size": [
-        23,
-        13,
-        46
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 5545,
-      "sha256Prefix": "e5ed52677c6fdde3",
-      "connections": [
-        {
-          "name": "to_gate",
-          "offset": [
-            0,
-            0,
-            -50
-          ],
-          "direction": "south"
         },
         {
-          "name": "wilds_exit",
           "offset": [
-            0,
-            0,
-            -95
-          ],
-          "direction": "north"
-        }
-      ],
-      "signs": [
-        {
-          "offset": [
-            4,
-            1,
-            -71
+            -4,
+            2,
+            -37
           ],
           "glowing": true,
           "lines": [
@@ -525,35 +314,35 @@
     {
       "id": "east_guild_hall",
       "template": "canopycavern:server_spawn/east_guild_hall",
-      "role": "guild_hall",
+      "role": "east_guild",
       "offset": [
-        25,
+        16,
         -4,
-        -13
+        -12
       ],
       "size": [
-        35,
+        25,
         23,
-        27
+        25
       ],
       "excavateBelow": false,
       "foundationSkirt": 8,
-      "nonAirBlocks": 6395,
-      "sha256Prefix": "eb89159f9c947cb3",
+      "nonAirBlocks": 4258,
+      "sha256Prefix": "4c55a9dbbbc8051d",
       "connections": [
         {
-          "name": "west_plaza",
+          "name": "west",
           "offset": [
-            25,
+            16,
             0,
             0
           ],
           "direction": "west"
         },
         {
-          "name": "east_trail",
+          "name": "east_wilds",
           "offset": [
-            59,
+            40,
             0,
             0
           ],
@@ -563,9 +352,9 @@
       "signs": [
         {
           "offset": [
-            38,
+            23,
             2,
-            -7
+            -5
           ],
           "glowing": true,
           "lines": [
@@ -577,9 +366,9 @@
         },
         {
           "offset": [
-            38,
+            29,
             2,
-            7
+            -7
           ],
           "glowing": true,
           "lines": [
@@ -591,7 +380,7 @@
         },
         {
           "offset": [
-            40,
+            29,
             2,
             7
           ],
@@ -607,95 +396,54 @@
       "lecterns": [
         {
           "offset": [
-            36,
+            24,
             1,
-            -5
+            -4
           ],
           "bookKey": "guild_field_guide"
         },
         {
           "offset": [
-            40,
+            24,
             1,
-            -5
+            4
           ],
           "bookKey": "guild_expedition_routes"
         }
       ]
     },
     {
-      "id": "east_meadow_trail",
-      "template": "canopycavern:server_spawn/east_meadow_trail",
-      "role": "road_connector",
-      "offset": [
-        60,
-        -4,
-        -20
-      ],
-      "size": [
-        36,
-        17,
-        41
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 7627,
-      "sha256Prefix": "afade2ecfc0bb6d9",
-      "connections": [
-        {
-          "name": "inner",
-          "offset": [
-            60,
-            0,
-            0
-          ],
-          "direction": "west"
-        },
-        {
-          "name": "outer",
-          "offset": [
-            95,
-            0,
-            0
-          ],
-          "direction": "east"
-        }
-      ],
-      "signs": [],
-      "lecterns": []
-    },
-    {
       "id": "west_nature_garden",
       "template": "canopycavern:server_spawn/west_nature_garden",
-      "role": "nature_garden",
+      "role": "west_garden",
       "offset": [
-        -59,
+        -40,
         -4,
-        -13
+        -12
       ],
       "size": [
-        35,
+        25,
         20,
-        27
+        25
       ],
       "excavateBelow": false,
       "foundationSkirt": 8,
-      "nonAirBlocks": 5336,
-      "sha256Prefix": "3d9d1d4c88cd201e",
+      "nonAirBlocks": 3396,
+      "sha256Prefix": "08f9173ca149962e",
       "connections": [
         {
-          "name": "east_plaza",
+          "name": "east",
           "offset": [
-            -25,
+            -16,
             0,
             0
           ],
           "direction": "east"
         },
         {
-          "name": "west_trail",
+          "name": "west_wilds",
           "offset": [
-            -59,
+            -40,
             0,
             0
           ],
@@ -705,9 +453,9 @@
       "signs": [
         {
           "offset": [
-            -52,
+            -18,
             2,
-            0
+            -4
           ],
           "glowing": true,
           "lines": [
@@ -721,98 +469,57 @@
       "lecterns": []
     },
     {
-      "id": "west_grove_trail",
-      "template": "canopycavern:server_spawn/west_grove_trail",
-      "role": "road_connector",
-      "offset": [
-        -95,
-        -4,
-        -20
-      ],
-      "size": [
-        36,
-        17,
-        41
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 7627,
-      "sha256Prefix": "518bb2af754a5cae",
-      "connections": [
-        {
-          "name": "inner",
-          "offset": [
-            -60,
-            0,
-            0
-          ],
-          "direction": "east"
-        },
-        {
-          "name": "outer",
-          "offset": [
-            -95,
-            0,
-            0
-          ],
-          "direction": "west"
-        }
-      ],
-      "signs": [],
-      "lecterns": []
-    },
-    {
       "id": "south_trading_pavilion",
       "template": "canopycavern:server_spawn/south_trading_pavilion",
-      "role": "pavilion",
+      "role": "south_pavilion",
       "offset": [
-        -22,
+        -15,
         -3,
-        25
+        16
       ],
       "size": [
-        45,
+        31,
         21,
-        30
+        25
       ],
       "excavateBelow": false,
       "foundationSkirt": 8,
-      "nonAirBlocks": 6977,
-      "sha256Prefix": "fe4936124a6b3c7b",
+      "nonAirBlocks": 3482,
+      "sha256Prefix": "7a4cb3264ef07aea",
       "connections": [
         {
-          "name": "north_plaza",
+          "name": "north",
           "offset": [
             0,
             0,
-            25
+            16
           ],
           "direction": "north"
         },
         {
-          "name": "south_apron",
+          "name": "south_wilds",
           "offset": [
             0,
             0,
-            54
+            40
           ],
           "direction": "south"
         },
         {
-          "name": "west_stair_bottom",
+          "name": "to_atrium_w",
           "offset": [
-            -10,
+            -12,
             -3,
-            45
+            33
           ],
           "direction": "down"
         },
         {
-          "name": "east_stair_bottom",
+          "name": "to_atrium_e",
           "offset": [
-            10,
+            12,
             -3,
-            45
+            33
           ],
           "direction": "down"
         }
@@ -820,37 +527,9 @@
       "signs": [
         {
           "offset": [
-            -12,
-            2,
-            34
-          ],
-          "glowing": true,
-          "lines": [
-            "sign.canopycavern.cavern_stair.1",
-            "sign.canopycavern.cavern_stair.2",
-            "sign.canopycavern.cavern_stair.3",
-            "sign.canopycavern.cavern_stair.4"
-          ]
-        },
-        {
-          "offset": [
-            8,
-            2,
-            34
-          ],
-          "glowing": true,
-          "lines": [
-            "sign.canopycavern.cavern_stair.1",
-            "sign.canopycavern.cavern_stair.2",
-            "sign.canopycavern.cavern_stair.3",
-            "sign.canopycavern.cavern_stair.4"
-          ]
-        },
-        {
-          "offset": [
             -4,
             2,
-            26
+            18
           ],
           "glowing": true,
           "lines": [
@@ -859,103 +538,63 @@
             "sign.canopycavern.pavilion_sign.3",
             "sign.canopycavern.pavilion_sign.4"
           ]
-        }
-      ],
-      "lecterns": []
-    },
-    {
-      "id": "south_pavilion_apron",
-      "template": "canopycavern:server_spawn/south_pavilion_apron",
-      "role": "road_connector",
-      "offset": [
-        -15,
-        -3,
-        55
-      ],
-      "size": [
-        31,
-        16,
-        12
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 1658,
-      "sha256Prefix": "7155d6b04d80d774",
-      "connections": [
-        {
-          "name": "north",
-          "offset": [
-            0,
-            0,
-            55
-          ],
-          "direction": "north"
         },
         {
-          "name": "south",
           "offset": [
-            0,
-            0,
-            66
+            -8,
+            2,
+            26
           ],
-          "direction": "south"
+          "glowing": true,
+          "lines": [
+            "sign.canopycavern.cavern_stair.1",
+            "sign.canopycavern.cavern_stair.2",
+            "sign.canopycavern.cavern_stair.3",
+            "sign.canopycavern.cavern_stair.4"
+          ]
+        },
+        {
+          "offset": [
+            2,
+            2,
+            39
+          ],
+          "glowing": true,
+          "lines": [
+            "sign.canopycavern.cavern_surface_portal.1",
+            "sign.canopycavern.cavern_surface_portal.2",
+            "sign.canopycavern.cavern_surface_portal.3",
+            "sign.canopycavern.cavern_surface_portal.4"
+          ]
         }
       ],
-      "signs": [],
       "lecterns": []
     },
     {
       "id": "cavern_descent_upper",
       "template": "canopycavern:server_spawn/cavern_descent_upper",
-      "role": "cavern_descent",
+      "role": "cavern_upper",
       "offset": [
-        -14,
-        -19,
-        30
+        -15,
+        -17,
+        16
       ],
       "size": [
-        29,
-        16,
-        37
+        31,
+        14,
+        25
       ],
       "excavateBelow": true,
-      "foundationSkirt": 0,
-      "nonAirBlocks": 14444,
-      "sha256Prefix": "49884cb675de80b6",
+      "foundationSkirt": 4,
+      "nonAirBlocks": 8457,
+      "sha256Prefix": "ccccbc24506d161d",
       "connections": [
         {
-          "name": "west_stair_top",
-          "offset": [
-            -10,
-            -4,
-            45
-          ],
-          "direction": "up"
-        },
-        {
-          "name": "east_stair_top",
-          "offset": [
-            10,
-            -4,
-            45
-          ],
-          "direction": "up"
-        },
-        {
-          "name": "south_emergency_tunnel",
+          "name": "to_grotto",
           "offset": [
             0,
-            -12,
-            66
-          ],
-          "direction": "south"
-        },
-        {
-          "name": "grotto_upper_landing",
-          "offset": [
-            0,
-            -19,
-            44
+            -17,
+            27
           ],
           "direction": "down"
         }
@@ -963,9 +602,9 @@
       "signs": [
         {
           "offset": [
+            -7,
             -8,
-            -11,
-            55
+            35
           ],
           "glowing": true,
           "lines": [
@@ -977,9 +616,9 @@
         },
         {
           "offset": [
-            8,
-            -11,
-            55
+            7,
+            -8,
+            35
           ],
           "glowing": true,
           "lines": [
@@ -991,9 +630,9 @@
         },
         {
           "offset": [
-            -3,
-            -11,
-            63
+            3,
+            -8,
+            28
           ],
           "glowing": true,
           "lines": [
@@ -1011,59 +650,36 @@
       "template": "canopycavern:server_spawn/crystal_grotto_gallery",
       "role": "crystal_grotto",
       "offset": [
-        -21,
-        -34,
-        32
+        -15,
+        -29,
+        12
       ],
       "size": [
-        43,
-        15,
-        40
+        31,
+        12,
+        29
       ],
       "excavateBelow": true,
-      "foundationSkirt": 0,
-      "nonAirBlocks": 18589,
-      "sha256Prefix": "b874dab8b58b6944",
+      "foundationSkirt": 4,
+      "nonAirBlocks": 7572,
+      "sha256Prefix": "b5c68744813d33f3",
       "connections": [
         {
-          "name": "from_descent",
+          "name": "from_atrium",
           "offset": [
             0,
-            -20,
-            44
+            -18,
+            28
           ],
           "direction": "up"
-        },
-        {
-          "name": "emergency_south_exit",
-          "offset": [
-            0,
-            -21,
-            71
-          ],
-          "direction": "south"
         }
       ],
       "signs": [
         {
           "offset": [
-            -3,
-            -30,
-            59
-          ],
-          "glowing": true,
-          "lines": [
-            "sign.canopycavern.grotto_exit.1",
-            "sign.canopycavern.grotto_exit.2",
-            "sign.canopycavern.grotto_exit.3",
-            "sign.canopycavern.grotto_exit.4"
-          ]
-        },
-        {
-          "offset": [
             0,
-            -30,
-            57
+            -22,
+            37
           ],
           "glowing": true,
           "lines": [
@@ -1072,152 +688,22 @@
             "sign.canopycavern.grotto_lore.3",
             "sign.canopycavern.grotto_lore.4"
           ]
-        }
-      ],
-      "lecterns": []
-    },
-    {
-      "id": "south_crag_trail",
-      "template": "canopycavern:server_spawn/south_crag_trail",
-      "role": "road_connector",
-      "offset": [
-        -22,
-        -19,
-        67
-      ],
-      "size": [
-        45,
-        32,
-        29
-      ],
-      "excavateBelow": true,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 25561,
-      "sha256Prefix": "5f5ea1d725d2176c",
-      "connections": [
-        {
-          "name": "north",
-          "offset": [
-            0,
-            0,
-            67
-          ],
-          "direction": "north"
         },
         {
-          "name": "south_wilds",
           "offset": [
-            0,
-            0,
-            95
-          ],
-          "direction": "south"
-        }
-      ],
-      "signs": [
-        {
-          "offset": [
-            4,
-            2,
-            82
+            3,
+            -22,
+            17
           ],
           "glowing": true,
           "lines": [
-            "sign.canopycavern.cavern_surface_portal.1",
-            "sign.canopycavern.cavern_surface_portal.2",
-            "sign.canopycavern.cavern_surface_portal.3",
-            "sign.canopycavern.cavern_surface_portal.4"
+            "sign.canopycavern.grotto_exit.1",
+            "sign.canopycavern.grotto_exit.2",
+            "sign.canopycavern.grotto_exit.3",
+            "sign.canopycavern.grotto_exit.4"
           ]
         }
       ],
-      "lecterns": []
-    },
-    {
-      "id": "landscape_nw",
-      "template": "canopycavern:server_spawn/landscape_nw",
-      "role": "perimeter_landscape",
-      "offset": [
-        -72,
-        -4,
-        -72
-      ],
-      "size": [
-        41,
-        19,
-        41
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 8674,
-      "sha256Prefix": "e69ccf302f3e40f5",
-      "connections": [],
-      "signs": [],
-      "lecterns": []
-    },
-    {
-      "id": "landscape_ne",
-      "template": "canopycavern:server_spawn/landscape_ne",
-      "role": "perimeter_landscape",
-      "offset": [
-        32,
-        -4,
-        -72
-      ],
-      "size": [
-        41,
-        19,
-        41
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 8674,
-      "sha256Prefix": "3f46803a79f80f48",
-      "connections": [],
-      "signs": [],
-      "lecterns": []
-    },
-    {
-      "id": "landscape_sw",
-      "template": "canopycavern:server_spawn/landscape_sw",
-      "role": "perimeter_landscape",
-      "offset": [
-        -72,
-        -4,
-        32
-      ],
-      "size": [
-        41,
-        19,
-        41
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 8674,
-      "sha256Prefix": "3a40b61310a362c3",
-      "connections": [],
-      "signs": [],
-      "lecterns": []
-    },
-    {
-      "id": "landscape_se",
-      "template": "canopycavern:server_spawn/landscape_se",
-      "role": "perimeter_landscape",
-      "offset": [
-        32,
-        -4,
-        32
-      ],
-      "size": [
-        41,
-        19,
-        41
-      ],
-      "excavateBelow": false,
-      "foundationSkirt": 8,
-      "nonAirBlocks": 8679,
-      "sha256Prefix": "971d3a502e2073a4",
-      "connections": [],
-      "signs": [],
       "lecterns": []
     }
   ]

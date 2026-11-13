@@ -54,11 +54,11 @@ class CanopySanctuarySuiteTest {
 	);
 
 	@Test
-	void allTwentyFourTemplatesLoadAndTransformCleanlyAcrossAllRotations() throws Exception {
+	void allTenTemplatesLoadAndTransformCleanlyAcrossAllRotations() throws Exception {
 		SanctuaryManifest manifest = SanctuaryManifest.loadDefault();
 		assertEquals("canopy_sanctuary", manifest.hubId());
 		assertEquals(5023, manifest.dataVersion());
-		assertEquals(24, manifest.pieces().size());
+		assertEquals(10, manifest.pieces().size());
 
 		// Also verify world-space non-overlap across all 4 rotations and validate arrival pad & sign/lectern bindings
 		for (Rotation rotation : Rotation.values()) {
@@ -301,9 +301,10 @@ class CanopySanctuarySuiteTest {
 		SanctuaryManifest manifest = SanctuaryManifest.loadDefault();
 		BlockPos center = new BlockPos(200, 72, -100);
 
-		assertTrue(SpawnSanctuaryProtection.isProtectedCoordinate(center, center, Rotation.NONE, manifest, 48));
-		assertTrue(SpawnSanctuaryProtection.isProtectedCoordinate(center.offset(90, 0, 0), center, Rotation.CLOCKWISE_90, manifest, 48));
-		assertTrue(SpawnSanctuaryProtection.isProtectedCoordinate(center.offset(0, -30, 50), center, Rotation.NONE, manifest, 48));
+		assertTrue(SpawnSanctuaryProtection.isProtectedCoordinate(center, center, Rotation.NONE, manifest, 8));
+		assertTrue(SpawnSanctuaryProtection.isProtectedCoordinate(center.offset(35, 0, 0), center, Rotation.CLOCKWISE_90, manifest, 8));
+		assertTrue(SpawnSanctuaryProtection.isProtectedCoordinate(center.offset(0, -24, 30), center, Rotation.NONE, manifest, 8));
+		assertFalse(SpawnSanctuaryProtection.isProtectedCoordinate(center.offset(55, 0, 0), center, Rotation.NONE, manifest, 8));
 		assertFalse(SpawnSanctuaryProtection.isProtectedCoordinate(center.offset(130, 0, 0), center, Rotation.NONE, manifest, 48));
 
 		assertTrue(SpawnSanctuaryProtection.isWithinChebyshevClimateZone(center, center, 48));

@@ -153,3 +153,5 @@ If a server already uses a separate lobby/spawn plugin or Fabric mod, support us
 ---
 
 **Decision record:** The conversational request said "update spawn server" followed by "lanjutkan design spawner". This specification treats that as the **server spawn hub**. It intentionally does **not** add monster spawning logic.
+
+**Compact Revision (`v0.5.0-beta.25`):** Based on live gameplay feedback ("Bikin simpel saja, jangan terlalu lebar"), the modular footprint was compacted from `191x65x191` (`24` modules) to **`81x59x81`** (`[-40..40, -29..29, -40..40]`, **`10` modules**, `41,110` non-air blocks), connecting all four wings directly to the `31x31` Central Plaza (`13x13` Safe Arrival Pad) while keeping the Heartroot Tree, North Gate, East Guild Hall, West Nature Garden, South Pavilion, and three underground Crystal Grotto exit stairs intact.
