@@ -18,28 +18,43 @@ class ShelterBlueprintsTest {
 		BlueprintDefinition camp = ShelterBlueprints.findBlueprint("trailside_camp");
 		assertNotNull(camp);
 
-		Map<String, Integer> partial = Map.of(
-			"minecraft:spruce_planks", 20,
-			"minecraft:spruce_log", 12,
-			"minecraft:campfire", 1,
-			"minecraft:crafting_table", 1,
-			"minecraft:chest", 1
-		);
+		Map<String, Integer> complete = new java.util.HashMap<>();
+		for (var material : camp.materials()) {
+			complete.put(material.itemId(), material.count());
+		}
+		assertTrue(ShelterBlueprints.hasAllMaterials(complete, camp.materials()));
+		assertTrue(ShelterBlueprints.missingMaterials(complete, camp.materials()).isEmpty());
+
+		Map<String, Integer> partial = new java.util.HashMap<>(complete);
+		partial.put("minecraft:spruce_planks", complete.get("minecraft:spruce_planks") - 8);
+		partial.remove("minecraft:lantern");
 		assertFalse(ShelterBlueprints.hasAllMaterials(partial, camp.materials()));
 		Map<String, Integer> missing = ShelterBlueprints.missingMaterials(partial, camp.materials());
 		assertEquals(8, missing.get("minecraft:spruce_planks"));
 		assertEquals(1, missing.get("minecraft:lantern"));
+	}
 
-		Map<String, Integer> complete = Map.of(
-			"minecraft:spruce_planks", 32,
-			"minecraft:spruce_log", 12,
-			"minecraft:campfire", 1,
-			"minecraft:crafting_table", 1,
-			"minecraft:chest", 1,
-			"minecraft:lantern", 1
-		);
-		assertTrue(ShelterBlueprints.hasAllMaterials(complete, camp.materials()));
-		assertTrue(ShelterBlueprints.missingMaterials(complete, camp.materials()).isEmpty());
+	@Test
+	void materialCostsMatchFinalBlockPlacementsForEveryBlueprint() {
+		for (BlueprintDefinition bp : ShelterBlueprints.allBlueprints()) {
+			Map<String, String> finalBlocks = new java.util.HashMap<>();
+			for (var spec : bp.blocks()) {
+				finalBlocks.put(spec.dx() + ":" + spec.dy() + ":" + spec.dz(), spec.blockId());
+			}
+			Map<String, Integer> expected = new java.util.HashMap<>();
+			for (String blockId : finalBlocks.values()) {
+				if (!"minecraft:air".equals(blockId)) {
+					expected.merge(blockId, 1, Integer::sum);
+				}
+			}
+			Map<String, Integer> actual = new java.util.HashMap<>();
+			for (var cost : bp.materials()) {
+				actual.merge(cost.itemId(), cost.count(), Integer::sum);
+			}
+			assertEquals(expected, actual, "Material mismatch for " + bp.id());
+		}
+		assertTrue(ShelterBlueprints.findBlueprint("peak_stone_cabin").blocks().stream()
+			.anyMatch(b -> b.blockId().equals("minecraft:spruce_door")));
 	}
 
 	@Test
