@@ -142,6 +142,68 @@ class StructureExpansionIntegrityTest {
         }
     }
 
+    @Test
+    void villageGeometryDoesNotBreakBedsDoorsLightsOrSpawnPoints() throws Exception {
+        for (String id : allNewStructures()) {
+            Map<String,Object> data = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/center.nbt"));
+            List<?> palette = list(data, "palette");
+            Map<String,String> blocks = new HashMap<>();
+            Map<String,Map<String,Object>> properties = new HashMap<>();
+            for (Object obj : list(data, "blocks")) {
+                Map<String,Object> b = map(obj);
+                List<?> p = list(b, "pos");
+                String at = p.get(0) + ":" + p.get(1) + ":" + p.get(2);
+                Map<String,Object> entry = map(palette.get((int)b.get("state")));
+                blocks.put(at, String.valueOf(entry.get("id")));
+                properties.put(at, entry.containsKey("properties") ? map(entry.get("properties")) : Map.of());
+            }
+            for (Object obj : list(data, "blocks")) {
+                Map<String,Object> block = map(obj);
+                List<?> pos = list(block, "pos");
+                int x = (int)pos.get(0), y = (int)pos.get(1), z = (int)pos.get(2);
+                String at = x + ":" + y + ":" + z;
+                String blockId = blocks.get(at);
+                Map<String,Object> props = properties.get(at);
+                if (blockId.endsWith("_door")) {
+                    String otherPos = x + ":" + (y + ("lower".equals(props.get("half")) ? 1 : -1)) + ":" + z;
+                    assertEquals(blockId, blocks.get(otherPos), id + " has half of a broken two-block door at " + at);
+                    assertEquals("lower".equals(props.get("half")) ? "upper" : "lower",
+                        properties.getOrDefault(otherPos, Map.of()).get("half"), id + " has invalid door half " + at);
+                }
+                if (blockId.endsWith("_bed")) {
+                    assertTrue(props.containsKey("part"), id + " bed missing part at " + at);
+                    String facing = String.valueOf(props.get("facing"));
+                    int offsetX = "east".equals(facing) ? 1 : "west".equals(facing) ? -1 : 0;
+                    int offsetZ = "south".equals(facing) ? 1 : "north".equals(facing) ? -1 : 0;
+                    int sign = "foot".equals(props.get("part")) ? 1 : -1;
+                    String otherPos = (x + sign * offsetX) + ":" + y + ":" + (z + sign * offsetZ);
+                    assertEquals(blockId, blocks.get(otherPos), id + " half of the bed missing at " + at);
+                    assertEquals("foot".equals(props.get("part")) ? "head" : "foot",
+                        properties.getOrDefault(otherPos, Map.of()).get("part"), id + " bed pairing invalid at " + at);
+                }
+                if (blockId.equals("minecraft:lantern") && "true".equals(props.get("hanging"))) {
+                    String above = blocks.get(x + ":" + (y+1) + ":" + z);
+                    assertNotNull(above, id + " hanging lantern has no roof at " + at);
+                    assertFalse(above.equals("minecraft:air"), id + " hanging lantern falls without solid support at " + at);
+                }
+                if (blockId.equals("minecraft:bell") && "floor".equals(props.get("attachment"))) {
+                    String below = blocks.get(x + ":" + (y-1) + ":" + z);
+                    assertNotNull(below, id + " bell has no floor support");
+                    assertFalse(below.equals("minecraft:air") || below.equals("minecraft:water")
+                        || below.equals("minecraft:lava"), id + " bell is supported by liquid/air");
+                }
+            }
+            for (Object obj : list(data, "entities")) {
+                Map<String,Object> e = map(obj);
+                List<?> blockPos = list(e, "blockPos");
+                int x = (int)blockPos.get(0), y = (int)blockPos.get(1), z = (int)blockPos.get(2);
+                String idAt = blocks.get(x + ":" + y + ":" + z);
+                assertFalse("minecraft:stone_bricks".equals(idAt) || "minecraft:deepslate_bricks".equals(idAt),
+                    id + " spawned an entity intersecting solid walls at " + blockPos);
+            }
+        }
+    }
+
     private static List<String> allNewStructures() {
         List<String> all = new ArrayList<>(NEW_VILLAGES);
         all.add(ABANDONED);
