@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:craft_tide_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:dark_prismarine"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.plunder_sunken_citadel.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.plunder_sunken_citadel.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_plunder_sunken_citadel": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:sunken_citadel_vault"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_plunder_sunken_citadel"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

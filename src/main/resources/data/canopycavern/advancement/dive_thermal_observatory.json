@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:craft_tide_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:cut_copper"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.dive_thermal_observatory.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.dive_thermal_observatory.description"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "in_dive_thermal_observatory": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:abyssal_thermal_observatory"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_dive_thermal_observatory"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

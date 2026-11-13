@@ -29,9 +29,10 @@ import java.util.Map;
 public class CanopyFieldGuideScreen extends Screen {
 
 	private static final int PANEL_WIDTH = 368;
-	private static final int PANEL_HEIGHT = 236;
+	private static final int PANEL_HEIGHT = 252;
 
 	private int activeTab = 0; // 0 = Guide, 1 = Gear & Materials, 2 = Shelter Builder
+	private int guidePage = 0; // 0 = Basics/Climate/Gear/World, 1 = Ocean Mega-Structures & Villages
 	private int equipmentScroll = 0;
 	private int selectedBlueprintIndex = 0;
 	private Button buildButton;
@@ -50,25 +51,43 @@ public class CanopyFieldGuideScreen extends Screen {
 		addTabButton(left + 126, top + 28, 112, 20, "screen.canopycavern.tab.gear", 1);
 		addTabButton(left + 244, top + 28, 112, 20, "screen.canopycavern.tab.builder", 2);
 
-		if (activeTab == 1) {
-			this.addRenderableWidget(Button.builder(Component.literal("<"), b -> {
+		if (activeTab == 0) {
+			Button prevBtn = this.addRenderableWidget(Button.builder(Component.literal("<"), b -> {
+				guidePage = Math.max(0, guidePage - 1);
+				this.init();
+			}).bounds(left + 14, top + PANEL_HEIGHT - 30, 22, 20).build());
+			prevBtn.active = guidePage > 0;
+			Button nextBtn = this.addRenderableWidget(Button.builder(Component.literal(">"), b -> {
+				guidePage = Math.min(1, guidePage + 1);
+				this.init();
+			}).bounds(left + 40, top + PANEL_HEIGHT - 30, 22, 20).build());
+			nextBtn.active = guidePage < 1;
+		} else if (activeTab == 1) {
+			Button prevGear = this.addRenderableWidget(Button.builder(Component.literal("<"), b -> {
 				equipmentScroll = Math.max(0, equipmentScroll - 4);
-			}).bounds(left + PANEL_WIDTH - 56, top + PANEL_HEIGHT - 28, 20, 18).build());
-			this.addRenderableWidget(Button.builder(Component.literal(">"), b -> {
-				int maxStart = Math.max(0, ShelterBlueprints.equipmentCatalog().size() - 4);
+				this.init();
+			}).bounds(left + 14, top + PANEL_HEIGHT - 30, 22, 20).build());
+			prevGear.active = equipmentScroll > 0;
+			int maxStart = Math.max(0, ShelterBlueprints.equipmentCatalog().size() - 4);
+			Button nextGear = this.addRenderableWidget(Button.builder(Component.literal(">"), b -> {
 				equipmentScroll = Math.min(maxStart, equipmentScroll + 4);
-			}).bounds(left + PANEL_WIDTH - 32, top + PANEL_HEIGHT - 28, 20, 18).build());
+				this.init();
+			}).bounds(left + 40, top + PANEL_HEIGHT - 30, 22, 20).build());
+			nextGear.active = equipmentScroll < maxStart;
 		} else if (activeTab == 2) {
 			List<BlueprintDefinition> blueprints = ShelterBlueprints.allBlueprints();
 			for (int i = 0; i < blueprints.size(); i++) {
 				final int idx = i;
+				int col = i % 2;
+				int row = i / 2;
 				BlueprintDefinition bp = blueprints.get(i);
-				this.addRenderableWidget(
+				Button bpBtn = this.addRenderableWidget(
 					Button.builder(Component.translatable(bp.titleKey()), b -> {
 						selectedBlueprintIndex = idx;
-						refreshBuildButtonState();
-					}).bounds(left + 12 + idx * 116, top + 56, 110, 20).build()
+						this.init();
+					}).bounds(left + 12 + col * 174, top + 54 + row * 22, 168, 19).build()
 				);
+				bpBtn.active = (selectedBlueprintIndex != idx);
 			}
 			buildButton = this.addRenderableWidget(
 				Button.builder(Component.translatable("screen.canopycavern.builder.build_now"), b -> triggerBuild())
@@ -142,19 +161,29 @@ public class CanopyFieldGuideScreen extends Screen {
 		int x = left + 16;
 		int y = top + 58;
 		int wrapWidth = PANEL_WIDTH - 32;
-		String[] keys = {
-			"guide.canopycavern.section.basics",
-			"guide.canopycavern.section.climate",
-			"guide.canopycavern.section.gear",
-			"guide.canopycavern.section.world"
-		};
-		int[] colors = {0xFFAEE8A8, 0xFF9CD4FF, 0xFFF3C677, 0xFFC5A3FF};
+		String[] keys = guidePage == 0
+			? new String[] {
+				"guide.canopycavern.section.basics",
+				"guide.canopycavern.section.climate",
+				"guide.canopycavern.section.gear",
+				"guide.canopycavern.section.world"
+			}
+			: new String[] {
+				"guide.canopycavern.section.oceans",
+				"guide.canopycavern.section.ocean_gear",
+				"guide.canopycavern.section.airlock",
+				"guide.canopycavern.section.villages"
+			};
+		int[] colors = guidePage == 0
+			? new int[] {0xFFAEE8A8, 0xFF9CD4FF, 0xFFF3C677, 0xFFC5A3FF}
+			: new int[] {0xFF66E2D5, 0xFF8CC8FF, 0xFFF4B860, 0xFFAEE8A8};
 		for (int i = 0; i < keys.length; i++) {
 			graphics.text(this.font, Component.translatable(keys[i] + ".title"), x, y, colors[i], false);
 			y += 12;
 			graphics.textWithWordWrap(this.font, Component.translatable(keys[i] + ".body"), x, y, wrapWidth, 0xFFD9E6DF, false);
-			y += 28;
+			y += 30;
 		}
+		graphics.text(this.font, Component.literal((guidePage + 1) + " / 2"), left + 68, top + PANEL_HEIGHT - 24, 0xFF9FB8AD, false);
 	}
 
 	private void renderGearTab(GuiGraphicsExtractor graphics, int left, int top) {
@@ -186,6 +215,9 @@ public class CanopyFieldGuideScreen extends Screen {
 			);
 			y += 38;
 		}
+		int totalPages = (entries.size() + 3) / 4;
+		int currentPage = (equipmentScroll / 4) + 1;
+		graphics.text(this.font, Component.literal(currentPage + " / " + totalPages), left + 68, top + PANEL_HEIGHT - 24, 0xFF9FB8AD, false);
 	}
 
 	private void renderBuilderTab(GuiGraphicsExtractor graphics, int left, int top) {
@@ -194,17 +226,18 @@ public class CanopyFieldGuideScreen extends Screen {
 		boolean creative = this.minecraft != null && this.minecraft.player != null && this.minecraft.player.isCreative();
 
 		Item icon = BuiltInRegistries.ITEM.getValue(Identifier.parse(selected.iconItemId()));
-		graphics.item(new ItemStack(icon), left + 16, top + 84);
-		graphics.text(
+		graphics.item(new ItemStack(icon), left + 16, top + 100);
+		graphics.textWithWordWrap(
 			this.font,
 			Component.translatable(selected.descKey()),
 			left + 40,
-			top + 88,
+			top + 102,
+			PANEL_WIDTH - 56,
 			0xFFD5E6DE,
 			false
 		);
 
-		int y = top + 108;
+		int y = top + 124;
 		graphics.text(
 			this.font,
 			Component.translatable("screen.canopycavern.builder.requirements", selected.width(), selected.height(), selected.depth()),

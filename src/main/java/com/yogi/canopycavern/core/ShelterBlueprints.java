@@ -87,6 +87,7 @@ public final class ShelterBlueprints {
 		list.add(createTrailsideCamp());
 		list.add(createPeakStoneCabin());
 		list.add(createGrottoSafeBunker());
+		list.add(createAbyssalAirlockDome());
 		return List.copyOf(list);
 	}
 
@@ -262,6 +263,53 @@ public final class ShelterBlueprints {
 		);
 	}
 
+	private static BlueprintDefinition createAbyssalAirlockDome() {
+		List<BlockSpec> blocks = new ArrayList<>();
+		// 5x4x5 pressurized underwater glass-and-copper airlock dome for ocean mega-structure expeditions
+		for (int dx = -2; dx <= 2; dx++) {
+			for (int dz = 1; dz <= 5; dz++) {
+				boolean onPerimeter = Math.abs(dx) == 2 || dz == 1 || dz == 5;
+				boolean corner = Math.abs(dx) == 2 && (dz == 1 || dz == 5);
+				blocks.add(new BlockSpec(dx, -1, dz, "minecraft:polished_deepslate"));
+				for (int dy = 0; dy <= 2; dy++) {
+					if (dx == 0 && dz == 1 && (dy == 0 || dy == 1)) {
+						blocks.add(new BlockSpec(dx, dy, dz, dy == 0 ? "minecraft:oak_door" : "minecraft:air"));
+					} else if (corner) {
+						blocks.add(new BlockSpec(dx, dy, dz, "minecraft:cut_copper"));
+					} else if (onPerimeter) {
+						blocks.add(new BlockSpec(dx, dy, dz, dy == 1 ? "minecraft:glass" : "minecraft:polished_deepslate"));
+					} else {
+						blocks.add(new BlockSpec(dx, dy, dz, "minecraft:air"));
+					}
+				}
+				blocks.add(new BlockSpec(dx, 3, dz, onPerimeter ? "minecraft:cut_copper" : "minecraft:glass"));
+			}
+		}
+		blocks.add(new BlockSpec(-1, 0, 4, "minecraft:crafting_table"));
+		blocks.add(new BlockSpec(0, 0, 4, "minecraft:sea_lantern"));
+		blocks.add(new BlockSpec(1, 0, 4, "minecraft:chest"));
+
+		return new BlueprintDefinition(
+			"abyssal_airlock_dome",
+			"blueprint.canopycavern.abyssal_airlock_dome",
+			"blueprint.canopycavern.abyssal_airlock_dome.desc",
+			"minecraft:sea_lantern",
+			5,
+			4,
+			5,
+			List.of(
+				new MaterialCost("minecraft:polished_deepslate", 32),
+				new MaterialCost("minecraft:cut_copper", 16),
+				new MaterialCost("minecraft:glass", 16),
+				new MaterialCost("minecraft:oak_door", 1),
+				new MaterialCost("minecraft:sea_lantern", 1),
+				new MaterialCost("minecraft:crafting_table", 1),
+				new MaterialCost("minecraft:chest", 1)
+			),
+			List.copyOf(blocks)
+		);
+	}
+
 	private static List<EquipmentEntry> buildEquipmentCatalog() {
 		return List.of(
 			new EquipmentEntry("canopycavern:thermal_hood", "item.canopycavern.thermal_hood", "guide.cat.thermal",
@@ -290,6 +338,10 @@ public final class ShelterBlueprints {
 				List.of(new MaterialCost("minecraft:lantern", 1), new MaterialCost("minecraft:glow_berries", 2), new MaterialCost("minecraft:amethyst_shard", 1))),
 			new EquipmentEntry("canopycavern:grotto_relic_compass", "item.canopycavern.grotto_relic_compass", "guide.cat.tools",
 				List.of(new MaterialCost("minecraft:compass", 1), new MaterialCost("minecraft:amethyst_shard", 2), new MaterialCost("minecraft:glow_berries", 1))),
+			new EquipmentEntry("canopycavern:abyssal_tide_compass", "item.canopycavern.abyssal_tide_compass", "guide.cat.tools",
+				List.of(new MaterialCost("minecraft:compass", 1), new MaterialCost("minecraft:prismarine_crystals", 2), new MaterialCost("minecraft:nautilus_shell", 1))),
+			new EquipmentEntry("canopycavern:sea_glass_charm", "item.canopycavern.sea_glass_charm", "guide.cat.tools",
+				List.of(new MaterialCost("minecraft:glass", 2), new MaterialCost("minecraft:prismarine_crystals", 2), new MaterialCost("minecraft:kelp", 4), new MaterialCost("minecraft:amethyst_shard", 1))),
 			new EquipmentEntry("canopycavern:canopy_field_guide", "item.canopycavern.canopy_field_guide", "guide.cat.tools",
 				List.of(new MaterialCost("minecraft:book", 1), new MaterialCost("minecraft:moss_block", 1)))
 		);

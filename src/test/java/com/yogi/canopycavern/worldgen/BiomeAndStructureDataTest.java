@@ -58,6 +58,131 @@ class BiomeAndStructureDataTest {
 	}
 
 	@Test
+	void configuresOceanMegaStructuresGrandMonumentAndLootTables() throws IOException {
+		assertMultiPieceStructure(
+			"sunken_citadel_vault",
+			"sunken_citadel_vaults",
+			"sunken_citadel_vault/central_vault",
+			"canopycavern:chests/sunken_citadel"
+		);
+		assertMultiPieceStructure(
+			"abyssal_thermal_observatory",
+			"abyssal_thermal_observatories",
+			"abyssal_thermal_observatory/main_dome",
+			"canopycavern:chests/thermal_observatory"
+		);
+		assertMultiPieceStructure(
+			"reef_lighthouse_keep",
+			"reef_lighthouse_keeps",
+			"reef_lighthouse_keep/island_keep",
+			"canopycavern:chests/armada_treasure"
+		);
+		assertMultiPieceStructure(
+			"abyssal_sanctum_monument",
+			"abyssal_sanctum_monument",
+			"abyssal_sanctum_monument/grand_rotunda",
+			"canopycavern:chests/abyssal_monument"
+		);
+
+		JsonObject tideTag = readJson("data/canopycavern/tags/worldgen/structure/tide_compass_targets.json");
+		String tideValues = tideTag.getAsJsonArray("values").toString();
+		assertTrue(tideValues.contains("canopycavern:sunken_citadel_vault"));
+		assertTrue(tideValues.contains("canopycavern:abyssal_thermal_observatory"));
+		assertTrue(tideValues.contains("canopycavern:reef_lighthouse_keep"));
+
+		JsonObject relicTag = readJson("data/canopycavern/tags/worldgen/structure/relic_compass_targets.json");
+		assertTrue(relicTag.getAsJsonArray("values").toString().contains("canopycavern:abyssal_sanctum_monument"));
+	}
+
+	@Test
+	void configuresRevampedVanillaVillagesWithGroundOutdoorSentinelsAndValidOrientations() throws Exception {
+		for (String theme : List.of("plains", "desert", "savanna", "snowy", "taiga")) {
+			JsonObject tcPool = readJson("data/minecraft/worldgen/template_pool/village/" + theme + "/town_centers.json");
+			assertTrue(tcPool.getAsJsonArray("elements").toString().contains("canopycavern:vanilla_revamp/" + theme + "/grand_town_center"));
+			assertPoolWeightsValid(tcPool, theme + "/town_centers.json");
+			JsonObject housesPool = readJson("data/minecraft/worldgen/template_pool/village/" + theme + "/houses.json");
+			assertPoolWeightsValid(housesPool, theme + "/houses.json");
+			String housesRaw = housesPool.getAsJsonArray("elements").toString();
+			assertTrue(housesRaw.contains("canopycavern:vanilla_revamp/" + theme + "/grand_manor"));
+			assertTrue(housesRaw.contains("canopycavern:vanilla_revamp/" + theme + "/bastion_gatehouse"));
+
+			assertRevampNbtIntegrity(theme, "grand_town_center", 9, 5, 2);
+			assertRevampNbtIntegrity(theme, "bastion_gatehouse", 4, 2, 1);
+			assertRevampNbtIntegrity(theme, "guild_smithy", 3, 2, 0);
+			assertRevampNbtIntegrity(theme, "market_pavilion", 3, 3, 0);
+			assertRevampNbtIntegrity(theme, "grand_manor", 2, 3, 0);
+			assertRevampNbtIntegrity(theme, "sanctuary_library", 2, 3, 0);
+		}
+	}
+
+	private static void assertPoolWeightsValid(JsonObject pool, String label) {
+		for (var el : pool.getAsJsonArray("elements")) {
+			int w = el.getAsJsonObject().get("weight").getAsInt();
+			assertTrue(w >= 1 && w <= 150, label + " weight " + w + " outside vanilla [1..150] range");
+		}
+	}
+
+	private static void assertMultiPieceStructure(
+		String structureId,
+		String setId,
+		String mainNbtRel,
+		String expectedLootTable
+	) throws IOException {
+		JsonObject def = readJson("data/canopycavern/worldgen/structure/" + structureId + ".json");
+		assertEquals("minecraft:jigsaw", def.get("type").getAsString());
+		JsonObject set = readJson("data/canopycavern/worldgen/structure_set/" + setId + ".json");
+		assertTrue(set.getAsJsonArray("structures").toString().contains("canopycavern:" + structureId));
+
+		String nbtPath = "data/canopycavern/structure/" + mainNbtRel + ".nbt";
+		String ascii = decompressNbtLatin1(nbtPath);
+		assertTrue(ascii.contains("DataVersion"), nbtPath + " missing DataVersion");
+		assertTrue(ascii.contains("minecraft:chest"), nbtPath + " missing chest");
+		assertTrue(ascii.contains(expectedLootTable), nbtPath + " missing loot " + expectedLootTable);
+
+		String lootRel = expectedLootTable.replace("canopycavern:", "data/canopycavern/loot_table/") + ".json";
+		JsonObject lootTable = readJson(lootRel);
+		assertEquals("minecraft:chest", lootTable.get("type").getAsString());
+		assertTrue(lootTable.getAsJsonArray("pools").size() >= 2, lootRel + " should have >= 2 pools");
+		assertEquals(expectedLootTable, lootTable.get("random_sequence").getAsString());
+	}
+
+	private static void assertRevampNbtIntegrity(
+		String theme,
+		String piece,
+		int minSentinels,
+		int minVillagers,
+		int minGolems
+	) throws IOException {
+		String nbtPath = "data/canopycavern/structure/vanilla_revamp/" + theme + "/" + piece + ".nbt";
+		String ascii = decompressNbtLatin1(nbtPath);
+		assertTrue(ascii.contains("DataVersion"), nbtPath + " missing DataVersion");
+		assertEquals(true, countOccurrences(ascii, "canopycavern:village_sentinel") >= minSentinels,
+			nbtPath + " expected >= " + minSentinels + " sentinels");
+		assertEquals(true, countOccurrences(ascii, "minecraft:villager") >= minVillagers,
+			nbtPath + " expected >= " + minVillagers + " villagers");
+		if (minGolems > 0) {
+			assertEquals(true, countOccurrences(ascii, "minecraft:iron_golem") >= minGolems,
+				nbtPath + " expected >= " + minGolems + " iron golems");
+		}
+	}
+
+	private static String decompressNbtLatin1(String resourcePath) throws IOException {
+		try (GZIPInputStream gzip = new GZIPInputStream(new ByteArrayInputStream(readBytes(resourcePath)))) {
+			return new String(gzip.readAllBytes(), StandardCharsets.ISO_8859_1);
+		}
+	}
+
+	private static int countOccurrences(String haystack, String needle) {
+		int count = 0;
+		int idx = 0;
+		while ((idx = haystack.indexOf(needle, idx)) >= 0) {
+			count++;
+			idx += needle.length();
+		}
+		return count;
+	}
+
+	@Test
 	void configuresValidJigsawStructuresTemplatesSetsNbtAndLootTables() throws IOException {
 		assertStructureBundle(
 			"peak_watchtower_ruin",

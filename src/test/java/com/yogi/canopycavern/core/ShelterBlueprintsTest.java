@@ -43,10 +43,25 @@ class ShelterBlueprintsTest {
 	}
 
 	@Test
-	void includesEquipmentCatalogEntriesForAllModGear() {
-		assertEquals(14, ShelterBlueprints.equipmentCatalog().size());
+	void includesAbyssalAirlockDomeAndEquipmentCatalogEntriesForAllModGear() {
+		assertEquals(4, ShelterBlueprints.allBlueprints().size());
+		BlueprintDefinition airlock = ShelterBlueprints.findBlueprint("abyssal_airlock_dome");
+		assertNotNull(airlock);
+		assertEquals("blueprint.canopycavern.abyssal_airlock_dome", airlock.titleKey());
+		assertFalse(airlock.materials().isEmpty());
+		assertFalse(airlock.blocks().isEmpty());
+		assertTrue(airlock.materials().stream().anyMatch(m -> m.itemId().equals("minecraft:glass")));
+		assertTrue(airlock.materials().stream().anyMatch(m -> m.itemId().equals("minecraft:cut_copper")));
+
+		assertEquals(16, ShelterBlueprints.equipmentCatalog().size());
 		for (EquipmentEntry entry : ShelterBlueprints.equipmentCatalog()) {
 			assertFalse(entry.materials().isEmpty(), "Missing materials for " + entry.itemId());
 		}
+		assertNotNull(ShelterBlueprints.equipmentCatalog().stream()
+			.filter(e -> e.itemId().equals("canopycavern:abyssal_tide_compass"))
+			.findFirst().orElse(null));
+		assertNotNull(ShelterBlueprints.equipmentCatalog().stream()
+			.filter(e -> e.itemId().equals("canopycavern:sea_glass_charm"))
+			.findFirst().orElse(null));
 	}
 }

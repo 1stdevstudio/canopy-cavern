@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:attune_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:gilded_blackstone"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.discover_abyssal_monument.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.discover_abyssal_monument.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_discover_abyssal_monument": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:abyssal_sanctum_monument"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_discover_abyssal_monument"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

@@ -3,7 +3,7 @@
 	"id": "canopycavern",
 	"version": "${version}",
 	"name": "Canopy Cavern",
-	"description": "Client-first world overhaul for Minecraft 26.3: eliminates floating terrain and chaotic cave gashes across the Overworld, Nether, and End with grounded surface features, structured caves, and an ambient telemetry HUD.",
+	"description": "Vanilla-plus world overhaul for Minecraft 26.3: custom TerraBlender biomes, dynamic micro-climate survival & HUD, villager civilizations & sentinels, field guide auto-shelters, and deep ocean mega-structures.",
 	"authors": [
 		"Yogi Iskandar (1stdevstudio)"
 	],

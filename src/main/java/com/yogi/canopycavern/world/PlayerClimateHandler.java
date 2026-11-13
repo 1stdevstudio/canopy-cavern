@@ -104,7 +104,7 @@ public final class PlayerClimateHandler {
 				nearLava = true;
 			}
 		}
-		boolean enclosedShelter = !canSeeSky && isEnclosedShelter(level, pos);
+		boolean enclosedShelter = isEnclosedShelter(level, pos);
 
 		int thermalCount = ModItems.countThermalArmor(player);
 		int mossCount = ModItems.countMossweaveArmor(player);
@@ -149,11 +149,18 @@ public final class PlayerClimateHandler {
 		pulseReactiveCaveFlora(level, pos, snapshot, biomeId);
 	}
 
+	private static boolean isShelterBarrier(BlockState state) {
+		return !state.isAir() && !state.canBeReplaced() && state.getFluidState().isEmpty();
+	}
+
 	private static boolean isEnclosedShelter(ServerLevel level, BlockPos pos) {
+		if (!level.getBlockState(pos.above()).getFluidState().isEmpty()) {
+			return false;
+		}
 		boolean roofFound = false;
 		for (int dy = 2; dy <= 5; dy++) {
 			BlockPos roofPos = pos.above(dy);
-			if (!level.getBlockState(roofPos).isAir() && !level.getBlockState(roofPos).canBeReplaced()) {
+			if (isShelterBarrier(level.getBlockState(roofPos))) {
 				roofFound = true;
 				break;
 			}
@@ -165,7 +172,7 @@ public final class PlayerClimateHandler {
 		for (var dir : net.minecraft.core.Direction.Plane.HORIZONTAL) {
 			for (int dist = 1; dist <= 3; dist++) {
 				BlockPos sidePos = pos.above().relative(dir, dist);
-				if (level.getBlockState(sidePos).isSolidRender()) {
+				if (isShelterBarrier(level.getBlockState(sidePos))) {
 					walledSides++;
 					break;
 				}
@@ -181,6 +188,10 @@ public final class PlayerClimateHandler {
 		int mossCount,
 		boolean nearCampfire
 	) {
+		if (!player.isCreative() && !player.isSpectator() && ModItems.hasSeaGlassCharm(player) && player.isInWater()) {
+			player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 45, 0, true, false, false));
+		}
+
 		CanopyCavernConfig config = CanopyCavernMod.getConfig();
 		if (!config.climateSurvivalEnabled() || player.isCreative() || player.isSpectator()) {
 			return;
@@ -242,6 +253,11 @@ public final class PlayerClimateHandler {
 		boolean hasMoss = hasItem(inv, Items.MOSS_BLOCK);
 		boolean hasAmethyst = hasItem(inv, Items.AMETHYST_SHARD);
 		boolean hasIron = hasItem(inv, Items.IRON_INGOT);
+		boolean hasOceanMaterial =
+			hasItem(inv, Items.PRISMARINE_CRYSTALS)
+				|| hasItem(inv, Items.PRISMARINE_SHARD)
+				|| hasItem(inv, Items.NAUTILUS_SHELL)
+				|| hasItem(inv, Items.KELP);
 
 		List<ResourceKey<Recipe<?>>> unlocks = new ArrayList<>();
 		if (hasWoolOrLeather) {
@@ -263,6 +279,10 @@ public final class PlayerClimateHandler {
 		}
 		if (hasIron) {
 			unlocks.add(recipeKey("alpine_climbing_pick"));
+		}
+		if (hasOceanMaterial) {
+			unlocks.add(recipeKey("abyssal_tide_compass"));
+			unlocks.add(recipeKey("sea_glass_charm"));
 		}
 		if (!unlocks.isEmpty()) {
 			player.awardRecipesByKey(unlocks);

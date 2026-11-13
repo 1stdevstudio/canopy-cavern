@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 941802,
+    "separation": 11,
+    "spacing": 22
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:abyssal_thermal_observatory",
+      "weight": 1
+    }
+  ]
+}

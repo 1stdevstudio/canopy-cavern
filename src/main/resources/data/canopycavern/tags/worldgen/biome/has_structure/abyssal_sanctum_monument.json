@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:amber_caverns",
+    "canopycavern:verdant_grotto",
+    "canopycavern:crystal_steppe",
+    "minecraft:dripstone_caves",
+    "minecraft:lush_caves",
+    "minecraft:plains",
+    "#minecraft:is_mountain",
+    "#minecraft:is_forest",
+    "#minecraft:is_taiga",
+    "#minecraft:is_savanna"
+  ]
+}

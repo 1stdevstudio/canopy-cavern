@@ -62,6 +62,7 @@ public final class ModItems {
 	public static final TagKey<Item> REPAIRS_MOSSWEAVE_ARMOR = itemTag("repairs_mossweave_armor");
 	public static final TagKey<Item> REPAIRS_CRYSTAL_TOOLS = itemTag("repairs_crystal_tools");
 	public static final TagKey<Structure> RELIC_COMPASS_TARGETS = TagKey.create(Registries.STRUCTURE, CanopyCavernMod.id("relic_compass_targets"));
+	public static final TagKey<Structure> TIDE_COMPASS_TARGETS = TagKey.create(Registries.STRUCTURE, CanopyCavernMod.id("tide_compass_targets"));
 
 	public static final ArmorMaterial PEAK_THERMAL_MATERIAL = armorMaterial(
 		16, 2, 4, 3, 2, 15, 0.0F, 0.0F, REPAIRS_THERMAL_ARMOR, "peak_thermal"
@@ -114,6 +115,14 @@ public final class ModItems {
 		"canopy_field_guide",
 		props -> new CanopyFieldGuideItem(props.stacksTo(1))
 	);
+	public static final Item ABYSSAL_TIDE_COMPASS = register(
+		"abyssal_tide_compass",
+		props -> new AbyssalTideCompassItem(props.stacksTo(1))
+	);
+	public static final Item SEA_GLASS_CHARM = register(
+		"sea_glass_charm",
+		props -> new SeaGlassCharmItem(props.stacksTo(1))
+	);
 
 	public static final CreativeModeTab GENERAL_TAB = Registry.register(
 		BuiltInRegistries.CREATIVE_MODE_TAB,
@@ -153,7 +162,16 @@ public final class ModItems {
 
 	/** Returns true when player holds Glow Lantern in either hand. */
 	public static boolean hasGlowLantern(Player player) {
-		return player.getMainHandItem().is(GLOW_LANTERN) || player.getOffhandItem().is(GLOW_LANTERN);
+		return hasHeldItem(player, GLOW_LANTERN);
+	}
+
+	/** Returns true when player holds Sea Glass Charm in either hand. */
+	public static boolean hasSeaGlassCharm(Player player) {
+		return hasHeldItem(player, SEA_GLASS_CHARM);
+	}
+
+	private static boolean hasHeldItem(Player player, Item item) {
+		return player.getMainHandItem().is(item) || player.getOffhandItem().is(item);
 	}
 
 	private static int countMatchingArmor(Player player, Item head, Item chest, Item legs, Item feet) {
@@ -356,19 +374,31 @@ public final class ModItems {
 		}
 	}
 
-	/** Tunable relic compass aligning to the nearest shrine or echoing mineshaft hub. */
-	private static final class GrottoRelicCompassItem extends Item {
-		GrottoRelicCompassItem(Properties properties) {
+	/** Shared tunable compass locking onto the nearest structure in a configured structure tag. */
+	private static class StructureCompassItem extends Item {
+		private final TagKey<Structure> targetTag;
+		private final String translationKeyPrefix;
+		private final int searchRadiusChunks;
+
+		StructureCompassItem(
+			Properties properties,
+			TagKey<Structure> targetTag,
+			String translationKeyPrefix,
+			int searchRadiusChunks
+		) {
 			super(properties);
+			this.targetTag = targetTag;
+			this.translationKeyPrefix = translationKeyPrefix;
+			this.searchRadiusChunks = searchRadiusChunks;
 		}
 
 		@Override
 		public InteractionResult use(Level level, Player player, InteractionHand hand) {
 			ItemStack stack = player.getItemInHand(hand);
 			if (level instanceof ServerLevel serverLevel) {
-				BlockPos target = serverLevel.findNearestMapStructure(RELIC_COMPASS_TARGETS, player.blockPosition(), 100, false);
+				BlockPos target = serverLevel.findNearestMapStructure(targetTag, player.blockPosition(), searchRadiusChunks, false);
 				if (target == null) {
-					sendActionBar(player, Component.translatable("item.canopycavern.grotto_relic_compass.not_found"));
+					sendActionBar(player, Component.translatable(translationKeyPrefix + ".not_found"));
 					return InteractionResult.FAIL;
 				}
 				stack.set(
@@ -379,8 +409,47 @@ public final class ModItems {
 				serverLevel.playSound(null, player.blockPosition(), SoundEvents.LODESTONE_COMPASS_LOCK, SoundSource.PLAYERS, 0.85F, 1.15F);
 				sendActionBar(
 					player,
-					Component.translatable("item.canopycavern.grotto_relic_compass.locked", Math.round(dist))
+					Component.translatable(translationKeyPrefix + ".locked", Math.round(dist))
 				);
+			}
+			return InteractionResult.SUCCESS;
+		}
+	}
+
+	/** Tunable relic compass aligning to the nearest shrine or echoing mineshaft hub. */
+	private static final class GrottoRelicCompassItem extends StructureCompassItem {
+		GrottoRelicCompassItem(Properties properties) {
+			super(properties, RELIC_COMPASS_TARGETS, "item.canopycavern.grotto_relic_compass", 100);
+		}
+	}
+
+	/** Ocean exploration compass aligning to Sunken Citadels, Thermal Observatories, or Reef Lighthouses. */
+	private static final class AbyssalTideCompassItem extends StructureCompassItem {
+		AbyssalTideCompassItem(Properties properties) {
+			super(properties, TIDE_COMPASS_TARGETS, "item.canopycavern.abyssal_tide_compass", 140);
+		}
+	}
+
+	/** Sea Glass Charm providing passive underwater breath support and an active Airlock Bubble Pulse. */
+	private static final class SeaGlassCharmItem extends Item {
+		SeaGlassCharmItem(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		public InteractionResult use(Level level, Player player, InteractionHand hand) {
+			ItemStack stack = player.getItemInHand(hand);
+			if (player.getCooldowns().isOnCooldown(stack)) {
+				return InteractionResult.FAIL;
+			}
+			if (level instanceof ServerLevel serverLevel) {
+				player.setAirSupply(player.getMaxAirSupply());
+				player.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 400, 0, true, false, true));
+				player.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 200, 0, true, false, true));
+				player.getCooldowns().addCooldown(stack, 400);
+				serverLevel.playSound(null, player.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8F, 1.35F);
+				serverLevel.sendParticles(ParticleTypes.BUBBLE_POP, player.getX(), player.getY() + 1.0, player.getZ(), 18, 0.55, 0.45, 0.55, 0.05);
+				sendActionBar(player, Component.translatable("item.canopycavern.sea_glass_charm.activated"));
 			}
 			return InteractionResult.SUCCESS;
 		}

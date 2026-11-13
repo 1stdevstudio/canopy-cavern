@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "KPK",
+    "GAG",
+    "KPK"
+  ],
+  "key": {
+    "K": "minecraft:kelp",
+    "P": "minecraft:prismarine_crystals",
+    "G": "minecraft:glass",
+    "A": "minecraft:amethyst_shard"
+  },
+  "result": {
+    "id": "canopycavern:sea_glass_charm",
+    "count": 1
+  }
+}

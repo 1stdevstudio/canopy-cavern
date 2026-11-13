@@ -1,0 +1,32 @@
+{
+  "parent": "canopycavern:root",
+  "display": {
+    "icon": {
+      "id": "canopycavern:abyssal_tide_compass"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.craft_tide_compass.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.craft_tide_compass.description"
+    }
+  },
+  "criteria": {
+    "has_tide_compass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "canopycavern:abyssal_tide_compass"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_tide_compass"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

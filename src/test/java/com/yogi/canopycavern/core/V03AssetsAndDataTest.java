@@ -30,7 +30,9 @@ class V03AssetsAndDataTest {
 		"flare_torch",
 		"glow_lantern",
 		"grotto_relic_compass",
-		"canopy_field_guide"
+		"canopy_field_guide",
+		"abyssal_tide_compass",
+		"sea_glass_charm"
 	);
 
 	private static final List<String> ALL_ADVANCEMENTS = List.of(
@@ -43,7 +45,12 @@ class V03AssetsAndDataTest {
 		"conquer_shrine",
 		"conquer_mineshaft",
 		"attune_compass",
-		"visit_village_sentinel"
+		"visit_village_sentinel",
+		"craft_tide_compass",
+		"explore_reef_lighthouse",
+		"dive_thermal_observatory",
+		"plunder_sunken_citadel",
+		"discover_abyssal_monument"
 	);
 
 	@Test
@@ -56,9 +63,9 @@ class V03AssetsAndDataTest {
 			assertTrue(recipe.has("type"), item + " recipe missing type");
 			assertTrue(recipe.getAsJsonObject("result").get("id").getAsString().equals("canopycavern:" + item));
 
-			if (item.equals("grotto_relic_compass")) {
+			if (item.equals("grotto_relic_compass") || item.equals("abyssal_tide_compass")) {
 				for (int i = 0; i < 32; i++) {
-					String frame = String.format("grotto_relic_compass_%02d", i);
+					String frame = String.format("%s_%02d", item, i);
 					JsonObject m = readJson("assets/canopycavern/models/item/" + frame + ".json");
 					assertTrue(m.has("textures"));
 					assertPngHeader("assets/canopycavern/textures/item/" + frame + ".png");
@@ -86,6 +93,7 @@ class V03AssetsAndDataTest {
 			"tags/item/repairs_mossweave_armor.json",
 			"tags/item/repairs_crystal_tools.json",
 			"tags/worldgen/structure/relic_compass_targets.json",
+			"tags/worldgen/structure/tide_compass_targets.json",
 			"tags/worldgen/structure/villages.json"
 		)) {
 			JsonObject t = readJson("data/canopycavern/" + tag);
@@ -100,7 +108,7 @@ class V03AssetsAndDataTest {
 		Set<String> enKeys = en.keySet();
 		Set<String> idKeys = id.keySet();
 		assertEquals(enKeys, idKeys, "English and Indonesian translation keys must match exactly");
-		assertTrue(enKeys.size() >= 70, "Expected complete v0.3.0 localization catalog");
+		assertTrue(enKeys.size() >= 90, "Expected complete v0.4.0 localization catalog");
 	}
 
 	@Test

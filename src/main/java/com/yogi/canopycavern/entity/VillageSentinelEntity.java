@@ -15,10 +15,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.npc.villager.Villager;
@@ -36,6 +38,9 @@ public class VillageSentinelEntity extends PathfinderMob {
 
 	public VillageSentinelEntity(EntityType<? extends PathfinderMob> type, Level level) {
 		super(type, level);
+		if (this.getNavigation() instanceof GroundPathNavigation groundNav) {
+			groundNav.setCanOpenDoors(true);
+		}
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -50,13 +55,14 @@ public class VillageSentinelEntity extends PathfinderMob {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.15, true));
+		this.goalSelector.addGoal(1, new OpenDoorGoal(this, true));
+		this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.15, true));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.85));
 		this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Villager.class, 6.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
 			this,
 			net.minecraft.world.entity.Mob.class,

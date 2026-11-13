@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "canopycavern:item/abyssal_tide_compass_01"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:craft_tide_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:sea_lantern"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.explore_reef_lighthouse.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.explore_reef_lighthouse.description"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "in_explore_reef_lighthouse": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:reef_lighthouse_keep"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_explore_reef_lighthouse"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

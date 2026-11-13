@@ -58,4 +58,16 @@ class ClimateSimulationTest {
 		assertEquals(ClimateStatus.SHELTERED, sheltered.status());
 		assertFalse(sheltered.frostPenaltyActive());
 	}
+
+	@Test
+	void drySubmergedAirlockDomeGrantsShelteredRecoveryWithoutFrost() {
+		AmbientInput deepOceanCold = new AmbientInput(0.15f, 24, 63, true, 12, false, false, false);
+		ClimateSnapshot inDome = ClimateSimulation.evaluate(
+			new ClimateInput(deepOceanCold, "minecraft:deep_ocean", 0, 0, false, true, true, false, 4000L)
+		);
+
+		assertTrue(inDome.warmthRecoveryActive());
+		assertEquals(ClimateStatus.SHELTERED, inDome.status());
+		assertFalse(inDome.frostPenaltyActive());
+	}
 }
