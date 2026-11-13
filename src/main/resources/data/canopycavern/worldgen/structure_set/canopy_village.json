@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 28,
+    "separation": 9,
+    "salt": 6741053
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:canopy_village",
+      "weight": 1
+    }
+  ]
+}

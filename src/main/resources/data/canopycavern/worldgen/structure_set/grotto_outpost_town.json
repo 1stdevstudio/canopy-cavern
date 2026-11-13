@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 27,
+    "separation": 9,
+    "salt": 6741054
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:grotto_outpost_town",
+      "weight": 1
+    }
+  ]
+}

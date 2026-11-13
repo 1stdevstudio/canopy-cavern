@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 28,
+    "separation": 9,
+    "salt": 6741052
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:peak_citadel",
+      "weight": 1
+    }
+  ]
+}

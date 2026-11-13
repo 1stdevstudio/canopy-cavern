@@ -212,10 +212,11 @@ class BiomeAndStructureDataTest {
 
 	@Test
 	void configuresFourThemedVillagerCivilizationsAndSentinels() throws IOException {
-		JsonObject villageSet = readJson("data/canopycavern/worldgen/structure_set/villages.json");
-		String setJson = villageSet.toString();
+		// Each village now gets its own random-spread placement. Combining mutually
+		// exclusive biome targets into one weighted set suppressed valid generations.
 		for (String villageId : List.of("crystal_citadel", "peak_citadel", "canopy_village", "grotto_outpost_town")) {
-			assertTrue(setJson.contains("canopycavern:" + villageId));
+			JsonObject villageSet = readJson("data/canopycavern/worldgen/structure_set/" + villageId + ".json");
+			assertTrue(villageSet.getAsJsonArray("structures").toString().contains("canopycavern:" + villageId));
 			JsonObject structure = readJson("data/canopycavern/worldgen/structure/" + villageId + ".json");
 			assertEquals("minecraft:jigsaw", structure.get("type").getAsString());
 			assertEquals("canopycavern:" + villageId + "/start", structure.get("start_pool").getAsString());

@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "canopycavern:verdant_grotto",
-    "canopycavern:amber_caverns"
+    "canopycavern:amber_caverns",
+    "minecraft:lush_caves",
+    "minecraft:dripstone_caves"
   ]
 }
