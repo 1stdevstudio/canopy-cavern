@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 6741044,
+    "separation": 11,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:cherry_grove_hamlet",
+      "weight": 1
+    }
+  ]
+}

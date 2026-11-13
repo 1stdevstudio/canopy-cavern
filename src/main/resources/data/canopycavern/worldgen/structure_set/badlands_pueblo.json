@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 6741043,
+    "separation": 11,
+    "spacing": 31
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:badlands_pueblo",
+      "weight": 1
+    }
+  ]
+}

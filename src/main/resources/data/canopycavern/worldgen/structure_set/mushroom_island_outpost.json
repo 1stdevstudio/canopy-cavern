@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 6741045,
+    "separation": 11,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:mushroom_island_outpost",
+      "weight": 1
+    }
+  ]
+}

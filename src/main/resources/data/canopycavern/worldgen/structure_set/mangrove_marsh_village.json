@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 6741042,
+    "separation": 11,
+    "spacing": 31
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:mangrove_marsh_village",
+      "weight": 1
+    }
+  ]
+}
