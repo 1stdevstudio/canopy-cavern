@@ -34,6 +34,34 @@
 
 ---
 
+## Pengembangan struktur v0.5.0 — branch eksperimental
+
+**Belum rilis stabil:** seluruh fitur di bawah ada di branch `feat/structure-overhaul-v050-20261113`, sementara unduhan publik saat ini tetap v0.4.2.
+
+- **Enam desa baru berdasarkan biome:** Jungle Canopy Hamlet, Mangrove Marsh Village, Badlands Pueblo, Cherry Grove Hamlet, Mushroom Island Outpost, dan Frozen Ridge Village. Setiap permukiman punya tema blok sendiri, empat rumah dengan villager dan tempat kerja, tempat tidur, plaza, bell, Village Sentinel, serta Iron Golem.
+- **Underground Hollow Village:** pemukiman beratap dan terlindung di gua, empat kios berpenghuni dengan profesi, bed, penerangan, dan penjaga.
+- **Abandoned Mega Village:** empat rumah terbengkalai, plaza rusak, cobweb, zombie villager, dan peti penjelajahan. Tidak spawn villager hidup.
+- **Grotto Outpost Town yang sudah ada:** pool rumah/forge disesuaikan, pilihan tinggi bawah tanah lebih luas, dan penyebaran menjangkau lush/dripstone caves.
+- **Penyebaran kota lama diperbaiki:** crystal, peak, canopy, dan grotto memakai structure-set independen, tidak saling berebut satu weighted set pada biome yang berbeda.
+
+Uji perintah (dengan cheats aktif, **world baru atau chunk yang belum dibuka**):
+
+```mcfunction
+/locate structure canopycavern:abandoned_mega_village
+/locate structure canopycavern:underground_hollow_village
+/locate structure canopycavern:grotto_outpost_town
+/locate structure canopycavern:jungle_canopy_hamlet
+/locate structure canopycavern:mangrove_marsh_village
+/locate structure canopycavern:badlands_pueblo
+/locate structure canopycavern:cherry_grove_hamlet
+/locate structure canopycavern:mushroom_island_outpost
+/locate structure canopycavern:frozen_ridge_village
+```
+
+Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navigasi villager, air/lava, kompatibilitas multiplayer, dan persistensi setelah restart. **Lulus CI saja tidak berarti tanpa bug.** Rincian: `docs/structure-qa.md`.
+
+---
+
 ## Ketergantungan / Dependencies
 
 - **Minecraft**: `26.3`
@@ -42,7 +70,7 @@
 - **Fabric API**: `>=0.166.2+26.3`
 - **TerraBlender (Fabric)**: `>=26.3.0.0.9` (`TerraBlender-fabric-26.3-26.3.0.0.9.jar`)
 
-> **Catatan Instalasi (Client Modrinth & Fabric Server)**: Letakkan `canopycavern-0.4.1.jar` bersama `TerraBlender-fabric-26.3-26.3.0.0.9.jar` dan Fabric API di folder `mods/` pada klien Modrinth (seperti *Fabulously Optimized*) maupun Fabric Dedicated Server `26.3`. Kedua sisi (server dan client) wajib memasang mod karena menambahkan bioma, item, dan entitas `village_sentinel`.
+> **Catatan Instalasi (Client Modrinth & Fabric Server)**: Letakkan `canopycavern-0.4.2.jar` bersama `TerraBlender-fabric-26.3-26.3.0.0.9.jar` dan Fabric API di folder `mods/` pada klien Modrinth (seperti *Fabulously Optimized*) maupun Fabric Dedicated Server `26.3`. Kedua sisi (server dan client) wajib memasang mod karena menambahkan bioma, item, dan entitas `village_sentinel`.
 
 ---
 
@@ -70,4 +98,4 @@
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build tersedia di `build/libs/canopycavern-0.4.1.jar`.
+Artefak build tersedia di `build/libs/canopycavern-0.4.2.jar`.
