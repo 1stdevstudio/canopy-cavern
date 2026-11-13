@@ -13,30 +13,12 @@
     },
     {
       "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "minecraft:village/desert/zombie/town_centers/desert_meeting_point_1",
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:vanilla_revamp/desert/zombie/ruined_plaza",
         "processors": "minecraft:zombie_desert",
         "projection": "rigid"
       },
-      "weight": 2
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "minecraft:village/desert/zombie/town_centers/desert_meeting_point_2",
-        "processors": "minecraft:zombie_desert",
-        "projection": "rigid"
-      },
-      "weight": 2
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
-        "location": "minecraft:village/desert/zombie/town_centers/desert_meeting_point_3",
-        "processors": "minecraft:zombie_desert",
-        "projection": "rigid"
-      },
-      "weight": 1
+      "weight": 5
     }
   ],
   "fallback": "minecraft:empty"

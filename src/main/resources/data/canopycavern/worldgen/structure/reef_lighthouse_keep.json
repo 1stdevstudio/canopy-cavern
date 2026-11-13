@@ -7,7 +7,7 @@
   "size": 2,
   "spawn_overrides": {},
   "start_height": {
-    "absolute": -20
+    "absolute": -68
   },
   "start_pool": "canopycavern:reef_lighthouse_keep/start",
   "step": "surface_structures",

@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:echoing_mineshaft_tunnel",
+        "location": "canopycavern:echoing_mineshaft_hub/haulage_gallery",
         "processors": {
           "processors": []
         },

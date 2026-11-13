@@ -1,0 +1,38 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/zombie/collapsed_cottage",
+        "processors": "minecraft:zombie_savanna",
+        "projection": "rigid"
+      },
+      "weight": 23
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/zombie/ruined_workshop",
+        "processors": "minecraft:zombie_savanna",
+        "projection": "rigid"
+      },
+      "weight": 22
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/zombie/abandoned_longhouse",
+        "processors": "minecraft:zombie_savanna",
+        "projection": "rigid"
+      },
+      "weight": 22
+    },
+    {
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      },
+      "weight": 5
+    }
+  ],
+  "fallback": "minecraft:village/savanna/zombie/terminators"
+}

@@ -1,0 +1,41 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/snowy/roads/terminators/terminator_01",
+        "processors": "canopycavern:village_roads/snowy",
+        "projection": "terrain_matching"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/snowy/roads/terminators/terminator_02",
+        "processors": "canopycavern:village_roads/snowy",
+        "projection": "terrain_matching"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/snowy/roads/terminators/terminator_03",
+        "processors": "canopycavern:village_roads/snowy",
+        "projection": "terrain_matching"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/snowy/roads/terminators/terminator_04",
+        "processors": "canopycavern:village_roads/snowy",
+        "projection": "terrain_matching"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

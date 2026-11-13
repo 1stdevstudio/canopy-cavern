@@ -1,0 +1,7 @@
+{
+  "type": "canopycavern:mining_city",
+  "biomes": "#canopycavern:has_structure/mining_city",
+  "step": "underground_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

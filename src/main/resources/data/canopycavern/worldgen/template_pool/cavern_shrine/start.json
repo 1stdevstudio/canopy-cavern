@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:cavern_shrine",
+        "location": "canopycavern:cavern_shrine/vaulted_nave",
         "processors": {
           "processors": []
         },

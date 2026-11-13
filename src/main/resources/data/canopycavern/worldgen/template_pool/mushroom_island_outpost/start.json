@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:mushroom_island_outpost/center",
+        "location": "canopycavern:mushroom_island_outpost/hillside_village",
         "processors": {
           "processors": []
         },

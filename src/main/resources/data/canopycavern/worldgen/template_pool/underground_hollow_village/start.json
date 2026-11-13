@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:underground_hollow_village/center",
+        "location": "canopycavern:underground_hollow_village/cavern_city",
         "processors": {
           "processors": []
         },

@@ -1,0 +1,4 @@
+{
+  "structures": [{"structure": "canopycavern:mining_city", "weight": 1}],
+  "placement": {"type": "minecraft:random_spread", "spacing": 50, "separation": 16, "salt": 86293461}
+}

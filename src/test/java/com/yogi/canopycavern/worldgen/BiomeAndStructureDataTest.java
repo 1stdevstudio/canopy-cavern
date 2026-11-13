@@ -74,7 +74,7 @@ class BiomeAndStructureDataTest {
 		assertMultiPieceStructure(
 			"reef_lighthouse_keep",
 			"reef_lighthouse_keeps",
-			"reef_lighthouse_keep/island_keep",
+			"reef_lighthouse_keep/island_keep_anchored",
 			"canopycavern:chests/armada_treasure"
 		);
 		assertMultiPieceStructure(
@@ -260,15 +260,21 @@ class BiomeAndStructureDataTest {
 		assertTrue(structureSet.getAsJsonArray("structures").toString().contains("canopycavern:" + structureName));
 
 		JsonObject pool = readJson("data/canopycavern/worldgen/template_pool/" + structureName + "/start.json");
+		String template = switch (structureName) {
+			case "cavern_shrine" -> "cavern_shrine/vaulted_nave";
+		case "echoing_mineshaft_hub" -> "echoing_mineshaft_hub/ore_exchange";
+
+			default -> structureName;
+		};
 		assertEquals(
-			"canopycavern:" + structureName,
+			"canopycavern:" + template,
 			pool.getAsJsonArray("elements")
 				.get(0).getAsJsonObject()
 				.getAsJsonObject("element")
 				.get("location").getAsString()
 		);
 
-		String nbtPath = "data/canopycavern/structure/" + structureName + ".nbt";
+		String nbtPath = "data/canopycavern/structure/" + template + ".nbt";
 		byte[] compressed = readBytes(nbtPath);
 		byte[] uncompressed;
 		try (GZIPInputStream gzip = new GZIPInputStream(new ByteArrayInputStream(compressed))) {

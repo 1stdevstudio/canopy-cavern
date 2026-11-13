@@ -1,0 +1,176 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/corner_01",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/corner_03",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_02",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_04",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 7
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_05",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_06",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_08",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_09",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_10",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/straight_11",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/crossroad_02",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/crossroad_03",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/crossroad_04",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/crossroad_05",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/crossroad_06",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/crossroad_07",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/split_01",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/split_02",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "canopycavern:vanilla_revamp/savanna/roads/zombie/streets/turn_01",
+        "processors": "canopycavern:village_roads/savanna",
+        "projection": "terrain_matching"
+      },
+      "weight": 3
+    }
+  ],
+  "fallback": "minecraft:village/savanna/zombie/terminators"
+}

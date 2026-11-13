@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.yogi.canopycavern.mixin",
+  "mixins": [
+    "DeepFocusPlayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

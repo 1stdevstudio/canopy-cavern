@@ -12,13 +12,23 @@ import com.yogi.canopycavern.network.ModNetworking.ClimateSyncPayload;
 import com.yogi.canopycavern.network.ModNetworking.OpenGuidePayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+
+import java.util.List;
 
 /**
  * Client-first entrypoint registering the ambient telemetry HUD, keybindings,
@@ -52,6 +62,10 @@ public final class CanopyCavernClient implements ClientModInitializer {
 		);
 
 		EntityRendererRegistry.register(ModEntities.VILLAGE_SENTINEL, VillageSentinelRenderer::new);
+		ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
+			appendEnchantmentDescriptions(stack, DataComponents.ENCHANTMENTS, lines);
+			appendEnchantmentDescriptions(stack, DataComponents.STORED_ENCHANTMENTS, lines);
+		});
 
 		ClientPlayNetworking.registerGlobalReceiver(ClimateSyncPayload.TYPE, (payload, context) ->
 			ClientClimateCache.update(payload)
@@ -91,5 +105,22 @@ public final class CanopyCavernClient implements ClientModInitializer {
 			ClientEnvironmentSampler.sampleTick(client);
 			ClientAtmosphereTicker.tick(client);
 		});
+	}
+
+	private static void appendEnchantmentDescriptions(
+		ItemStack stack, DataComponentType<ItemEnchantments> type, List<Component> lines
+	) {
+		TooltipDisplay display = stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
+		ItemEnchantments enchantments = stack.get(type);
+		if (enchantments == null || display.hideTooltip() || !display.shows(type)) {
+			return;
+		}
+		for (var holder : enchantments.keySet()) {
+			holder.unwrapKey().map(key -> key.identifier())
+				.filter(id -> id.getNamespace().equals(CanopyCavernMod.MOD_ID))
+				.map(id -> id.toLanguageKey("enchantment", "desc"))
+				.filter(Language.getInstance()::has)
+				.ifPresent(key -> lines.add(Component.translatable(key).withStyle(ChatFormatting.GRAY)));
+		}
 	}
 }

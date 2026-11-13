@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:frontier_pillager_outpost/center",
+        "location": "canopycavern:frontier_pillager_outpost/stockade",
         "processors": {
           "processors": []
         },

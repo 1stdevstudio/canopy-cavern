@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:reef_lighthouse_keep/island_keep",
+        "location": "canopycavern:reef_lighthouse_keep/island_keep_anchored",
         "processors": {
           "processors": []
         },

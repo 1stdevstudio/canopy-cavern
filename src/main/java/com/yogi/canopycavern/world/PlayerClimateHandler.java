@@ -6,8 +6,10 @@ import com.yogi.canopycavern.core.ClimateSimulation;
 import com.yogi.canopycavern.core.ClimateSimulation.ClimateInput;
 import com.yogi.canopycavern.core.ClimateSimulation.ClimateSnapshot;
 import com.yogi.canopycavern.core.EnvironmentTelemetry.AmbientInput;
+import com.yogi.canopycavern.item.ExpeditionEnchantments;
 import com.yogi.canopycavern.item.ModItems;
 import com.yogi.canopycavern.network.ModNetworking.ClimateSyncPayload;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -23,6 +25,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -45,12 +48,16 @@ public final class PlayerClimateHandler {
 	private static final String STARTER_GUIDE_TAG = "canopycavern_guided_v1";
 	private static final int CLIMATE_EVAL_INTERVAL_TICKS = 10;
 	private static final int RECIPE_CHECK_INTERVAL_TICKS = 40;
+	private static final ClimateUpdates<ClimateSyncPayload> CLIMATE_UPDATES = new ClimateUpdates<>(100);
 
 	private PlayerClimateHandler() {
 	}
 
 	public static void register() {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> onPlayerJoin(handler.player));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
+			CLIMATE_UPDATES.forget(handler.player.getUUID(), handler.player));
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> CLIMATE_UPDATES.clear());
 		ServerTickEvents.END_SERVER_TICK.register(PlayerClimateHandler::onServerTick);
 	}
 
@@ -128,10 +135,12 @@ public final class PlayerClimateHandler {
 			nearCampfire,
 			enclosedShelter,
 			nearLava,
-			level.getGameTime()
+			level.getGameTime(),
+			ExpeditionEnchantments.level(player, ExpeditionEnchantments.THERMAL_WEAVE, EquipmentSlot.CHEST),
+			ExpeditionEnchantments.level(player, ExpeditionEnchantments.SPORE_FILTER, EquipmentSlot.HEAD)
 		));
 
-		ServerPlayNetworking.send(player, new ClimateSyncPayload(
+		ClimateSyncPayload payload = new ClimateSyncPayload(
 			snapshot.humidityPercent(),
 			snapshot.microWeather().id(),
 			snapshot.status().id(),
@@ -143,7 +152,10 @@ public final class PlayerClimateHandler {
 			snapshot.warmthRecoveryActive(),
 			nearCampfire,
 			enclosedShelter
-		));
+		);
+		if (CLIMATE_UPDATES.shouldSend(player.getUUID(), player, payload, level.getServer().getTickCount())) {
+			ServerPlayNetworking.send(player, payload);
+		}
 
 		applySurvivalEffects(player, level, snapshot, mossCount, nearCampfire);
 		pulseReactiveCaveFlora(level, pos, snapshot, biomeId);

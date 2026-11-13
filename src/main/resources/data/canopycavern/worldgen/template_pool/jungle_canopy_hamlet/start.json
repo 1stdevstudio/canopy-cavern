@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:jungle_canopy_hamlet/center",
+        "location": "canopycavern:jungle_canopy_hamlet/hillside_village",
         "processors": {
           "processors": []
         },

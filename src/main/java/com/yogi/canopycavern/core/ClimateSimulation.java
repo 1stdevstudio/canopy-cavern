@@ -74,8 +74,19 @@ public final class ClimateSimulation {
 		boolean nearCampfire,
 		boolean enclosedShelter,
 		boolean nearLava,
-		long worldTimeTicks
-	) {}
+		long worldTimeTicks,
+		int thermalWeaveLevel,
+		int sporeFilterLevel
+	) {
+		public ClimateInput(
+			AmbientInput ambient, String biomeId, int thermalArmorPieces, int mossweaveArmorPieces,
+			boolean hasGlowLantern, boolean nearCampfire, boolean enclosedShelter, boolean nearLava,
+			long worldTimeTicks
+		) {
+			this(ambient, biomeId, thermalArmorPieces, mossweaveArmorPieces, hasGlowLantern,
+				nearCampfire, enclosedShelter, nearLava, worldTimeTicks, 0, 0);
+		}
+	}
 
 	public record ClimateSnapshot(
 		AmbientSnapshot telemetry,
@@ -112,13 +123,14 @@ public final class ClimateSimulation {
 		AmbientSnapshot base = EnvironmentTelemetry.evaluate(input.ambient());
 		int thermalPieces = clampPieces(input.thermalArmorPieces());
 		int mossPieces = clampPieces(input.mossweaveArmorPieces());
-		int thermalInsulation = thermalPieces * 25;
+		int thermalInsulation = Math.min(100, thermalPieces * 25
+			+ ExpeditionEnchantmentRules.clampTwoLevels(input.thermalWeaveLevel()) * 10);
 		int cavernCooling = mossPieces * 25;
 
 		int humidity = computeHumidity(input, base);
 		MicroWeather weather = classifyMicroWeather(input, base, humidity);
-		double shifted = computePerceivedTemperature(input, base, weather, thermalPieces, mossPieces);
-		ClimateStatus status = classifyStatus(input, shifted, humidity);
+		double shifted = computePerceivedTemperature(input, base, weather, thermalInsulation, mossPieces);
+		ClimateStatus status = classifyStatus(input, base.depthZone(), shifted, humidity);
 
 		boolean frostPenalty = status == ClimateStatus.FREEZING && thermalPieces < 4;
 		boolean heatPenalty = status == ClimateStatus.OVERHEATED && mossPieces < 4;
@@ -200,7 +212,7 @@ public final class ClimateSimulation {
 		ClimateInput input,
 		AmbientSnapshot base,
 		MicroWeather weather,
-		int thermalPieces,
+		int thermalInsulation,
 		int mossPieces
 	) {
 		double temp = base.apparentCelsius();
@@ -222,9 +234,9 @@ public final class ClimateSimulation {
 			temp = temp + (18.0 - temp) * 0.55;
 		}
 
-		if (temp < 15.0 && thermalPieces > 0) {
+		if (temp < 15.0 && thermalInsulation > 0) {
 			double coldDeficit = 15.0 - temp;
-			temp += coldDeficit * (thermalPieces * 0.25);
+			temp += coldDeficit * (thermalInsulation / 100.0);
 		}
 		if (temp > 23.0 && mossPieces > 0) {
 			double heatExcess = temp - 23.0;
@@ -236,7 +248,9 @@ public final class ClimateSimulation {
 		return temp;
 	}
 
-	private static ClimateStatus classifyStatus(ClimateInput input, double perceivedCelsius, int humidity) {
+	private static ClimateStatus classifyStatus(
+		ClimateInput input, DepthZone zone, double perceivedCelsius, int humidity
+	) {
 		if (perceivedCelsius <= -2.0) {
 			return ClimateStatus.FREEZING;
 		}
@@ -246,7 +260,9 @@ public final class ClimateSimulation {
 		if (perceivedCelsius >= 35.0) {
 			return ClimateStatus.OVERHEATED;
 		}
-		boolean unshieldedHumid = humidity >= 82
+		int effectiveHumidity = humidity - (isCave(zone)
+			? ExpeditionEnchantmentRules.clampTwoLevels(input.sporeFilterLevel()) * 10 : 0);
+		boolean unshieldedHumid = effectiveHumidity >= 82
 			&& !input.enclosedShelter()
 			&& input.mossweaveArmorPieces() < 2
 			&& !input.hasGlowLantern();

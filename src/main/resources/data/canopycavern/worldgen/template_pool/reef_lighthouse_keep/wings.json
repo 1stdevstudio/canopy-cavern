@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:reef_lighthouse_keep/sunken_flagship_wreck",
+        "location": "canopycavern:reef_lighthouse_keep/sunken_flagship_wreck_anchored",
         "processors": {
           "processors": []
         },

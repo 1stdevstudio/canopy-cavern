@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:grotto_outpost_town/terminator",
+        "location": "canopycavern:grotto_outpost_town/survey_exit",
         "processors": {
           "processors": []
         },

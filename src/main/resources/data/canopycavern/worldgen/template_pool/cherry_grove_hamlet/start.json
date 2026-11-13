@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:cherry_grove_hamlet/center",
+        "location": "canopycavern:cherry_grove_hamlet/hillside_village",
         "processors": {
           "processors": []
         },

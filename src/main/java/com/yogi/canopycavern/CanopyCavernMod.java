@@ -3,9 +3,13 @@ package com.yogi.canopycavern;
 import com.yogi.canopycavern.config.CanopyCavernConfig;
 import com.yogi.canopycavern.entity.ModEntities;
 import com.yogi.canopycavern.item.ModItems;
+import com.yogi.canopycavern.item.ExpeditionGearActions;
+
 import com.yogi.canopycavern.network.ModNetworking;
 import com.yogi.canopycavern.world.PlayerClimateHandler;
 import com.yogi.canopycavern.worldgen.WorldOverhaulRegistry;
+import com.yogi.canopycavern.worldgen.MiningCityStructure;
+
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
@@ -29,10 +33,14 @@ public final class CanopyCavernMod implements ModInitializer {
 		Path configPath = configPath();
 		config = CanopyCavernConfig.loadOrCreate(configPath, LOGGER);
 		ModItems.register();
+		ExpeditionGearActions.register();
+
 		ModEntities.register();
 		ModNetworking.register();
 		PlayerClimateHandler.register();
 		WorldOverhaulRegistry.register(config);
+		MiningCityStructure.register();
+
 		LOGGER.info(
 			"Canopy Cavern initialized (surfaceOverhaul={}, caveOverhaul={}, surfaceLavaCleanup={}, climateSurvival={})",
 			config.surfaceOverhaulEnabled(),

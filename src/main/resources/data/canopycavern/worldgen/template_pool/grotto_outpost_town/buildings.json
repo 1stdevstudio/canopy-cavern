@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:grotto_outpost_town/house",
+        "location": "canopycavern:grotto_outpost_town/miners_quarters",
         "processors": {
           "processors": []
         },
@@ -14,7 +14,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:grotto_outpost_town/forge",
+        "location": "canopycavern:grotto_outpost_town/deep_forge",
         "processors": {
           "processors": []
         },
@@ -25,7 +25,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:grotto_outpost_town/library",
+        "location": "canopycavern:grotto_outpost_town/survey_library",
         "processors": {
           "processors": []
         },
@@ -36,7 +36,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:grotto_outpost_town/guardhouse",
+        "location": "canopycavern:grotto_outpost_town/watch_room",
         "processors": {
           "processors": []
         },

@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:badlands_pueblo/center",
+        "location": "canopycavern:badlands_pueblo/hillside_village",
         "processors": {
           "processors": []
         },

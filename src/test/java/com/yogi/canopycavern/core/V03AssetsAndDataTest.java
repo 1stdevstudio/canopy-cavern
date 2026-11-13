@@ -111,6 +111,21 @@ class V03AssetsAndDataTest {
 		assertTrue(enKeys.size() >= 90, "Expected complete v0.4.0 localization catalog");
 	}
 
+
+	@Test
+	void everyCanopyItemHasTwoLocalizedTooltipLines() {
+		for (String locale : List.of("en_us", "id_id")) {
+			JsonObject lang = readJson("assets/canopycavern/lang/" + locale + ".json");
+			for (String item : ALL_ITEMS) {
+				for (String suffix : List.of(".tooltip", ".tooltip.detail")) {
+					String key = "item.canopycavern." + item + suffix;
+					assertTrue(lang.has(key), locale + " missing " + key);
+					assertTrue(!lang.get(key).getAsString().isBlank(), locale + " blank " + key);
+				}
+			}
+		}
+	}
+
 	@Test
 	void allAdvancementsParseCleanlyAndMatchTranslations() {
 		JsonObject en = readJson("assets/canopycavern/lang/en_us.json");

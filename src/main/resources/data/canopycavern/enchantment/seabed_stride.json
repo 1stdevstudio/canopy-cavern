@@ -1,0 +1,20 @@
+{
+  "description": {
+    "translate": "enchantment.canopycavern.seabed_stride"
+  },
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 2,
+  "max_level": 2,
+  "min_cost": {
+    "base": 12,
+    "per_level_above_first": 8
+  },
+  "max_cost": {
+    "base": 42,
+    "per_level_above_first": 8
+  },
+  "anvil_cost": 4,
+  "slots": [
+    "feet"
+  ]
+}

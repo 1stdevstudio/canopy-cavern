@@ -1,0 +1,38 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:vanilla_revamp/taiga/zombie/collapsed_cottage",
+        "processors": "minecraft:zombie_taiga",
+        "projection": "rigid"
+      },
+      "weight": 23
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:vanilla_revamp/taiga/zombie/ruined_workshop",
+        "processors": "minecraft:zombie_taiga",
+        "projection": "rigid"
+      },
+      "weight": 23
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:vanilla_revamp/taiga/zombie/abandoned_longhouse",
+        "processors": "minecraft:zombie_taiga",
+        "projection": "rigid"
+      },
+      "weight": 22
+    },
+    {
+      "element": {
+        "element_type": "minecraft:empty_pool_element"
+      },
+      "weight": 6
+    }
+  ],
+  "fallback": "minecraft:village/taiga/terminators"
+}

@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:grotto_outpost_town/town_center",
+        "location": "canopycavern:grotto_outpost_town/lantern_market",
         "processors": {
           "processors": []
         },

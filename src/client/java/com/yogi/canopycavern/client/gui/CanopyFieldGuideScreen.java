@@ -194,7 +194,7 @@ public class CanopyFieldGuideScreen extends Screen {
 		for (int i = equipmentScroll; i < end; i++) {
 			EquipmentEntry entry = entries.get(i);
 			boolean ready = ShelterBlueprints.hasAllMaterials(inv, entry.materials());
-			graphics.fill(left + 14, y, left + PANEL_WIDTH - 14, y + 34, 0x801A2B26);
+			graphics.fill(left + 14, y, left + PANEL_WIDTH - 14, y + 36, 0x801A2B26);
 			Item icon = BuiltInRegistries.ITEM.getValue(Identifier.parse(entry.itemId()));
 			graphics.item(new ItemStack(icon), left + 20, y + 8);
 			graphics.text(
@@ -205,14 +205,11 @@ public class CanopyFieldGuideScreen extends Screen {
 				ready ? 0xFF9DF0B8 : 0xFFE6EFEA,
 				false
 			);
-			graphics.text(
-				this.font,
-				formatMaterialsLine(inv, entry.materials()),
-				left + 44,
-				y + 18,
-				ready ? 0xFF7BE0C3 : 0xFFB8C7C0,
-				false
-			);
+			int materialY = y + 16;
+			for (var line : this.font.split(formatMaterialsLine(inv, entry.materials()), PANEL_WIDTH - 64)) {
+				graphics.text(this.font, line, left + 44, materialY, ready ? 0xFF7BE0C3 : 0xFFB8C7C0, false);
+				materialY += 9;
+			}
 			y += 38;
 		}
 		int totalPages = (entries.size() + 3) / 4;

@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:abandoned_mega_village/center",
+        "location": "canopycavern:abandoned_mega_village/ruins",
         "processors": {
           "processors": []
         },

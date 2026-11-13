@@ -4,6 +4,7 @@ import com.yogi.canopycavern.CanopyCavernMod;
 import com.yogi.canopycavern.network.ModNetworking.OpenGuidePayload;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -30,7 +31,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.LodestoneTracker;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.EquipmentAsset;
@@ -51,12 +54,14 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * Registers all Canopy Cavern armor sets, cavern/alpine tools, guidebook, tags, and Creative tab.
  */
 public final class ModItems {
+	private static final int COMPASS_SEARCH_COOLDOWN_TICKS = 100;
 
 	public static final TagKey<Item> REPAIRS_THERMAL_ARMOR = itemTag("repairs_thermal_armor");
 	public static final TagKey<Item> REPAIRS_MOSSWEAVE_ARMOR = itemTag("repairs_mossweave_armor");
@@ -224,7 +229,7 @@ public final class ModItems {
 	}
 
 	private static Item registerArmor(String name, ArmorMaterial material, ArmorType type) {
-		return register(name, props -> new Item(props.humanoidArmor(material, type)));
+		return register(name, props -> new DescribedItem(props.humanoidArmor(material, type)));
 	}
 
 	private static Item register(String name, Function<Item.Properties, Item> factory) {
@@ -235,8 +240,25 @@ public final class ModItems {
 		return item;
 	}
 
+	private static class DescribedItem extends Item {
+		DescribedItem(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		public void appendHoverText(
+			ItemStack stack, TooltipContext context, TooltipDisplay display,
+			Consumer<Component> lines, TooltipFlag flag
+		) {
+			super.appendHoverText(stack, context, display, lines, flag);
+			String tooltipKey = getDescriptionId() + ".tooltip";
+			lines.accept(Component.translatable(tooltipKey).withStyle(ChatFormatting.GRAY));
+			lines.accept(Component.translatable(tooltipKey + ".detail").withStyle(ChatFormatting.GRAY));
+		}
+	}
+
 	/** Pickaxe with faster mining speed against tough subterranean stone variants. */
-	private static final class GrottoCrystalPickaxeItem extends Item {
+	private static final class GrottoCrystalPickaxeItem extends DescribedItem {
 		GrottoCrystalPickaxeItem(Properties properties) {
 			super(properties);
 		}
@@ -252,7 +274,7 @@ public final class ModItems {
 	}
 
 	/** Climbing pick allowing controlled vertical boosts up cliffs and cave walls. */
-	private static final class AlpineClimbingPickItem extends Item {
+	private static final class AlpineClimbingPickItem extends DescribedItem {
 		AlpineClimbingPickItem(Properties properties) {
 			super(properties);
 		}
@@ -287,7 +309,7 @@ public final class ModItems {
 	}
 
 	/** Long-range throwable flare torch placing torches along distant cliffs and cavern ceilings. */
-	private static final class FlareTorchItem extends Item {
+	private static final class FlareTorchItem extends DescribedItem {
 		FlareTorchItem(Properties properties) {
 			super(properties);
 		}
@@ -307,7 +329,9 @@ public final class ModItems {
 
 			Direction face = hit.getDirection();
 			BlockPos targetPos = hit.getBlockPos().relative(face);
-			if (!level.isInWorldBounds(targetPos) || !level.getBlockState(targetPos).canBeReplaced()) {
+			if (player.isSpectator() || !level.isInWorldBounds(targetPos)
+				|| !level.mayInteract(player, hit.getBlockPos()) || !level.mayInteract(player, targetPos)
+				|| !player.mayUseItemAt(targetPos, face, stack) || !level.getBlockState(targetPos).canBeReplaced()) {
 				return InteractionResult.FAIL;
 			}
 
@@ -331,7 +355,9 @@ public final class ModItems {
 			}
 
 			if (level instanceof ServerLevel serverLevel) {
-				level.setBlock(targetPos, torchState, Block.UPDATE_ALL);
+				if (!serverLevel.setBlock(targetPos, torchState, Block.UPDATE_ALL)) {
+					return InteractionResult.FAIL;
+				}
 				if (!player.isCreative()) {
 					stack.shrink(1);
 				}
@@ -353,7 +379,7 @@ public final class ModItems {
 	}
 
 	/** Portable bioluminescent lantern reducing damp cavern strain and pulsing short-term cave clarity. */
-	private static final class GlowLanternItem extends Item {
+	private static final class GlowLanternItem extends DescribedItem {
 		GlowLanternItem(Properties properties) {
 			super(properties);
 		}
@@ -375,7 +401,7 @@ public final class ModItems {
 	}
 
 	/** Shared tunable compass locking onto the nearest structure in a configured structure tag. */
-	private static class StructureCompassItem extends Item {
+	private static class StructureCompassItem extends DescribedItem {
 		private final TagKey<Structure> targetTag;
 		private final String translationKeyPrefix;
 		private final int searchRadiusChunks;
@@ -395,7 +421,11 @@ public final class ModItems {
 		@Override
 		public InteractionResult use(Level level, Player player, InteractionHand hand) {
 			ItemStack stack = player.getItemInHand(hand);
+			if (player.getCooldowns().isOnCooldown(stack)) {
+				return InteractionResult.FAIL;
+			}
 			if (level instanceof ServerLevel serverLevel) {
+				player.getCooldowns().addCooldown(stack, COMPASS_SEARCH_COOLDOWN_TICKS);
 				BlockPos target = serverLevel.findNearestMapStructure(targetTag, player.blockPosition(), searchRadiusChunks, false);
 				if (target == null) {
 					sendActionBar(player, Component.translatable(translationKeyPrefix + ".not_found"));
@@ -431,7 +461,7 @@ public final class ModItems {
 	}
 
 	/** Sea Glass Charm providing passive underwater breath support and an active Airlock Bubble Pulse. */
-	private static final class SeaGlassCharmItem extends Item {
+	private static final class SeaGlassCharmItem extends DescribedItem {
 		SeaGlassCharmItem(Properties properties) {
 			super(properties);
 		}
@@ -456,7 +486,7 @@ public final class ModItems {
 	}
 
 	/** Starter and craftable field guide opening the bilingual guide + auto-shelter builder GUI. */
-	private static final class CanopyFieldGuideItem extends Item {
+	private static final class CanopyFieldGuideItem extends DescribedItem {
 		CanopyFieldGuideItem(Properties properties) {
 			super(properties);
 		}

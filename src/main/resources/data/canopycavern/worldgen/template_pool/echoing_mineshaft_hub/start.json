@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:echoing_mineshaft_hub",
+        "location": "canopycavern:echoing_mineshaft_hub/ore_exchange",
         "processors": {
           "processors": []
         },

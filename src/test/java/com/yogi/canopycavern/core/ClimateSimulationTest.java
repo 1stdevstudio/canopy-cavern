@@ -70,4 +70,36 @@ class ClimateSimulationTest {
 		assertEquals(ClimateStatus.SHELTERED, inDome.status());
 		assertFalse(inDome.frostPenaltyActive());
 	}
+
+	@Test
+	void thermalWeaveInsulationAddsToArmorAndCapsAtOneHundredPercent() {
+		AmbientInput coldPeak = new AmbientInput(-0.3f, 148, 63, true, 15, false, true, false);
+		ClimateSnapshot unenchanted = ClimateSimulation.evaluate(
+			new ClimateInput(coldPeak, "canopycavern:whispering_peaks", 1, 0, false, false, false, false, 0L)
+		);
+		ClimateSnapshot weave = ClimateSimulation.evaluate(
+			new ClimateInput(coldPeak, "canopycavern:whispering_peaks", 1, 0, false, false, false, false, 0L, 2, 0)
+		);
+		ClimateSnapshot fullSet = ClimateSimulation.evaluate(
+			new ClimateInput(coldPeak, "canopycavern:whispering_peaks", 4, 0, false, false, false, false, 0L, 2, 0)
+		);
+		assertEquals(45, weave.thermalInsulationPercent());
+		assertEquals(100, fullSet.thermalInsulationPercent());
+		assertTrue(weave.perceivedCelsius() > unenchanted.perceivedCelsius());
+	}
+
+	@Test
+	void sporeFilterChangesExposureStatusWithoutChangingMeasuredHumidity() {
+		AmbientInput dampGrotto = new AmbientInput(0.7f, 10, 63, false, 0, false, false, false);
+		ClimateSnapshot exposed = ClimateSimulation.evaluate(
+			new ClimateInput(dampGrotto, "canopycavern:verdant_grotto", 0, 0, false, false, false, false, 1000L)
+		);
+		ClimateSnapshot filtered = ClimateSimulation.evaluate(
+			new ClimateInput(dampGrotto, "canopycavern:verdant_grotto", 0, 0, false, false, false, false, 1000L, 0, 2)
+		);
+		assertEquals(ClimateStatus.HUMID, exposed.status());
+		assertEquals(ClimateStatus.COMFORTABLE, filtered.status());
+		assertEquals(exposed.humidityPercent(), filtered.humidityPercent());
+		assertEquals(exposed.microWeather(), filtered.microWeather());
+	}
 }

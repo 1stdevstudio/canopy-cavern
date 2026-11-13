@@ -136,6 +136,26 @@
           "weight": 3
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:empty",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": [
+              "canopycavern:spore_filter",
+              "canopycavern:cave_grip"
+            ]
+          }
+        }
+      ]
     }
   ]
 }
