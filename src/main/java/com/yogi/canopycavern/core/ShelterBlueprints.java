@@ -82,6 +82,24 @@ public final class ShelterBlueprints {
 		return Collections.unmodifiableMap(missing);
 	}
 
+
+	/**
+	 * Build costs are derived from the actual block placement plan. This prevents
+	 * new decorations, furniture, roofs or windows from becoming free items.
+	 * Air is used to clear interior space and does not cost inventory items.
+	 */
+	private static List<MaterialCost> materialsForBlocks(List<BlockSpec> blocks) {
+		Map<String, Integer> totals = new LinkedHashMap<>();
+		for (BlockSpec spec : blocks) {
+			if (!"minecraft:air".equals(spec.blockId())) {
+				totals.merge(spec.blockId(), 1, Integer::sum);
+			}
+		}
+		return totals.entrySet().stream()
+			.map(entry -> new MaterialCost(entry.getKey(), entry.getValue()))
+			.toList();
+	}
+
 	private static List<BlueprintDefinition> buildBlueprints() {
 		List<BlueprintDefinition> list = new ArrayList<>();
 		list.add(createTrailsideCamp());
@@ -135,14 +153,7 @@ public final class ShelterBlueprints {
 			5,
 			4,
 			5,
-			List.of(
-				new MaterialCost("minecraft:spruce_planks", 28),
-				new MaterialCost("minecraft:spruce_log", 12),
-				new MaterialCost("minecraft:campfire", 1),
-				new MaterialCost("minecraft:crafting_table", 1),
-				new MaterialCost("minecraft:chest", 1),
-				new MaterialCost("minecraft:lantern", 1)
-			),
+			materialsForBlocks(blocks),
 			List.copyOf(blocks)
 		);
 	}
@@ -200,16 +211,7 @@ public final class ShelterBlueprints {
 			5,
 			5,
 			5,
-			List.of(
-				new MaterialCost("minecraft:cobblestone", 36),
-				new MaterialCost("minecraft:spruce_planks", 24),
-				new MaterialCost("minecraft:spruce_log", 12),
-				new MaterialCost("minecraft:glass_pane", 3),
-				new MaterialCost("minecraft:furnace", 1),
-				new MaterialCost("minecraft:campfire", 1),
-				new MaterialCost("minecraft:chest", 1),
-				new MaterialCost("minecraft:lantern", 1)
-			),
+			materialsForBlocks(blocks),
 			List.copyOf(blocks)
 		);
 	}
@@ -248,17 +250,7 @@ public final class ShelterBlueprints {
 			5,
 			4,
 			5,
-			List.of(
-				new MaterialCost("minecraft:deepslate_bricks", 32),
-				new MaterialCost("minecraft:polished_deepslate", 32),
-				new MaterialCost("minecraft:glass", 3),
-				new MaterialCost("minecraft:oak_door", 1),
-				new MaterialCost("minecraft:moss_block", 1),
-				new MaterialCost("minecraft:amethyst_block", 1),
-				new MaterialCost("minecraft:crafting_table", 1),
-				new MaterialCost("minecraft:chest", 1),
-				new MaterialCost("minecraft:lantern", 1)
-			),
+			materialsForBlocks(blocks),
 			List.copyOf(blocks)
 		);
 	}
@@ -297,15 +289,7 @@ public final class ShelterBlueprints {
 			5,
 			4,
 			5,
-			List.of(
-				new MaterialCost("minecraft:polished_deepslate", 32),
-				new MaterialCost("minecraft:cut_copper", 16),
-				new MaterialCost("minecraft:glass", 16),
-				new MaterialCost("minecraft:oak_door", 1),
-				new MaterialCost("minecraft:sea_lantern", 1),
-				new MaterialCost("minecraft:crafting_table", 1),
-				new MaterialCost("minecraft:chest", 1)
-			),
+			materialsForBlocks(blocks),
 			List.copyOf(blocks)
 		);
 	}
