@@ -22,7 +22,7 @@ BIOMES = {
     "plains": ("minecraft:stone_bricks", "minecraft:mossy_cobblestone", "minecraft:stone_brick_wall"),
     "desert": ("minecraft:cut_sandstone", "minecraft:smooth_sandstone", "minecraft:sandstone_wall"),
     "savanna": ("minecraft:terracotta", "minecraft:packed_mud", "minecraft:mud_brick_wall"),
-    "snowy": ("minecraft:polished_andesite", "minecraft:andesite", "minecraft:andesite_wall"),
+    "snowy": ("minecraft:dirt_path", "minecraft:packed_ice", "minecraft:andesite_wall"),
     "taiga": ("minecraft:cobbled_deepslate", "minecraft:mossy_stone_bricks", "minecraft:cobbled_deepslate_wall"),
 }
 
@@ -82,7 +82,7 @@ def pave(template, biome, path):
     for (x, y, z), (state, block_nbt) in states.items():
         if y == 0 and (x, z) in road:
             edge = sum(pos in road for pos in neighbors(x, z)) < 4
-            builder.set(x, y, z, curb if edge and (x + z) % 4 else paving)
+            builder.set(x, y, z, curb if (len(road) == 1 and paving in GROUND) or (edge and (x + z) % 4) else paving)
         else:
             builder.set(x, y, z, (state["id"], state.get("properties", {})), block_nbt)
 
@@ -136,14 +136,19 @@ def save_json(destination, document):
 def processor_with_paved_crossings(vanilla, name, biome):
     original = json.loads(vanilla.read(f"data/minecraft/worldgen/processor_list/{name}.json"))
     rules = original["processors"][0]["rules"]
+    base_rules = [
+        rule for rule in rules
+        if not (biome == "snowy" and rule["input_predicate"].get("predicate_type") == "minecraft:random_block_match")
+    ]
     replacements = [
         {**rule, "input_predicate": {**rule["input_predicate"], "block": material}}
-        for rule in rules
+        for rule in base_rules
         if rule["input_predicate"].get("block") == "minecraft:dirt_path"
         and rule["location_predicate"].get("block") in ("minecraft:water", "minecraft:ice")
         for material in BIOMES[biome][:2]
+        if material != "minecraft:dirt_path"
     ]
-    rules[:0] = replacements
+    original["processors"][0]["rules"] = replacements + base_rules
     return original
 
 

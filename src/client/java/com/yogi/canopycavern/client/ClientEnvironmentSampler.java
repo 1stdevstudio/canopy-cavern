@@ -8,6 +8,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.locale.Language;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.LightLayer;
@@ -68,12 +70,23 @@ public final class ClientEnvironmentSampler {
 
 		String rawBiomeKey = biomeHolder.unwrapKey()
 			.map(ResourceKey::identifier)
-			.map(Object::toString)
+			.map(Identifier::toString)
 			.orElse("unknown");
-		String biomeName = EnvironmentTelemetry.formatBiomeName(rawBiomeKey);
+		String biomeName = resolveBiomeName(biomeHolder.unwrapKey().map(ResourceKey::identifier).orElse(null), rawBiomeKey);
 		boolean forest = biomeHolder.is(BiomeTags.IS_FOREST) || biomeHolder.is(BiomeTags.IS_TAIGA);
 
 		latestSample = new SampledEnvironment(snapshot, rawBiomeKey, biomeName, forest, raining, night);
+	}
+
+	private static String resolveBiomeName(Identifier biomeId, String rawBiomeKey) {
+		if (biomeId != null) {
+			String translationKey = biomeId.toLanguageKey("biome");
+			Language language = Language.getInstance();
+			if (language.has(translationKey)) {
+				return language.getOrDefault(translationKey);
+			}
+		}
+		return EnvironmentTelemetry.formatBiomeName(rawBiomeKey);
 	}
 
 	/** Returns the most recent environmental sample, if in-world. */

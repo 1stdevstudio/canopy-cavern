@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.27`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.28`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,15 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.27.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.28.jar`.
+
+---
+
+## Perbaikan HUD Minimal, Tiang Outpost & Jalan Biome Salju (`v0.5.0-beta.28`)
+
+- **HUD Iklim Minimal (`WorldHudOverlay` & `HudTelemetryFormatter`)**: Panel kotak besar `192x68` diganti menjadi strip kompak 2 baris inti (biome · zona kedalaman serta suhu · kelembapan · status) dengan baris ke-3 opsional saat ada *micro-weather* aktif atau proteksi zirah `> 0%`, lengkap dengan garis aksen kiri `2px`, lebar dinamis agar tidak menutup layar, dan auto-hide saat layar debug (`F3`) terbuka.
+- **Pilar Sudut Menara `canopycavern:frontier_pillager_outpost`**: Memperbaiki urutan pembangunan di `build_watchtower_keep()` agar 4 pilar utama `cobblestone` → `dark_oak_log` berdiri utuh dari dasar hingga kemiringan atap `y=17` ditambah 4 tiang sudut atap lantai 2 (`y=14..15`), tanpa terhapus oleh `AIR`.
+- **Jalan Bebas Timbunan Salju (`minecraft:village_snowy`, `frozen_ridge_village`, `peak_citadel`)**: Menggunakan kombinasi `minecraft:dirt_path` dan tepian `minecraft:packed_ice` serta menonaktifkan aturan acak `grass_block` pada processor `village_roads/snowy` sehingga jalan tetap terlihat bersih dan bebas timbunan `minecraft:snow`.
 
 ---
 

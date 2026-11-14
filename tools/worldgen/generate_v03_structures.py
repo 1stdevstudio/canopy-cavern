@@ -753,7 +753,7 @@ def build_village_theme(village_id: str, biomes: list[str], pal: dict, landmark:
         ),
     }
     vtype, profile, wall_alt, accent_roof, clear_pane, aw_a, aw_b, flower = theme_defaults[village_id]
-    road_block = "minecraft:coarse_dirt" if pal["road"] == "minecraft:dirt_path" else pal["road"]
+    road_block = "minecraft:coarse_dirt" if village_id == "canopy_village" and pal["road"] == "minecraft:dirt_path" else pal["road"]
     city_palette = CityPalette(
         city_id=village_id,
         biomes=tuple(biomes),
@@ -1419,7 +1419,7 @@ def build_all():
             "accent": "minecraft:cobbled_deepslate",
             "pillar": "minecraft:spruce_log",
             "floor": "minecraft:oak_planks",
-            "road": "minecraft:cobblestone",
+            "road": "minecraft:dirt_path",
             "grass": "minecraft:grass_block",
             "roof_stairs": "minecraft:deepslate_tile_stairs",
             "roof_slab": "minecraft:deepslate_tile_slab",

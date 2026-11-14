@@ -1294,7 +1294,7 @@ THEMES = {
         "plinth": "minecraft:stone_bricks",
         "plinth_alt": "minecraft:polished_andesite",
         "floor": "minecraft:spruce_planks",
-        "path": "minecraft:cobblestone",
+        "path": "minecraft:dirt_path",
         "pillar": "minecraft:stripped_spruce_log",
         "wall": "minecraft:snow_block",
         "trim": "minecraft:spruce_planks",
@@ -1465,7 +1465,7 @@ def _vanilla_city_palette(theme: str, p: dict):
         flower=p["flower"],
         awning_a=p["awning_a"],
         awning_b=p["awning_b"],
-        garden_soil=p["path"],
+        garden_soil="minecraft:grass_block" if p["path"] == "minecraft:dirt_path" else p["path"],
         foundation=p["plinth"],
     )
 

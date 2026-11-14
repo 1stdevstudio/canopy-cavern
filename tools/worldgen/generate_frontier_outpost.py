@@ -38,16 +38,7 @@ def build_watchtower_keep() -> V4StructureBuilder:
         sb.fill(x0, 0, z0, x1, 0, z1, "minecraft:cobblestone")
         sb.fill(x0, 1, z0, x1, 3, z1, AIR)
 
-    # Dark oak corner timber columns + cobblestone bases
-    for px, pz in ((2, 2), (12, 2), (2, 12), (12, 12)):
-        sb.fill(px, 1, pz, px, 2, pz, "minecraft:cobblestone")
-        sb.fill(px, 3, pz, px, 15, pz, "minecraft:dark_oak_log")
-
-    # Mid-span struts on ground walls, leaving cardinal 3-wide archways open
-    for px, pz in ((5, 2), (9, 2), (5, 12), (9, 12), (2, 5), (2, 9), (12, 5), (12, 9)):
-        sb.fill(px, 1, pz, px, 7, pz, "minecraft:dark_oak_log")
-
-    # Floor 1 (y=7) and cantilevered Floor 2 (y=14) with perimeter dark oak fences
+    # Floor 1 (y=7) and cantilevered Floor 2 (y=14) cleared before structural framing
     sb.fill(2, 7, 2, 12, 7, 12, "minecraft:dark_oak_planks")
     sb.fill(2, 8, 2, 12, 13, 12, AIR)
     sb.fill(1, 14, 1, 13, 14, 13, "minecraft:dark_oak_planks")
@@ -62,6 +53,19 @@ def build_watchtower_keep() -> V4StructureBuilder:
         sb.set(8, deck_y, 8, AIR)
         if fence_y == 8:
             sb.set(8, 8, 8, AIR)
+
+    # Full-height corner piers rising continuously past Floor 1 & Floor 2 up to the y=17 gable slope
+    for px, pz in ((2, 2), (12, 2), (2, 12), (12, 12)):
+        sb.fill(px, 1, pz, px, 2, pz, "minecraft:cobblestone")
+        sb.fill(px, 3, pz, px, 16, pz, "minecraft:dark_oak_log")
+
+    # Outer eave posts on Floor 2 supporting the cantilevered roof corners at y=16
+    for px, pz in ((1, 1), (13, 1), (1, 13), (13, 13)):
+        sb.fill(px, 14, pz, px, 15, pz, "minecraft:dark_oak_log")
+
+    # Mid-span struts on ground walls, leaving cardinal 3-wide archways open
+    for px, pz in ((5, 2), (9, 2), (5, 12), (9, 12), (2, 5), (2, 9), (12, 5), (12, 9)):
+        sb.fill(px, 1, pz, px, 7, pz, "minecraft:dark_oak_log")
 
     # Full 14-block climbable ladder beside solid log spine
     sb.fill(9, 1, 8, 9, 14, 8, "minecraft:dark_oak_log")

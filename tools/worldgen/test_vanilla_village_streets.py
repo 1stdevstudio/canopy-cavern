@@ -57,8 +57,14 @@ class VillageStreetTest(unittest.TestCase):
                             (output / "canopycavern/worldgen/processor_list" / (new_id + ".json")).read_text()
                         )
                         previous = rules["processors"][0]["rules"]
+                        expected_tail = [
+                            r for r in previous
+                            if not (biome == "snowy" and r["input_predicate"].get("predicate_type") == "minecraft:random_block_match")
+                        ]
                         replacements = generated_rules["processors"][0]["rules"]
-                        self.assertEqual(previous, replacements[-len(previous):])
+                        self.assertEqual(expected_tail, replacements[-len(expected_tail):])
+                        if biome == "snowy":
+                            self.assertFalse(any(r.get("output_state") == "minecraft:grass_block" for r in replacements))
                         water_inputs = {
                             r["input_predicate"]["block"] for r in replacements
                             if r["location_predicate"].get("block") == "minecraft:water"
@@ -96,3 +102,9 @@ class VillageStreetTest(unittest.TestCase):
                                      gzip.decompress(checked.read_bytes()))
             self.assertEqual(set(BIOMES), plazas)
             self.assertGreaterEqual(len(variants), 165)
+
+    def test_snowy_streets_use_snow_resistant_materials(self):
+        from generate_vanilla_village_streets import BIOMES
+
+        self.assertEqual("minecraft:dirt_path", BIOMES["snowy"][0])
+        self.assertEqual("minecraft:packed_ice", BIOMES["snowy"][1])

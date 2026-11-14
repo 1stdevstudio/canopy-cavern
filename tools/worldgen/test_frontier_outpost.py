@@ -30,6 +30,17 @@ class FrontierOutpostTest(unittest.TestCase):
             self.assertEqual("minecraft:dark_oak_log", keep_grid[(9, y, 8)][0])
         self.assertEqual("minecraft:air", keep_grid[(8, 15, 8)][0])
 
+        # Continuous corner columns up to the roof slope + outer eave corner posts on Floor 2
+        for px, pz in ((2, 2), (12, 2), (2, 12), (12, 12)):
+            for y in range(1, 3):
+                self.assertEqual("minecraft:cobblestone", keep_grid[(px, y, pz)][0])
+            for y in range(3, 17):
+                self.assertEqual("minecraft:dark_oak_log", keep_grid[(px, y, pz)][0])
+        for px, pz in ((1, 1), (13, 1), (1, 13), (13, 13)):
+            for y in (14, 15):
+                self.assertEqual("minecraft:dark_oak_log", keep_grid[(px, y, pz)][0])
+            self.assertEqual("minecraft:dark_oak_stairs", keep_grid[(px, 16, pz)][0])
+
         stairs = sum(1 for b, _, _ in keep_grid.values() if b == "minecraft:dark_oak_stairs")
         self.assertGreaterEqual(stairs, 100)
 
