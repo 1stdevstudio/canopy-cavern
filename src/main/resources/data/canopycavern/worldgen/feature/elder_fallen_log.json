@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:fallen_tree",
+  "log_length": {
+    "type": "minecraft:uniform",
+    "min_inclusive": 5,
+    "max_inclusive": 8
+  },
+  "log_decorators": [
+    {
+      "type": "minecraft:attached_to_logs",
+      "probability": 0.4,
+      "block_provider": {
+        "type": "minecraft:weighted",
+        "entries": [
+          {
+            "data": "minecraft:brown_mushroom",
+            "weight": 4
+          },
+          {
+            "data": "minecraft:red_mushroom",
+            "weight": 2
+          },
+          {
+            "data": "minecraft:moss_carpet",
+            "weight": 6
+          }
+        ]
+      },
+      "directions": [
+        "up"
+      ]
+    }
+  ],
+  "stump_decorators": [],
+  "trunk_provider": {
+    "id": "minecraft:dark_oak_log",
+    "properties": {
+      "axis": "y"
+    }
+  }
+}

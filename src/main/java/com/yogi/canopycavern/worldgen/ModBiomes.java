@@ -16,13 +16,15 @@ public final class ModBiomes {
 	public static final ResourceKey<Biome> VERDANT_GROTTO = key("verdant_grotto");
 	public static final ResourceKey<Biome> CRYSTAL_STEPPE = key("crystal_steppe");
 	public static final ResourceKey<Biome> AMBER_CAVERNS = key("amber_caverns");
+	public static final ResourceKey<Biome> ELDER_BOUGH_GROVE = key("elder_bough_grove");
 
 	public static final List<ResourceKey<Biome>> ALL_BIOMES = List.of(
 		WHISPERING_PEAKS,
 		MOSSY_CANOPY,
 		VERDANT_GROTTO,
 		CRYSTAL_STEPPE,
-		AMBER_CAVERNS
+		AMBER_CAVERNS,
+		ELDER_BOUGH_GROVE
 	);
 
 	private ModBiomes() {

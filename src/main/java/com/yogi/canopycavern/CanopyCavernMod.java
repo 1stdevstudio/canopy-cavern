@@ -10,8 +10,10 @@ import com.yogi.canopycavern.world.PlayerClimateHandler;
 import com.yogi.canopycavern.world.spawn.SanctuaryCommands;
 import com.yogi.canopycavern.world.spawn.SanctuaryPlacementService;
 import com.yogi.canopycavern.world.spawn.SpawnSanctuaryProtection;
+import com.yogi.canopycavern.worldgen.ElderTreeStructure;
 import com.yogi.canopycavern.worldgen.WorldOverhaulRegistry;
 import com.yogi.canopycavern.worldgen.MiningCityStructure;
+import com.yogi.canopycavern.worldgen.tree.CanopyTreePlacers;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -42,7 +44,9 @@ public final class CanopyCavernMod implements ModInitializer {
 		ModNetworking.register();
 		PlayerClimateHandler.register();
 		WorldOverhaulRegistry.register(config);
+		CanopyTreePlacers.register();
 		MiningCityStructure.register();
+		ElderTreeStructure.register();
 		SanctuaryPlacementService.registerLifecycle();
 		SpawnSanctuaryProtection.registerEvents();
 		SanctuaryCommands.register();

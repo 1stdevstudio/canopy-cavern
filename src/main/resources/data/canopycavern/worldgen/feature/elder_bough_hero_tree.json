@@ -1,0 +1,127 @@
+{
+  "type": "minecraft:tree",
+  "below_trunk_provider": {
+    "id": "minecraft:rooted_dirt"
+  },
+  "trunk_provider": {
+    "id": "minecraft:dark_oak_log",
+    "properties": {
+      "axis": "y"
+    }
+  },
+  "trunk_placer": {
+    "type": "canopycavern:gnarled_bough",
+    "base_height": 11,
+    "height_rand_a": 4,
+    "height_rand_b": 3,
+    "bough_count": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 4,
+      "max_inclusive": 6
+    },
+    "bough_length": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 3,
+      "max_inclusive": 4
+    },
+    "double_trunk": true
+  },
+  "foliage_provider": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": {
+          "id": "minecraft:azalea_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 4
+      },
+      {
+        "data": {
+          "id": "minecraft:flowering_azalea_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "id": "minecraft:oak_leaves",
+          "properties": {
+            "distance": "7",
+            "persistent": "false",
+            "waterlogged": "false"
+          }
+        },
+        "weight": 3
+      }
+    ]
+  },
+  "foliage_placer": {
+    "type": "canopycavern:layered_umbrella",
+    "radius": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 2,
+      "max_inclusive": 3
+    },
+    "offset": 0,
+    "height": 3,
+    "skirt_hole_chance": 0.28,
+    "hanging_chance": 0.25
+  },
+  "root_placer": {
+    "type": "canopycavern:arching_root",
+    "trunk_offset_y": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 1,
+      "max_inclusive": 2
+    },
+    "root_provider": {
+      "id": "minecraft:dark_oak_wood",
+      "properties": {
+        "axis": "y"
+      }
+    },
+    "above_root_placement": {
+      "above_root_placement_chance": 0.45,
+      "above_root_provider": {
+        "id": "minecraft:moss_carpet"
+      }
+    },
+    "root_count": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 4,
+      "max_inclusive": 6
+    },
+    "root_spread": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 3,
+      "max_inclusive": 4
+    },
+    "max_drop": 6
+  },
+  "minimum_size": {
+    "type": "minecraft:two_layers_feature_size",
+    "limit": 2,
+    "lower_size": 0,
+    "upper_size": 2
+  },
+  "decorators": [
+    {
+      "type": "minecraft:leave_vine",
+      "probability": 0.14
+    },
+    {
+      "type": "minecraft:beehive",
+      "probability": 0.02
+    }
+  ],
+  "ignore_vines": true
+}

@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.25`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.26`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,17 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.25.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.26.jar`.
+
+---
+
+## Elder Bough Grove & Elder Great Tree (`v0.5.0-beta.26`)
+
+- **Biome Baru (`canopycavern:elder_bough_grove`)**: Rimba Dahan Purba berkelembapan tinggi (`82%`) dengan lantai lumut, podzol, *rooted dirt*, serta partikel *firefly* dan *spore blossom*.
+- **Sistem Pohon Kompleks 3 Lapis**:
+  - **Layer 1 (Prosedural)**: `canopycavern:arching_root`, `canopycavern:gnarled_bough`, dan `canopycavern:layered_umbrella` menghasilkan pohon hero berakar melengkung dan kanopi payung bertingkat, lengkap dengan `elder_fallen_log`.
+  - **Layer 2 (Monumen Multi-Chunk `canopycavern:elder_great_tree`)**: Tiga modul `.nbt` bertingkat (`root_hollow_base`, `mid_bough_bridges`, `crown_observatory`) dengan ruang akar berongga, tangga spiral tengah, ruang botanis & jembatan gantung berpagar, observatorium puncak, peti loot `canopycavern:chests/elder_tree_hollow`, dan jangkar akar otomatis ke lereng medan.
+  - **Layer 3 (Permukaan, Iklim & Ambien)**: Aturan material permukaan (`CanopyMaterialRules`), simulasi kelembapan mikro (`82%` di `ClimateSimulation`), dan partikel ambien kunang-kunang/spora di client (`ClientAtmosphereTicker`).
 
 ---
 

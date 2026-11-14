@@ -3,6 +3,10 @@ package com.yogi.canopycavern.worldgen;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtAccounter;
+import net.minecraft.nbt.NbtIo;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -13,19 +17,21 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BiomeAndStructureDataTest {
 	@Test
-	void exposesFiveCohesiveCustomBiomes() {
-		assertEquals(5, ModBiomes.ALL_BIOMES.size());
+	void exposesSixCohesiveCustomBiomes() {
+		assertEquals(6, ModBiomes.ALL_BIOMES.size());
 		List<String> expected = List.of(
 			"whispering_peaks",
 			"mossy_canopy",
 			"verdant_grotto",
 			"crystal_steppe",
-			"amber_caverns"
+			"amber_caverns",
+			"elder_bough_grove"
 		);
 		List<String> actual = ModBiomes.ALL_BIOMES.stream().map(k -> k.identifier().getPath()).toList();
 		assertEquals(expected, actual);
@@ -49,12 +55,15 @@ class BiomeAndStructureDataTest {
 		assertTrue(raw.contains("canopycavern:verdant_grotto"));
 		assertTrue(raw.contains("canopycavern:crystal_steppe"));
 		assertTrue(raw.contains("canopycavern:amber_caverns"));
+		assertTrue(raw.contains("canopycavern:elder_bough_grove"));
 
 		JsonObject mountainTag = readJson("data/minecraft/tags/worldgen/biome/is_mountain.json");
 		assertTrue(mountainTag.getAsJsonArray("values").toString().contains("canopycavern:whispering_peaks"));
 
 		JsonObject forestTag = readJson("data/minecraft/tags/worldgen/biome/is_forest.json");
-		assertTrue(forestTag.getAsJsonArray("values").toString().contains("canopycavern:mossy_canopy"));
+		String forestValues = forestTag.getAsJsonArray("values").toString();
+		assertTrue(forestValues.contains("canopycavern:mossy_canopy"));
+		assertTrue(forestValues.contains("canopycavern:elder_bough_grove"));
 	}
 
 	@Test
@@ -290,6 +299,69 @@ class BiomeAndStructureDataTest {
 		assertEquals("minecraft:chest", lootTable.get("type").getAsString());
 		assertTrue(lootTable.getAsJsonArray("pools").size() >= 2);
 		assertEquals(expectedLootTable, lootTable.get("random_sequence").getAsString());
+	}
+
+	@Test
+	void configuresElderGreatTreeMonumentFeaturesAndAdvancement() throws IOException {
+		JsonObject structure = readJson("data/canopycavern/worldgen/structure/elder_great_tree.json");
+		assertEquals("canopycavern:elder_great_tree", structure.get("type").getAsString());
+		assertEquals("surface_structures", structure.get("step").getAsString());
+		assertEquals("#canopycavern:has_structure/elder_great_tree", structure.get("biomes").getAsString());
+
+		JsonObject structureSet = readJson("data/canopycavern/worldgen/structure_set/elder_great_tree.json");
+		assertTrue(structureSet.getAsJsonArray("structures").toString().contains("canopycavern:elder_great_tree"));
+
+		JsonObject biomeTag = readJson("data/canopycavern/tags/worldgen/biome/has_structure/elder_great_tree.json");
+		assertTrue(biomeTag.getAsJsonArray("values").toString().contains("canopycavern:elder_bough_grove"));
+
+		for (String piece : List.of("root_hollow_base", "mid_bough_bridges", "crown_observatory")) {
+			String nbtPath = "data/canopycavern/structure/elder_great_tree/" + piece + ".nbt";
+			CompoundTag root = NbtIo.readCompressed(
+				new ByteArrayInputStream(readBytes(nbtPath)),
+				NbtAccounter.unlimitedHeap()
+			);
+			assertTrue(root.getIntOr("DataVersion", 0) >= 5023, nbtPath + " missing current DataVersion");
+
+			ListTag palette = root.getListOrEmpty("palette");
+			assertTrue(palette.size() > 0, nbtPath + " must contain palette entries");
+			for (int i = 0; i < palette.size(); i++) {
+				CompoundTag entry = palette.getCompoundOrEmpty(i);
+				assertFalse(entry.getStringOr("id", "").isBlank(), nbtPath + " palette[" + i + "] missing 'id'");
+				assertFalse(entry.contains("Name"), nbtPath + " palette[" + i + "] uses legacy 'Name' instead of 'id'");
+				assertFalse(entry.contains("Properties"), nbtPath + " palette[" + i + "] uses legacy 'Properties'");
+			}
+
+			ListTag blocks = root.getListOrEmpty("blocks");
+			assertTrue(blocks.size() > 0, nbtPath + " must contain block entries");
+			boolean foundChestLoot = false;
+			for (int i = 0; i < blocks.size(); i++) {
+				CompoundTag blockTag = blocks.getCompoundOrEmpty(i);
+				int stateIdx = blockTag.getIntOr("state", -1);
+				assertTrue(stateIdx >= 0 && stateIdx < palette.size(), nbtPath + " invalid block state index " + stateIdx);
+				CompoundTag beNbt = blockTag.getCompoundOrEmpty("nbt");
+				if ("minecraft:chest".equals(beNbt.getStringOr("id", ""))
+					&& "canopycavern:chests/elder_tree_hollow".equals(beNbt.getStringOr("LootTable", ""))) {
+					foundChestLoot = true;
+				}
+			}
+			if (!piece.equals("crown_observatory")) {
+				assertTrue(foundChestLoot, nbtPath + " missing elder_tree_hollow loot chest block entity");
+			}
+		}
+
+		JsonObject loot = readJson("data/canopycavern/loot_table/chests/elder_tree_hollow.json");
+		assertEquals("minecraft:chest", loot.get("type").getAsString());
+		assertTrue(loot.getAsJsonArray("pools").size() >= 2);
+
+		JsonObject adv = readJson("data/canopycavern/advancement/find_elder_bough_grove.json");
+		assertEquals("canopycavern:root", adv.get("parent").getAsString());
+		assertTrue(adv.toString().contains("canopycavern:elder_bough_grove"));
+
+		readJson("data/canopycavern/worldgen/feature/elder_bough_hero_tree.json");
+		readJson("data/canopycavern/worldgen/feature/stilt_canopy_tree.json");
+		readJson("data/canopycavern/worldgen/feature/elder_fallen_log.json");
+		readJson("data/canopycavern/worldgen/feature/trees_elder_bough_grove.json");
+		readJson("data/canopycavern/worldgen/placed_feature/trees_elder_bough_grove.json");
 	}
 
 	private static JsonObject readJson(String resourcePath) {

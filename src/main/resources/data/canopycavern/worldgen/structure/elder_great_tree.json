@@ -1,0 +1,7 @@
+{
+  "type": "canopycavern:elder_great_tree",
+  "biomes": "#canopycavern:has_structure/elder_great_tree",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin"
+}

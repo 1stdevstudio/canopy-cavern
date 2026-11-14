@@ -20,6 +20,7 @@ public final class CanopyMaterialRules {
 	private static final MaterialRule DIRT = stateRule(Blocks.DIRT);
 	private static final MaterialRule COARSE_DIRT = stateRule(Blocks.COARSE_DIRT);
 	private static final MaterialRule PODZOL = stateRule(Blocks.PODZOL);
+	private static final MaterialRule ROOTED_DIRT = stateRule(Blocks.ROOTED_DIRT);
 	private static final MaterialRule MOSS_BLOCK = stateRule(Blocks.MOSS_BLOCK);
 	private static final MaterialRule GRANITE = stateRule(Blocks.GRANITE);
 	private static final MaterialRule TUFF = stateRule(Blocks.TUFF);
@@ -75,6 +76,29 @@ public final class CanopyMaterialRules {
 				MaterialRules.stoneDepthCheck(0, true, CaveSurface.FLOOR),
 				MaterialRules.sequence(
 					MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, -0.45D, 0.3D), COARSE_DIRT),
+					DIRT
+				)
+			)
+		);
+
+		MaterialRule elderBoughSurface = MaterialRules.sequence(
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, false, CaveSurface.FLOOR),
+				MaterialRules.ifTrue(
+					MaterialRules.waterBlockCheck(-1, 0),
+					MaterialRules.sequence(
+						MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, 0.15D, 1.8D), MOSS_BLOCK),
+						MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, -0.35D, 0.25D), PODZOL),
+						MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, -0.55D, -0.25D), ROOTED_DIRT),
+						GRASS_BLOCK
+					)
+				)
+			),
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, true, CaveSurface.FLOOR),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, -0.35D, 0.25D), ROOTED_DIRT),
+					MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, -0.45D, 0.1D), COARSE_DIRT),
 					DIRT
 				)
 			)
@@ -147,6 +171,7 @@ public final class CanopyMaterialRules {
 					MaterialRules.sequence(
 						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.WHISPERING_PEAKS), peaksFloorSurface),
 						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.MOSSY_CANOPY), mossyCanopyFloorSurface),
+						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.ELDER_BOUGH_GROVE), elderBoughSurface),
 						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.CRYSTAL_STEPPE), crystalSteppeSurface)
 					)
 				),

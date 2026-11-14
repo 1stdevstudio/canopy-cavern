@@ -1,0 +1,76 @@
+{
+  "type": "minecraft:chest",
+  "random_sequence": "canopycavern:chests/elder_tree_hollow",
+  "pools": [
+    {
+      "rolls": 3,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:flowering_azalea",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:honeycomb",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:amethyst_shard",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:moss_block",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:flare_torch",
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:glow_lantern",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:mossweave_tunic",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:mossweave_boots",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:grotto_crystal_pickaxe",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "canopycavern:canopy_field_guide",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:name_tag",
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}

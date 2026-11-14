@@ -33,6 +33,8 @@ public final class CanopyOverworldRegion extends Region {
 
 			builder.replaceBiome(Biomes.OLD_GROWTH_PINE_TAIGA, ModBiomes.MOSSY_CANOPY);
 			builder.replaceBiome(Biomes.DARK_FOREST, ModBiomes.MOSSY_CANOPY);
+			builder.replaceBiome(Biomes.OLD_GROWTH_BIRCH_FOREST, ModBiomes.ELDER_BOUGH_GROVE);
+			builder.replaceBiome(Biomes.OLD_GROWTH_SPRUCE_TAIGA, ModBiomes.ELDER_BOUGH_GROVE);
 
 			builder.replaceBiome(Biomes.SUNFLOWER_PLAINS, ModBiomes.CRYSTAL_STEPPE);
 			builder.replaceBiome(Biomes.SAVANNA_PLATEAU, ModBiomes.CRYSTAL_STEPPE);

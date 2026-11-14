@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 
 /**
  * Emits lightweight environmental particles and throttled dynamic atmospheric sound cues
@@ -50,15 +51,7 @@ public final class ClientAtmosphereTicker {
 	private static void spawnAmbientParticles(Minecraft client, SampledEnvironment sample, MicroWeather weather) {
 		var random = client.level.getRandom();
 		var player = client.player;
-		ParticleOptions particle = switch (weather) {
-			case BLIZZARD_CHILL -> ParticleTypes.SNOWFLAKE;
-			case MISTY_WIND -> ParticleTypes.WHITE_ASH;
-			case CAVERN_HUMID -> sample.biomeId().contains("verdant_grotto") || sample.biomeId().contains("lush_caves")
-				? ParticleTypes.SPORE_BLOSSOM_AIR
-				: ParticleTypes.GLOW;
-			case THERMAL_STEAM -> ParticleTypes.ASH;
-			case CLEAR -> null;
-		};
+		ParticleOptions particle = selectParticle(sample, weather, random);
 		if (particle == null) {
 			return;
 		}
@@ -71,6 +64,26 @@ public final class ClientAtmosphereTicker {
 			double vx = weather == MicroWeather.MISTY_WIND || weather == MicroWeather.BLIZZARD_CHILL ? 0.04 : 0.0;
 			client.level.addParticle(particle, px, py, pz, vx, -0.01, 0.0);
 		}
+	}
+
+	private static ParticleOptions selectParticle(
+		SampledEnvironment sample,
+		MicroWeather weather,
+		RandomSource random
+	) {
+		if (sample.biomeId().contains("elder_bough_grove")
+			&& (weather == MicroWeather.CLEAR || weather == MicroWeather.CAVERN_HUMID)) {
+			return random.nextInt(4) == 0 ? ParticleTypes.FIREFLY : ParticleTypes.SPORE_BLOSSOM_AIR;
+		}
+		return switch (weather) {
+			case BLIZZARD_CHILL -> ParticleTypes.SNOWFLAKE;
+			case MISTY_WIND -> ParticleTypes.WHITE_ASH;
+			case CAVERN_HUMID -> sample.biomeId().contains("verdant_grotto") || sample.biomeId().contains("lush_caves")
+				? ParticleTypes.SPORE_BLOSSOM_AIR
+				: ParticleTypes.GLOW;
+			case THERMAL_STEAM -> ParticleTypes.ASH;
+			case CLEAR -> null;
+		};
 	}
 
 	private static void playSubtleAmbienceSound(Minecraft client, SampledEnvironment sample, MicroWeather weather) {
