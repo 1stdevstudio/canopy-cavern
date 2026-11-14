@@ -50,9 +50,12 @@ public final class TreeGroundingHelper {
 			return false;
 		}
 		return state.is(BlockTags.DIRT)
+			|| state.is(BlockTags.GRASS_BLOCKS)
+			|| state.is(BlockTags.MOSS_BLOCKS)
 			|| state.is(BlockTags.BASE_STONE_OVERWORLD)
 			|| state.is(BlockTags.SAND)
 			|| state.is(BlockTags.TERRACOTTA)
+			|| state.is(Blocks.MUD)
 			|| state.is(Blocks.GRAVEL)
 			|| state.is(Blocks.CLAY)
 			|| state.is(Blocks.MYCELIUM)
@@ -62,7 +65,10 @@ public final class TreeGroundingHelper {
 	}
 
 	public static boolean isNaturalSoil(BlockState state) {
-		return state.is(BlockTags.DIRT) || state.is(Blocks.MOSS_BLOCK);
+		return state.is(BlockTags.DIRT)
+			|| state.is(BlockTags.GRASS_BLOCKS)
+			|| state.is(BlockTags.MOSS_BLOCKS)
+			|| state.is(Blocks.MOSS_BLOCK);
 	}
 
 	public static boolean isNaturalGroundAt(LevelSimulatedReader level, BlockPos pos) {

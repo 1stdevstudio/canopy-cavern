@@ -1251,7 +1251,7 @@ def build_canopy_treetop_bastion():
         "start_height": {"absolute": 0},
         "start_pool": "canopycavern:canopy_treetop_bastion/start",
         "step": "surface_structures",
-        "terrain_adaptation": "beard_thin",
+        "terrain_adaptation": "none",
         "terrain_guard": surface_terrain_guard(
             "minecraft:mossy_cobblestone",
             max_core_relief=5,

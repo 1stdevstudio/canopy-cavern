@@ -10,7 +10,7 @@
   },
   "start_pool": "canopycavern:canopy_treetop_bastion/start",
   "step": "surface_structures",
-  "terrain_adaptation": "beard_thin",
+  "terrain_adaptation": "none",
   "terrain_guard": {
     "allow_water": false,
     "core_probe_radius": 7,

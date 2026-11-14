@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.28`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.29`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,14 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.28.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.29.jar`.
+
+---
+
+## Perbaikan Beardifier Pohon Raksasa & Filter Tanah Biome `elder_bough_grove` (`v0.5.0-beta.29`)
+
+- **Hapus Platform Rumput/Tanah Melayang (`elder_great_tree` & `canopy_treetop_bastion`)**: Mengubah `"terrain_adaptation"` menjadi `"none"` pada [elder_great_tree.json](src/main/resources/data/canopycavern/worldgen/structure/elder_great_tree.json) dan [canopy_treetop_bastion.json](src/main/resources/data/canopycavern/worldgen/structure/canopy_treetop_bastion.json) agar `Beardifier` tidak membuat lempengan tanah/rumput persegi melayang di bawah *piece* bertingkat (`relativeY=18/38`) maupun jembatan gantung tinggi, sementara jangkar akar tetap turun alami ke permukaan tanah.
+- **Filter Pohon & Grounding `elder_bough_grove` (Kompatibel Tag `26.3`)**: Memperluas `placed_feature/trees_elder_bough_grove` untuk menerima `#minecraft:dirt` dan `#minecraft:grass_blocks`, memperbarui `TreeGroundingHelper` (`BlockTags.GRASS_BLOCKS`, `BlockTags.MOSS_BLOCKS`, `Blocks.MUD`), serta memperlebar probe diagonal `ElderTreePlan` menjadi `(±11, 0, ±11)` agar pas mencakup pendaratan akar utama.
 
 ---
 

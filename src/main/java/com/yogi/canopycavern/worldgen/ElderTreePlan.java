@@ -52,10 +52,10 @@ public final class ElderTreePlan {
 		new Vec3i(-12, 0, 0),
 		new Vec3i(0, 0, 12),
 		new Vec3i(0, 0, -12),
-		new Vec3i(8, 0, 8),
-		new Vec3i(8, 0, -8),
-		new Vec3i(-8, 0, 8),
-		new Vec3i(-8, 0, -8)
+		new Vec3i(11, 0, 11),
+		new Vec3i(11, 0, -11),
+		new Vec3i(-11, 0, 11),
+		new Vec3i(-11, 0, -11)
 	);
 
 	private ElderTreePlan() {

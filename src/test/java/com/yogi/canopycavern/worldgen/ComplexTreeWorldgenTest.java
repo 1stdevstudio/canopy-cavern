@@ -25,6 +25,8 @@ class ComplexTreeWorldgenTest {
 	void elderTreePlanAlignsVerticalShaftAxesAcrossAllRotations() {
 		BlockPos treeCenter = new BlockPos(120, 72, -64);
 		assertEquals(9, ElderTreePlan.terrainProbes().size());
+		assertTrue(ElderTreePlan.terrainProbes().stream().anyMatch(v -> v.getX() == 11 && v.getZ() == 11));
+		assertTrue(ElderTreePlan.terrainProbes().stream().anyMatch(v -> v.getX() == -11 && v.getZ() == -11));
 
 		for (ElderTreePlan.PieceSpec piece : ElderTreePlan.PIECES) {
 			assertTrue(piece.fitsVanillaTemplateLimit(), piece.templateId() + " must fit 48x48x48");

@@ -211,6 +211,9 @@ class BiomeAndStructureDataTest {
 			"surface_structures",
 			"canopycavern:chests/canopy_bastion"
 		);
+		JsonObject bastion = readJson("data/canopycavern/worldgen/structure/canopy_treetop_bastion.json");
+		assertEquals("none", bastion.get("terrain_adaptation").getAsString(),
+			"Elevated sky-bridge bastions must disable beardifier so Beardifier does not create floating dirt mounds");
 		assertStructureBundle(
 			"echoing_mineshaft_hub",
 			"echoing_mineshaft_hubs",
@@ -312,6 +315,8 @@ class BiomeAndStructureDataTest {
 		assertEquals("canopycavern:elder_great_tree", structure.get("type").getAsString());
 		assertEquals("surface_structures", structure.get("step").getAsString());
 		assertEquals("#canopycavern:has_structure/elder_great_tree", structure.get("biomes").getAsString());
+		assertEquals("none", structure.get("terrain_adaptation").getAsString(),
+			"Multi-tier Elder Great Tree must disable beardifier so stacked pieces do not spawn floating terrain plates");
 
 		JsonObject structureSet = readJson("data/canopycavern/worldgen/structure_set/elder_great_tree.json");
 		assertTrue(structureSet.getAsJsonArray("structures").toString().contains("canopycavern:elder_great_tree"));
@@ -366,7 +371,10 @@ class BiomeAndStructureDataTest {
 		readJson("data/canopycavern/worldgen/feature/stilt_canopy_tree.json");
 		readJson("data/canopycavern/worldgen/feature/elder_fallen_log.json");
 		readJson("data/canopycavern/worldgen/feature/trees_elder_bough_grove.json");
-		readJson("data/canopycavern/worldgen/placed_feature/trees_elder_bough_grove.json");
+		JsonObject groveTrees = readJson("data/canopycavern/worldgen/placed_feature/trees_elder_bough_grove.json");
+		String grovePlacementRaw = groveTrees.getAsJsonArray("placement").toString();
+		assertTrue(grovePlacementRaw.contains("minecraft:dirt"), "trees_elder_bough_grove must allow #minecraft:dirt");
+		assertTrue(grovePlacementRaw.contains("minecraft:grass_blocks"), "trees_elder_bough_grove must allow #minecraft:grass_blocks");
 	}
 
 	private static JsonObject readJson(String resourcePath) {
