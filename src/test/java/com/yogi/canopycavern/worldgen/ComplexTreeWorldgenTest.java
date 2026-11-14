@@ -121,4 +121,15 @@ class ComplexTreeWorldgenTest {
 		assertEquals(82, grove.humidityPercent());
 		assertTrue(grove.humidityPercent() > plains.humidityPercent());
 	}
+
+	@Test
+	void doubleTrunkGroundingCoversAllFourBaseColumns() {
+		assertEquals(List.of(BlockPos.ZERO), com.yogi.canopycavern.worldgen.tree.TreeGroundingHelper.footprintOffsets(false));
+		List<BlockPos> doubled = com.yogi.canopycavern.worldgen.tree.TreeGroundingHelper.footprintOffsets(true);
+		assertEquals(4, doubled.size());
+		assertTrue(doubled.contains(new BlockPos(0, 0, 0)));
+		assertTrue(doubled.contains(new BlockPos(1, 0, 0)));
+		assertTrue(doubled.contains(new BlockPos(0, 0, 1)));
+		assertTrue(doubled.contains(new BlockPos(1, 0, 1)));
+	}
 }

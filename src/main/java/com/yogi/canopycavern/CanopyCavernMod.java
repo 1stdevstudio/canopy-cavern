@@ -11,6 +11,7 @@ import com.yogi.canopycavern.world.spawn.SanctuaryCommands;
 import com.yogi.canopycavern.world.spawn.SanctuaryPlacementService;
 import com.yogi.canopycavern.world.spawn.SpawnSanctuaryProtection;
 import com.yogi.canopycavern.worldgen.ElderTreeStructure;
+import com.yogi.canopycavern.worldgen.SurfaceJigsawStructure;
 import com.yogi.canopycavern.worldgen.WorldOverhaulRegistry;
 import com.yogi.canopycavern.worldgen.MiningCityStructure;
 import com.yogi.canopycavern.worldgen.tree.CanopyTreePlacers;
@@ -47,6 +48,7 @@ public final class CanopyCavernMod implements ModInitializer {
 		CanopyTreePlacers.register();
 		MiningCityStructure.register();
 		ElderTreeStructure.register();
+		SurfaceJigsawStructure.register();
 		SanctuaryPlacementService.registerLifecycle();
 		SpawnSanctuaryProtection.registerEvents();
 		SanctuaryCommands.register();

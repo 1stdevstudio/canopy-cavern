@@ -3,7 +3,18 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:peak_citadel/house",
+        "location": "canopycavern:peak_citadel/villa_l_wing",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid"
+      },
+      "weight": 4
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:peak_citadel/rotunda_observatory",
         "processors": {
           "processors": []
         },
@@ -14,7 +25,29 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:peak_citadel/forge",
+        "location": "canopycavern:peak_citadel/market_t_hall",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:peak_citadel/foundry_bastion",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:peak_citadel/cruciform_guildhall",
         "processors": {
           "processors": []
         },
@@ -25,18 +58,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:peak_citadel/library",
-        "processors": {
-          "processors": []
-        },
-        "projection": "rigid"
-      },
-      "weight": 2
-    },
-    {
-      "element": {
-        "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:peak_citadel/guardhouse",
+        "location": "canopycavern:peak_citadel/side_garden",
         "processors": {
           "processors": []
         },

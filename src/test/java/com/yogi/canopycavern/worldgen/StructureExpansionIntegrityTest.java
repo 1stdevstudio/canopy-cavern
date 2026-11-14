@@ -34,32 +34,76 @@ class StructureExpansionIntegrityTest {
     private static final String UNDERGROUND = "underground_hollow_village";
     private static final String TREASURY = "canopycavern:chests/underground_village_treasury";
 
-    private static String templateName(String id) {
-        if (id.equals(UNDERGROUND)) return "cavern_city";
-        if (id.equals(ABANDONED)) return "ruins";
+    private static final List<String> SURFACE_GUARDED_STRUCTURES = List.of(
+        "jungle_canopy_hamlet", "mangrove_marsh_village", "badlands_pueblo",
+        "cherry_grove_hamlet", "mushroom_island_outpost", "frozen_ridge_village",
+        "abandoned_mega_village", "frontier_pillager_outpost",
+        "canopy_village", "crystal_citadel", "peak_citadel",
+        "peak_watchtower_ruin", "canopy_treetop_bastion"
+    );
 
-        return NEW_VILLAGES.contains(id) ? "hillside_village" : "center";
+    private static String startTemplateName(String id) {
+        return switch (id) {
+            case UNDERGROUND -> "cavern_city";
+            case ABANDONED -> "belfry_plaza";
+            case "frontier_pillager_outpost" -> "watchtower_keep";
+            default -> "town_center";
+        };
+    }
+
+    private static List<String> moduleTemplates(String id) {
+        if (id.equals(UNDERGROUND)) {
+            return List.of("cavern_city");
+        }
+        if (id.equals(ABANDONED)) {
+            return List.of(
+                "belfry_plaza",
+                "ruined_street_north", "ruined_street_east", "ruined_street_south", "ruined_street_west",
+                "ruined_hall_north", "ruined_hall_east", "ruined_hall_south", "ruined_hall_west"
+            );
+        }
+        if (id.equals("frontier_pillager_outpost")) {
+            return List.of(
+                "watchtower_keep",
+                "trail_cage", "trail_tent_east", "trail_gate", "trail_tent_west",
+                "golem_cage", "tent_west", "tent_east", "gate_palisade"
+            );
+        }
+        return List.of(
+            "town_center", "side_garden",
+            "street_boulevard_dual", "street_boulevard_single",
+            "street_turn_left", "street_turn_right",
+            "street_t_junction", "street_crossroad_plaza", "street_diagonal_zig",
+            "terminator_gate", "terminator_roundabout",
+            "villa_l_wing", "rotunda_observatory", "market_t_hall",
+            "foundry_bastion", "cruciform_guildhall"
+        );
     }
 
     @Test
     void surfaceVillagesUseShapedRoofsAtDifferentHeights() throws Exception {
         for (String id : NEW_VILLAGES) {
             if (id.equals(UNDERGROUND)) continue;
-            var data = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/" + templateName(id) + ".nbt"));
-            List<?> palette = list(data, "palette");
-            Map<Integer, Integer> roofLayers = new HashMap<>();
-            for (Object entry : list(data, "blocks")) {
-                var block = map(entry);
-                String state = (String) map(palette.get((int) block.get("state"))).get("id");
-                int y = (int) list(block, "pos").get(1);
-                if (!state.equals("minecraft:air") && y >= 6 && y <= 10) {
-                    roofLayers.merge(y, 1, Integer::sum);
+            var centerData = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/town_center.nbt"));
+            assertTrue((int) list(centerData, "size").get(0) <= 21, id + " town_center width budget");
+            assertTrue((int) list(centerData, "size").get(2) <= 21, id + " town_center depth budget");
+            for (String role : List.of("villa_l_wing", "rotunda_observatory", "market_t_hall", "foundry_bastion", "cruciform_guildhall")) {
+                var data = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/" + role + ".nbt"));
+                List<?> palette = list(data, "palette");
+                Map<Integer, Integer> roofLayers = new HashMap<>();
+                for (Object entry : list(data, "blocks")) {
+                    var block = map(entry);
+                    String state = (String) map(palette.get((int) block.get("state"))).get("id");
+                    int y = (int) list(block, "pos").get(1);
+                    if (!state.equals("minecraft:air") && !state.equals("minecraft:structure_void") && y >= 5 && y <= 20) {
+                        roofLayers.merge(y, 1, Integer::sum);
+                    }
                 }
+                assertTrue(new HashSet<>(roofLayers.values()).size() >= 3,
+                    id + "/" + role + " needs a varied silhouette across roof levels");
+                assertTrue((int) list(data, "size").get(0) >= 15, id + "/" + role);
+                assertTrue((int) list(data, "size").get(2) >= 15, id + "/" + role);
             }
-            assertTrue(new HashSet<>(roofLayers.values()).size() >= 3,
-                id + " needs a varied silhouette across roof levels");
-            assertEquals(47, list(data, "size").get(0), id);
-            assertEquals(47, list(data, "size").get(2), id);
         }
     }
 
@@ -84,10 +128,8 @@ class StructureExpansionIntegrityTest {
             JsonObject structureSet = json(ROOT.resolve("canopycavern/worldgen/structure_set/" + id + ".json"));
             JsonObject tag = json(ROOT.resolve("canopycavern/tags/worldgen/biome/has_structure/" + id + ".json"));
             JsonObject pool = json(ROOT.resolve("canopycavern/worldgen/template_pool/" + id + "/start.json"));
-            assertEquals("minecraft:jigsaw", structure.get("type").getAsString(), id);
             assertEquals("#canopycavern:has_structure/" + id, structure.get("biomes").getAsString(), id);
             assertEquals("canopycavern:" + id + "/start", structure.get("start_pool").getAsString(), id);
-            assertEquals(1, structure.get("size").getAsInt(), id + " must not rely on nonexistent jigsaw attachments");
             assertTrue(tag.getAsJsonArray("values").size() >= 1, id);
             assertEquals("minecraft:random_spread", structureSet.getAsJsonObject("placement").get("type").getAsString(), id);
             JsonObject placement = structureSet.getAsJsonObject("placement");
@@ -97,69 +139,101 @@ class StructureExpansionIntegrityTest {
                 structureSet.getAsJsonArray("structures").get(0).getAsJsonObject().get("structure").getAsString(), id);
             JsonArray elements = pool.getAsJsonArray("elements");
             assertEquals(1, elements.size(), id);
-            assertEquals("canopycavern:" + id + "/" + templateName(id),
+            assertEquals("canopycavern:" + id + "/" + startTemplateName(id),
                 elements.get(0).getAsJsonObject().getAsJsonObject("element").get("location").getAsString(), id);
-            if (id.equals("underground_hollow_village")) {
+            if (id.equals(UNDERGROUND)) {
+                assertEquals("minecraft:jigsaw", structure.get("type").getAsString(), id);
+                assertEquals(1, structure.get("size").getAsInt(), id);
                 assertEquals("underground_structures", structure.get("step").getAsString());
                 assertEquals("encapsulate", structure.get("terrain_adaptation").getAsString());
             } else {
+                assertEquals("canopycavern:surface_jigsaw", structure.get("type").getAsString(), id);
+                assertEquals(id.equals(ABANDONED) ? 3 : 7, structure.get("size").getAsInt(), id);
                 assertEquals("surface_structures", structure.get("step").getAsString());
+                assertNotEquals("beard_box", structure.get("terrain_adaptation").getAsString(), id);
+                assertTrue(structure.has("terrain_guard"), id + " must configure terrain_guard");
             }
+        }
+    }
+
+    @Test
+    void noSurfaceStructureUsesBeardBoxAndAllLandSurfaceStructuresUseSurfaceJigsaw() throws Exception {
+        Path structureDir = ROOT.resolve("canopycavern/worldgen/structure");
+        try (Stream<Path> files = Files.list(structureDir)) {
+            for (Path file : files.filter(p -> p.toString().endsWith(".json")).toList()) {
+                JsonObject obj = json(file);
+                if (obj.has("terrain_adaptation")) {
+                    assertNotEquals("beard_box", obj.get("terrain_adaptation").getAsString(),
+                        file.getFileName() + " must not extrude beard_box cliff shelves");
+                }
+            }
+        }
+        for (String id : SURFACE_GUARDED_STRUCTURES) {
+            JsonObject obj = json(structureDir.resolve(id + ".json"));
+            assertEquals("canopycavern:surface_jigsaw", obj.get("type").getAsString(), id);
+            assertTrue(obj.has("terrain_guard"), id);
         }
     }
 
     @Test
     void allNewTemplatesAreWellFormedAndVillagersAndLootMatchPurpose() throws Exception {
         for (String id : allNewStructures()) {
-            Path path = ROOT.resolve("canopycavern/structure/" + id + "/" + templateName(id) + ".nbt");
-            Map<String,Object> nbt = readNbt(path);
-            assertEquals(5023, nbt.get("DataVersion"), id);
-            List<?> size = list(nbt, "size");
-            int width = (int) size.get(0), height = (int) size.get(1), depth = (int) size.get(2);
-            int maxHorizontal = id.equals(UNDERGROUND) ? 80 : 48;
-            assertTrue(width <= maxHorizontal && height <= 48 && depth <= maxHorizontal, id + " exceeds template budget");
-            if (id.equals(UNDERGROUND)) assertTrue(width >= 65 && depth >= 65, "city needs room for distinct districts");
-
-            List<?> palette = list(nbt, "palette");
-            List<?> blocks = list(nbt, "blocks");
-            List<?> entities = list(nbt, "entities");
-            assertFalse(blocks.isEmpty(), id);
-            assertFalse(palette.isEmpty(), id);
-            Set<String> uniquePositions = new HashSet<>();
             int chestCount = 0;
             int treasuryCount = 0;
             int beds = 0;
-            for (Object blockObject : blocks) {
-                Map<String,Object> block = map(blockObject);
-                List<?> pos = list(block, "pos");
-                int x = (int) pos.get(0), y = (int) pos.get(1), z = (int) pos.get(2);
-                assertTrue(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth, id + ": " + pos);
-                assertTrue(uniquePositions.add(x + ":" + y + ":" + z), id + " duplicate block at " + pos);
-                int state = (int) block.get("state");
-                assertTrue(state >= 0 && state < palette.size(), id + ": invalid palette state " + state);
-                String blockId = String.valueOf(map(palette.get(state)).get("id"));
-                if (blockId.equals("minecraft:chest")) {
-                    chestCount++;
-                    Object loot = map(block.get("nbt")).get("LootTable");
-                    if (id.equals(UNDERGROUND) && TREASURY.equals(loot)) {
-                        treasuryCount++;
-                    } else {
-                        assertEquals(id.equals(ABANDONED) ? "canopycavern:chests/abandoned_mega_village"
-                            : "canopycavern:chests/village_supply", loot, id);
+            long villagers = 0;
+            long guardians = 0;
+            int entityCount = 0;
+            for (String template : moduleTemplates(id)) {
+                Path path = ROOT.resolve("canopycavern/structure/" + id + "/" + template + ".nbt");
+                Map<String,Object> nbt = readNbt(path);
+                assertEquals(5023, nbt.get("DataVersion"), id + "/" + template);
+                List<?> size = list(nbt, "size");
+                int width = (int) size.get(0), height = (int) size.get(1), depth = (int) size.get(2);
+                int maxHorizontal = id.equals(UNDERGROUND) ? 80 : 21;
+                assertTrue(width <= maxHorizontal && height <= 48 && depth <= maxHorizontal,
+                    id + "/" + template + " exceeds template budget");
+                if (id.equals(UNDERGROUND)) assertTrue(width >= 65 && depth >= 65, "city needs room for distinct districts");
+
+                List<?> palette = list(nbt, "palette");
+                List<?> blocks = list(nbt, "blocks");
+                List<?> entities = list(nbt, "entities");
+                assertFalse(blocks.isEmpty(), id + "/" + template);
+                assertFalse(palette.isEmpty(), id + "/" + template);
+                Set<String> uniquePositions = new HashSet<>();
+                for (Object blockObject : blocks) {
+                    Map<String,Object> block = map(blockObject);
+                    List<?> pos = list(block, "pos");
+                    int x = (int) pos.get(0), y = (int) pos.get(1), z = (int) pos.get(2);
+                    assertTrue(x >= 0 && y >= 0 && z >= 0 && x < width && y < height && z < depth, id + ": " + pos);
+                    assertTrue(uniquePositions.add(x + ":" + y + ":" + z), id + " duplicate block at " + pos);
+                    int state = (int) block.get("state");
+                    assertTrue(state >= 0 && state < palette.size(), id + ": invalid palette state " + state);
+                    String blockId = String.valueOf(map(palette.get(state)).get("id"));
+                    if (blockId.equals("minecraft:chest")) {
+                        chestCount++;
+                        Object loot = map(block.get("nbt")).get("LootTable");
+                        if (id.equals(UNDERGROUND) && TREASURY.equals(loot)) {
+                            treasuryCount++;
+                        } else {
+                            assertEquals(id.equals(ABANDONED) ? "canopycavern:chests/abandoned_mega_village"
+                                : "canopycavern:chests/village_supply", loot, id);
+                        }
                     }
+                    if (blockId.endsWith("_bed")) beds++;
                 }
-                if (blockId.endsWith("_bed")) beds++;
+                entityCount += entities.size();
+                villagers += entities.stream().filter(e ->
+                    "minecraft:villager".equals(map(map(e).get("nbt")).get("id"))).count();
+                guardians += entities.stream().filter(e ->
+                    "canopycavern:village_sentinel".equals(map(map(e).get("nbt")).get("id"))
+                    || "minecraft:iron_golem".equals(map(map(e).get("nbt")).get("id"))).count();
             }
             if (id.equals(UNDERGROUND)) assertEquals(1, treasuryCount);
-            long villagers = entities.stream().filter(e ->
-                "minecraft:villager".equals(map(map(e).get("nbt")).get("id"))).count();
-            long guardians = entities.stream().filter(e ->
-                "canopycavern:village_sentinel".equals(map(map(e).get("nbt")).get("id"))
-                || "minecraft:iron_golem".equals(map(map(e).get("nbt")).get("id"))).count();
             if (id.equals(ABANDONED)) {
                 assertEquals(0, villagers, "Abandoned village must not spawn living villagers");
-                assertTrue(chestCount >= 2, "Abandoned village needs its exploration reward");
-                assertTrue(entities.size() >= 2, "Abandoned village needs some threat");
+                assertTrue(chestCount >= 4, "Abandoned village needs its exploration reward");
+                assertTrue(entityCount >= 2, "Abandoned village needs some threat");
             } else {
                 assertTrue(villagers >= 4, id + " needs inhabitants");
                 assertTrue(guardians >= 1, id + " needs protection");
@@ -200,61 +274,63 @@ class StructureExpansionIntegrityTest {
     @Test
     void villageGeometryDoesNotBreakBedsDoorsLightsOrSpawnPoints() throws Exception {
         for (String id : allNewStructures()) {
-            Map<String,Object> data = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/" + templateName(id) + ".nbt"));
-            List<?> palette = list(data, "palette");
-            Map<String,String> blocks = new HashMap<>();
-            Map<String,Map<String,Object>> properties = new HashMap<>();
-            for (Object obj : list(data, "blocks")) {
-                Map<String,Object> b = map(obj);
-                List<?> p = list(b, "pos");
-                String at = p.get(0) + ":" + p.get(1) + ":" + p.get(2);
-                Map<String,Object> entry = map(palette.get((int)b.get("state")));
-                blocks.put(at, String.valueOf(entry.get("id")));
-                properties.put(at, entry.containsKey("properties") ? map(entry.get("properties")) : Map.of());
-            }
-            for (Object obj : list(data, "blocks")) {
-                Map<String,Object> block = map(obj);
-                List<?> pos = list(block, "pos");
-                int x = (int)pos.get(0), y = (int)pos.get(1), z = (int)pos.get(2);
-                String at = x + ":" + y + ":" + z;
-                String blockId = blocks.get(at);
-                Map<String,Object> props = properties.get(at);
-                if (blockId.endsWith("_door")) {
-                    String otherPos = x + ":" + (y + ("lower".equals(props.get("half")) ? 1 : -1)) + ":" + z;
-                    assertEquals(blockId, blocks.get(otherPos), id + " has half of a broken two-block door at " + at);
-                    assertEquals("lower".equals(props.get("half")) ? "upper" : "lower",
-                        properties.getOrDefault(otherPos, Map.of()).get("half"), id + " has invalid door half " + at);
+            for (String template : moduleTemplates(id)) {
+                Map<String,Object> data = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/" + template + ".nbt"));
+                List<?> palette = list(data, "palette");
+                Map<String,String> blocks = new HashMap<>();
+                Map<String,Map<String,Object>> properties = new HashMap<>();
+                for (Object obj : list(data, "blocks")) {
+                    Map<String,Object> b = map(obj);
+                    List<?> p = list(b, "pos");
+                    String at = p.get(0) + ":" + p.get(1) + ":" + p.get(2);
+                    Map<String,Object> entry = map(palette.get((int)b.get("state")));
+                    blocks.put(at, String.valueOf(entry.get("id")));
+                    properties.put(at, entry.containsKey("properties") ? map(entry.get("properties")) : Map.of());
                 }
-                if (blockId.endsWith("_bed")) {
-                    assertTrue(props.containsKey("part"), id + " bed missing part at " + at);
-                    String facing = String.valueOf(props.get("facing"));
-                    int offsetX = "east".equals(facing) ? 1 : "west".equals(facing) ? -1 : 0;
-                    int offsetZ = "south".equals(facing) ? 1 : "north".equals(facing) ? -1 : 0;
-                    int sign = "foot".equals(props.get("part")) ? 1 : -1;
-                    String otherPos = (x + sign * offsetX) + ":" + y + ":" + (z + sign * offsetZ);
-                    assertEquals(blockId, blocks.get(otherPos), id + " half of the bed missing at " + at);
-                    assertEquals("foot".equals(props.get("part")) ? "head" : "foot",
-                        properties.getOrDefault(otherPos, Map.of()).get("part"), id + " bed pairing invalid at " + at);
+                for (Object obj : list(data, "blocks")) {
+                    Map<String,Object> block = map(obj);
+                    List<?> pos = list(block, "pos");
+                    int x = (int)pos.get(0), y = (int)pos.get(1), z = (int)pos.get(2);
+                    String at = x + ":" + y + ":" + z;
+                    String blockId = blocks.get(at);
+                    Map<String,Object> props = properties.get(at);
+                    if (blockId.endsWith("_door")) {
+                        String otherPos = x + ":" + (y + ("lower".equals(props.get("half")) ? 1 : -1)) + ":" + z;
+                        assertEquals(blockId, blocks.get(otherPos), id + " has half of a broken two-block door at " + at);
+                        assertEquals("lower".equals(props.get("half")) ? "upper" : "lower",
+                            properties.getOrDefault(otherPos, Map.of()).get("half"), id + " has invalid door half " + at);
+                    }
+                    if (blockId.endsWith("_bed")) {
+                        assertTrue(props.containsKey("part"), id + " bed missing part at " + at);
+                        String facing = String.valueOf(props.get("facing"));
+                        int offsetX = "east".equals(facing) ? 1 : "west".equals(facing) ? -1 : 0;
+                        int offsetZ = "south".equals(facing) ? 1 : "north".equals(facing) ? -1 : 0;
+                        int sign = "foot".equals(props.get("part")) ? 1 : -1;
+                        String otherPos = (x + sign * offsetX) + ":" + y + ":" + (z + sign * offsetZ);
+                        assertEquals(blockId, blocks.get(otherPos), id + " half of the bed missing at " + at);
+                        assertEquals("foot".equals(props.get("part")) ? "head" : "foot",
+                            properties.getOrDefault(otherPos, Map.of()).get("part"), id + " bed pairing invalid at " + at);
+                    }
+                    if (blockId.equals("minecraft:lantern") && "true".equals(props.get("hanging"))) {
+                        String above = blocks.get(x + ":" + (y+1) + ":" + z);
+                        assertNotNull(above, id + " hanging lantern has no roof at " + at);
+                        assertFalse(above.equals("minecraft:air"), id + " hanging lantern falls without solid support at " + at);
+                    }
+                    if (blockId.equals("minecraft:bell") && "floor".equals(props.get("attachment"))) {
+                        String below = blocks.get(x + ":" + (y-1) + ":" + z);
+                        assertNotNull(below, id + " bell has no floor support");
+                        assertFalse(below.equals("minecraft:air") || below.equals("minecraft:water")
+                            || below.equals("minecraft:lava"), id + " bell is supported by liquid/air");
+                    }
                 }
-                if (blockId.equals("minecraft:lantern") && "true".equals(props.get("hanging"))) {
-                    String above = blocks.get(x + ":" + (y+1) + ":" + z);
-                    assertNotNull(above, id + " hanging lantern has no roof at " + at);
-                    assertFalse(above.equals("minecraft:air"), id + " hanging lantern falls without solid support at " + at);
+                for (Object obj : list(data, "entities")) {
+                    Map<String,Object> e = map(obj);
+                    List<?> blockPos = list(e, "blockPos");
+                    int x = (int)blockPos.get(0), y = (int)blockPos.get(1), z = (int)blockPos.get(2);
+                    String idAt = blocks.get(x + ":" + y + ":" + z);
+                    assertFalse("minecraft:stone_bricks".equals(idAt) || "minecraft:deepslate_bricks".equals(idAt),
+                        id + "/" + template + " spawned an entity intersecting solid walls at " + blockPos);
                 }
-                if (blockId.equals("minecraft:bell") && "floor".equals(props.get("attachment"))) {
-                    String below = blocks.get(x + ":" + (y-1) + ":" + z);
-                    assertNotNull(below, id + " bell has no floor support");
-                    assertFalse(below.equals("minecraft:air") || below.equals("minecraft:water")
-                        || below.equals("minecraft:lava"), id + " bell is supported by liquid/air");
-                }
-            }
-            for (Object obj : list(data, "entities")) {
-                Map<String,Object> e = map(obj);
-                List<?> blockPos = list(e, "blockPos");
-                int x = (int)blockPos.get(0), y = (int)blockPos.get(1), z = (int)blockPos.get(2);
-                String idAt = blocks.get(x + ":" + y + ":" + z);
-                assertFalse("minecraft:stone_bricks".equals(idAt) || "minecraft:deepslate_bricks".equals(idAt),
-                    id + " spawned an entity intersecting solid walls at " + blockPos);
             }
         }
     }
@@ -267,50 +343,56 @@ class StructureExpansionIntegrityTest {
         JsonObject set = json(ROOT.resolve("canopycavern/worldgen/structure_set/" + id + ".json"));
         JsonObject tag = json(ROOT.resolve("canopycavern/tags/worldgen/biome/has_structure/" + id + ".json"));
         JsonObject pool = json(ROOT.resolve("canopycavern/worldgen/template_pool/" + id + "/start.json"));
-        assertEquals("minecraft:jigsaw", def.get("type").getAsString());
+        assertEquals("canopycavern:surface_jigsaw", def.get("type").getAsString());
+        assertEquals("beard_thin", def.get("terrain_adaptation").getAsString());
         assertEquals("surface_structures", def.get("step").getAsString());
         assertEquals("canopycavern:" + id + "/start", def.get("start_pool").getAsString());
+        assertTrue(def.has("terrain_guard"));
         assertTrue(set.getAsJsonArray("structures").toString().contains("canopycavern:" + id));
-        assertEquals("canopycavern:" + id + "/stockade",
+        assertEquals("canopycavern:" + id + "/watchtower_keep",
             pool.getAsJsonArray("elements").get(0).getAsJsonObject()
                 .getAsJsonObject("element").get("location").getAsString());
         assertTrue(tag.getAsJsonArray("values").size() >= 4);
         assertFalse(Files.exists(ROOT.resolve("minecraft/worldgen/structure/pillager_outpost.json")),
             "Do not overwrite vanilla Pillager Outpost's structure definition");
 
-        Map<String,Object> nbt = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/stockade.nbt"));
-        assertEquals(5023, nbt.get("DataVersion"));
-        assertEquals(List.of(47, 24, 47), list(nbt, "size"));
-        List<?> palette = list(nbt, "palette"), blocks = list(nbt, "blocks"), entities = list(nbt, "entities");
-        assertFalse(blocks.isEmpty());
-        Set<String> locations = new HashSet<>();
         int ladders = 0, ironBars = 0, lootChests = 0, stairs = 0;
-        for (Object o : blocks) {
-            Map<String,Object> block = map(o);
-            List<?> p = list(block, "pos");
-            assertTrue(locations.add(p.get(0) + ":" + p.get(1) + ":" + p.get(2)), "duplicate outpost coordinate");
-            int state = (int)block.get("state");
-            assertTrue(state >= 0 && state < palette.size());
-            String blockId = String.valueOf(map(palette.get(state)).get("id"));
-            if (blockId.equals("minecraft:ladder")) ladders++;
-            if (blockId.endsWith("_stairs")) stairs++;
-            if (blockId.equals("minecraft:iron_bars")) ironBars++;
-            if (blockId.equals("minecraft:chest")) {
-                lootChests++;
-                assertEquals("canopycavern:chests/frontier_pillager_outpost",
-                    map(block.get("nbt")).get("LootTable"));
+        long pillagers = 0, golems = 0, villagers = 0;
+        for (String module : moduleTemplates(id)) {
+            Map<String,Object> nbt = readNbt(ROOT.resolve("canopycavern/structure/" + id + "/" + module + ".nbt"));
+            assertEquals(5023, nbt.get("DataVersion"), module);
+            List<?> size = list(nbt, "size");
+            assertTrue((int) size.get(0) <= 15 && (int) size.get(2) <= 15, module + " must stay compact");
+            List<?> palette = list(nbt, "palette"), blocks = list(nbt, "blocks"), entities = list(nbt, "entities");
+            assertFalse(blocks.isEmpty(), module);
+            Set<String> locations = new HashSet<>();
+            for (Object o : blocks) {
+                Map<String,Object> block = map(o);
+                List<?> p = list(block, "pos");
+                assertTrue(locations.add(p.get(0) + ":" + p.get(1) + ":" + p.get(2)), "duplicate outpost coordinate");
+                int state = (int)block.get("state");
+                assertTrue(state >= 0 && state < palette.size());
+                String blockId = String.valueOf(map(palette.get(state)).get("id"));
+                if (blockId.equals("minecraft:ladder")) ladders++;
+                if (blockId.endsWith("_stairs")) stairs++;
+                if (blockId.equals("minecraft:iron_bars")) ironBars++;
+                if (blockId.equals("minecraft:chest")) {
+                    lootChests++;
+                    assertEquals("canopycavern:chests/frontier_pillager_outpost",
+                        map(block.get("nbt")).get("LootTable"));
+                }
             }
+            pillagers += entities.stream().filter(o ->
+                "minecraft:pillager".equals(map(map(o).get("nbt")).get("id"))).count();
+            golems += entities.stream().filter(o ->
+                "minecraft:iron_golem".equals(map(map(o).get("nbt")).get("id"))).count();
+            villagers += entities.stream().filter(o ->
+                "minecraft:villager".equals(map(map(o).get("nbt")).get("id"))).count();
         }
         assertTrue(stairs >= 100, "Watchtower needs a pitched roof");
         assertTrue(ladders >= 14, "Watchtower needs climbable access");
         assertTrue(ironBars >= 10, "Golem cage should be physically present");
-        assertTrue(lootChests >= 1);
-        long pillagers = entities.stream().filter(o ->
-            "minecraft:pillager".equals(map(map(o).get("nbt")).get("id"))).count();
-        long golems = entities.stream().filter(o ->
-            "minecraft:iron_golem".equals(map(map(o).get("nbt")).get("id"))).count();
-        long villagers = entities.stream().filter(o ->
-            "minecraft:villager".equals(map(map(o).get("nbt")).get("id"))).count();
+        assertTrue(lootChests >= 3);
         assertTrue(pillagers >= 3);
         assertTrue(golems >= 1);
         assertEquals(0, villagers, "This is a hostile Pillager outpost, not a village");

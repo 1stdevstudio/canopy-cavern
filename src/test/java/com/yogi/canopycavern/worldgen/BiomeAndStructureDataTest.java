@@ -227,7 +227,8 @@ class BiomeAndStructureDataTest {
 			JsonObject villageSet = readJson("data/canopycavern/worldgen/structure_set/" + villageId + ".json");
 			assertTrue(villageSet.getAsJsonArray("structures").toString().contains("canopycavern:" + villageId));
 			JsonObject structure = readJson("data/canopycavern/worldgen/structure/" + villageId + ".json");
-			assertEquals("minecraft:jigsaw", structure.get("type").getAsString());
+			String expectedType = "grotto_outpost_town".equals(villageId) ? "minecraft:jigsaw" : "canopycavern:surface_jigsaw";
+			assertEquals(expectedType, structure.get("type").getAsString());
 			assertEquals("canopycavern:" + villageId + "/start", structure.get("start_pool").getAsString());
 
 			String centerPath = "data/canopycavern/structure/" + villageId + "/town_center.nbt";
@@ -236,9 +237,12 @@ class BiomeAndStructureDataTest {
 				rawCenter = gzip.readAllBytes();
 			}
 			String centerAscii = new String(rawCenter, StandardCharsets.ISO_8859_1);
-			assertTrue(centerAscii.contains("canopycavern:common/village_sentinel"), centerPath + " must summon Village Sentinels");
+			boolean isGrotto = "grotto_outpost_town".equals(villageId);
+			String sentinelMarker = isGrotto ? "canopycavern:common/village_sentinel" : "canopycavern:village_sentinel";
+			assertTrue(centerAscii.contains(sentinelMarker), centerPath + " must summon Village Sentinels");
 
-			String guardPath = "data/canopycavern/structure/" + villageId + "/guardhouse.nbt";
+			String hallName = isGrotto ? "guardhouse.nbt" : "foundry_bastion.nbt";
+			String guardPath = "data/canopycavern/structure/" + villageId + "/" + hallName;
 			byte[] rawGuard;
 			try (GZIPInputStream gzip = new GZIPInputStream(new ByteArrayInputStream(readBytes(guardPath)))) {
 				rawGuard = gzip.readAllBytes();
@@ -261,7 +265,8 @@ class BiomeAndStructureDataTest {
 		String expectedLootTable
 	) throws IOException {
 		JsonObject structure = readJson("data/canopycavern/worldgen/structure/" + structureName + ".json");
-		assertEquals("minecraft:jigsaw", structure.get("type").getAsString());
+		String expectedType = "surface_structures".equals(expectedStep) ? "canopycavern:surface_jigsaw" : "minecraft:jigsaw";
+		assertEquals(expectedType, structure.get("type").getAsString());
 		assertEquals(expectedStep, structure.get("step").getAsString());
 		assertEquals("canopycavern:" + structureName + "/start", structure.get("start_pool").getAsString());
 

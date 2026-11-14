@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.26`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.27`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,15 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.26.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.27.jar`.
+
+---
+
+## Perbaikan Tree Grounding & Overhaul Kota Non-Kotak (`v0.5.0-beta.27`)
+
+- **Grounding Pohon `canopycavern:elder_bough_grove`**: `GnarledBoughTrunkPlacer` dan `ArchingRootPlacer` (melalui `TreeGroundingHelper`) membumikan seluruh kolom footprint `2x2` maupun `1x1` serta ekstensi akar hingga mencapai tanah alami, mencegah batang dan `rooted_dirt` mengambang di udara.
+- **Penempatan Medan Permukaan (`SurfaceJigsawStructure` & `SurfaceTerrainHelper`)**: Validasi elevasi dan batas kemiringan/air agar struktur permukaan dan pos terdepan menyatu dengan medan alih-alih membentuk slab rata menggantung di tebing.
+- **Perkotaan Non-Kotak, Megah & Luas di Semua Biome**: Seluruh 6 *biome village* (`jungle_canopy_hamlet`, `mangrove_marsh_village`, `badlands_pueblo`, `cherry_grove_hamlet`, `mushroom_island_outpost`, `frozen_ridge_village`), 3 kota permukaan (`crystal_citadel`, `peak_citadel`, `canopy_village`), serta bangunan utama pada 5 revamp desa vanilla (`plains`, `desert`, `savanna`, `snowy`, `taiga`) kini menggunakan arsitektur kota bercabang (`grand_city_architecture.py`) dengan alun-alun segi delapan, jalan berbelok/bercabang, dan variasi bangunan non-kotak (`villa_l_wing`, `rotunda_observatory`, `market_t_hall`, `foundry_bastion`, `cruciform_guildhall`).
 
 ---
 

@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:mangrove_marsh_village/hillside_village",
+        "location": "canopycavern:mangrove_marsh_village/town_center",
         "processors": {
           "processors": []
         },

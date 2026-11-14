@@ -3,7 +3,18 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:crystal_citadel/terminator",
+        "location": "canopycavern:crystal_citadel/terminator_gate",
+        "processors": {
+          "processors": []
+        },
+        "projection": "terrain_matching"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "canopycavern:crystal_citadel/terminator_roundabout",
         "processors": {
           "processors": []
         },

@@ -1,57 +1,75 @@
-import gzip
-import tempfile
+import json
 import unittest
 from collections import deque
 from pathlib import Path
-from unittest.mock import patch
+
+from generate_abandoned_village import DIRECTIONS, LOOT, VILLAGE_ID
+from generate_vanilla_template_architecture import decode
+from test_biome_village_redesign import nbt_blocks, nbt_entities
+
+DATA = Path(__file__).resolve().parents[2] / "src/main/resources/data/canopycavern"
 
 
 class AbandonedVillageTest(unittest.TestCase):
-    def test_ruins_have_routes_to_reward_chests_and_a_varied_silhouette(self):
-        from generate_abandoned_village import ASSET, LOOT, build_ruins, v3
+    def test_modular_ruins_chest_routes_belfry_and_zombie_villagers(self):
+        struct_dir = DATA / "structure" / VILLAGE_ID
+        self.assertFalse((struct_dir / "ruins.nbt").exists())
 
-        ruins = build_ruins()
-        self.assertEqual((47, 20, 47), (ruins.sx, ruins.sy, ruins.sz))
-        self.assertEqual(
-            ["minecraft:zombie_villager"] * 2,
-            [entity["nbt"]["id"] for entity in ruins.entities],
-        )
-        self.assertTrue(any(y > 15 and "air" not in block
-                            for (_, y, _), (block, _) in ruins.grid.items()))
-        self.assertGreater(sum(kind.endswith("_stairs") for kind, _ in ruins.grid.values()), 20)
+        cfg = json.loads((DATA / "worldgen/structure" / f"{VILLAGE_ID}.json").read_text())
+        self.assertEqual("canopycavern:surface_jigsaw", cfg["type"])
+        self.assertEqual("beard_thin", cfg["terrain_adaptation"])
+        self.assertGreaterEqual(cfg["terrain_guard"]["min_rigid_pieces"], 4)
 
-        def block(x, y, z):
-            return ruins.grid.get((x, y, z), ("minecraft:structure_void", ()))[0]
+        belfry_nbt = decode((struct_dir / "belfry_plaza.nbt").read_bytes())
+        self.assertEqual([13, 20, 13], [v.value for v in belfry_nbt["size"].value])
+        belfry_grid = nbt_blocks(belfry_nbt)
+        max_y = max(y for (_, y, _), (b, _, _) in belfry_grid.items() if b not in ("minecraft:air", "minecraft:structure_void"))
+        self.assertGreaterEqual(max_y, 16)
+        self.assertIn("minecraft:bell", [b for b, _, _ in belfry_grid.values()])
 
-        def adjacent(x, z):
-            return ((x + 1, z), (x - 1, z), (x, z + 1), (x, z - 1))
+        all_entities = list(nbt_entities(belfry_nbt))
+        chests = 0
+        blocks_seen = set()
 
-        def can_walk(x, z):
-            return block(x, 0, z) not in ("minecraft:structure_void", "minecraft:air") and all(
-                block(x, y, z) in ("minecraft:air", "minecraft:cobweb")
-                or block(x, y, z).endswith("_door") for y in (1, 2)
+        for d in DIRECTIONS:
+            self.assertTrue((struct_dir / f"ruined_street_{d}.nbt").is_file())
+            hall_nbt = decode((struct_dir / f"ruined_hall_{d}.nbt").read_bytes())
+            self.assertEqual([11, 11, 11], [v.value for v in hall_nbt["size"].value])
+            grid = nbt_blocks(hall_nbt)
+            all_entities.extend(nbt_entities(hall_nbt))
+            blocks_seen |= {b for b, _, _ in grid.values()}
+
+            hall_chests = [pos for pos, (b, _, be) in grid.items() if b == "minecraft:chest" and be and be.get("LootTable") == LOOT]
+            self.assertEqual(1, len(hall_chests))
+            chests += len(hall_chests)
+            cx, cy, cz = hall_chests[0]
+
+            # BFS from front doorstep (5, 1, 0) to adjacent tile before chest (7, 1, 8)
+            seen = {(5, 1, 0)}
+            q = deque([(5, 1, 0)])
+            while q:
+                x, y, z = q.popleft()
+                for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    nxt = (x + dx, y, z + dz)
+                    if nxt in seen or not (0 <= nxt[0] < 11 and 0 <= nxt[2] < 11):
+                        continue
+                    bid = grid.get(nxt, ("minecraft:structure_void", {}, None))[0]
+                    if bid in ("minecraft:air", "minecraft:structure_void", "minecraft:dark_oak_door"):
+                        seen.add(nxt)
+                        q.append(nxt)
+            self.assertTrue(
+                any((cx + dx, cy, cz + dz) in seen for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))),
+                f"chest unreachable in ruined_hall_{d}",
             )
 
-        seen = {(23, 0)}
-        queue = deque(seen)
-        self.assertTrue(can_walk(*queue[0]))
-        while queue:
-            for candidate in adjacent(*queue.popleft()):
-                if candidate not in seen and can_walk(*candidate):
-                    seen.add(candidate)
-                    queue.append(candidate)
-        for exit_cell in ((23, 46), (0, 23), (46, 23)):
-            self.assertIn(exit_cell, seen)
+        for required in ("minecraft:mossy_stone_bricks", "minecraft:cracked_stone_bricks", "minecraft:cobweb", "minecraft:dark_oak_door", "minecraft:iron_bars", "minecraft:dark_oak_stairs"):
+            self.assertIn(required, blocks_seen)
+        self.assertGreaterEqual(chests, 4)
 
-        chests = [(x, y, z) for (x, y, z), data in ruins.block_nbts.items()
-                  if data.get("LootTable") == LOOT]
-        self.assertEqual(4, len(chests))
-        for x, y, z in chests:
-            self.assertEqual(1, y)
-            self.assertTrue(any(pos in seen for pos in adjacent(x, z)))
+        entity_ids = [e["id"] for e in all_entities]
+        self.assertEqual(0, entity_ids.count("minecraft:villager"))
+        self.assertGreaterEqual(entity_ids.count("minecraft:zombie_villager"), 2)
 
-        original = Path(v3.STRUCT_DIR) / ASSET
-        with tempfile.TemporaryDirectory() as folder, patch.object(v3, "STRUCT_DIR", Path(folder)):
-            ruins.save(ASSET)
-            self.assertEqual(gzip.decompress(original.read_bytes()),
-                             gzip.decompress((Path(folder) / ASSET).read_bytes()))
+
+if __name__ == "__main__":
+    unittest.main()

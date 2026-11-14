@@ -1,123 +1,227 @@
-"""Generate the ruined Abandoned Mega Village while retaining the legacy center template."""
+"""Generate modular terrain-conforming abandoned mega village templates and worldgen data."""
 
 from uuid import NAMESPACE_URL, uuid5
 
 from generate_v04_ocean_and_villages import V4StructureBuilder, v3
 
-ASSET = "abandoned_mega_village/ruins.nbt"
-LOOT = "canopycavern:chests/abandoned_mega_village"
+VILLAGE_ID = "abandoned_mega_village"
+LOOT = f"canopycavern:chests/{VILLAGE_ID}"
 AIR = "minecraft:air"
-MOSS = "minecraft:mossy_stone_bricks"
-CRACKED = "minecraft:cracked_stone_bricks"
-STONE = "minecraft:stone_bricks"
-WOOD = "minecraft:dark_oak_planks"
+VOID = "minecraft:structure_void"
+MASONRY = (
+    "minecraft:stone_bricks",
+    "minecraft:mossy_stone_bricks",
+    "minecraft:cracked_stone_bricks",
+    "minecraft:mossy_cobblestone",
+)
+DIRECTIONS = ("north", "east", "south", "west")
 
 
-def masonry(x, y, z):
-    return (STONE, MOSS, CRACKED, MOSS, STONE)[(x * 11 + y * 3 + z * 7) % 5]
+def masonry_at(x: int, y: int, z: int, variant: int = 0) -> str:
+    return MASONRY[(x * 7 + y * 13 + z * 11 + variant * 5) % len(MASONRY)]
 
 
-def ruined_hall(ruins, left, front, width, depth, height, collapse):
-    right, back = left + width - 1, front + depth - 1
-    ruins.fill(left, 0, front, right, 0, back, WOOD)
-    for x in range(left, right + 1):
-        for z in range(front, back + 1):
-            for y in range(1, height + 1):
-                outer = x in (left, right) or z in (front, back)
-                collapsed = abs(x - collapse[0]) + abs(z - collapse[1]) <= y - 1
-                ruins.set(x, y, z, masonry(x, y, z) if outer and not collapsed else AIR)
-    # Leave partial gables and rafters. Each damaged roof loses a different portion.
-    for slope in range((width + 1) // 2):
-        y = height + slope
-        west, east = left + slope, right - slope
-        for x, direction in ((west, "east"), (east, "west")):
-            for z in range(front, back + 1):
-                if abs(x - collapse[0]) + abs(z - collapse[1]) > 4:
-                    ruins.stairs(x, y, z, "minecraft:dark_oak_stairs", direction)
-        for z in (front, back):
-            for x in range(west + 1, east):
-                if abs(x - collapse[0]) + abs(z - collapse[1]) > 4:
-                    ruins.set(x, y, z, masonry(x, y, z))
-
-    door_x = (left + right) // 2
-    door_z = back if front < 23 else front
-    facing = "south" if front < 23 else "north"
-    ruins.door(door_x, 1, door_z, "minecraft:dark_oak_door", facing)
-    ruins.set(door_x, 3, door_z, CRACKED)
-    ruins.set(left + 1, 2, front + 1, "minecraft:cobweb")
-    ruins.set(right - 1, 2, back - 1, "minecraft:cobweb")
-    for x in (left, right):
-        for z in (front + 2, back - 2):
-            ruins.set(x, 2, z, "minecraft:iron_bars")
-            ruins.set(x, 3, z, AIR)
-    ruins.chest(left + 2, 1, front + 3, "east", LOOT)
+def stamp_uuids(builder: V4StructureBuilder, seed_key: str):
+    for index, entity in enumerate(builder.entities):
+        value = uuid5(NAMESPACE_URL, f"canopycavern:{seed_key}/{index}").bytes
+        entity["nbt"]["UUID"] = v3.nbt_int_array(
+            [int.from_bytes(value[i:i + 4], "big", signed=True) for i in range(0, 16, 4)]
+        )
 
 
-def belfry(ruins):
-    # Open central landmark: damaged masonry shoulders and fragment of its original roof.
-    for x, z, height in ((20, 20, 18), (26, 20, 16), (20, 26, 14), (26, 26, 9)):
-        for y in range(1, height + 1):
-            ruins.set(x, y, z, masonry(x, y, z))
-        for dx, dz in ((0, 1), (0, -1), (1, 0), (-1, 0)):
-            ruins.set(x + dx, 1, z + dz, MOSS)
-    for x in range(20, 27):
-        for y in range(5, 8):
-            ruins.set(x, y, 20, masonry(x, y, 20))
-    for z in range(20, 27):
-        for y in range(6, 8):
-            ruins.set(20, y, z, masonry(20, y, z))
-    for x in range(20, 25):
-        ruins.stairs(x, 16 + (x - 20) // 2, 20, "minecraft:dark_oak_stairs", "east")
-    ruins.set(23, 4, 20, ("minecraft:bell", {"attachment": "ceiling", "facing": "north", "powered": "false"}))
-    ruins.lantern(21, 4, 20, hanging=True)
+def add_zombie_villager(builder: V4StructureBuilder, x: int, y: int, z: int):
+    builder.clear_headroom(x, y, z, 2)
+    builder.add_entity(x + 0.5, float(y), z + 0.5, "minecraft:zombie_villager", {
+        "PersistenceRequired": 1,
+        "ConversionTime": -1,
+    })
 
 
-def build_ruins():
-    ruins = V4StructureBuilder(47, 20, 47, fill_block="minecraft:structure_void")
-    # Reclaim some paving as grass and moss while keeping cross streets traversable.
-    for x in range(47):
-        for z in range(47):
-            street = abs(x - 23) <= 3 or abs(z - 23) <= 3
-            court = 4 <= x <= 42 and 12 <= z <= 34
-            if street or court:
-                if street and (x + z) % 4 != 0:
-                    surface = "minecraft:gravel"
-                elif (x + z) % 3 == 0:
-                    surface = "minecraft:moss_block"
-                else:
-                    surface = "minecraft:coarse_dirt"
-                ruins.set(x, 0, z, surface)
-                ruins.fill(x, 1, z, x, 2, z, AIR)
-    for x, z, width, depth, height, collapse in (
-        (5, 5, 11, 10, 6, (14, 5)),
-        (31, 6, 10, 9, 5, (39, 14)),
-        (5, 32, 10, 10, 5, (5, 41)),
-        (32, 32, 9, 11, 6, (38, 33)),
-    ):
-        ruined_hall(ruins, x, z, width, depth, height, collapse)
-    belfry(ruins)
+def build_belfry_plaza() -> V4StructureBuilder:
+    """Compact 13x20x13 ruined stone plaza + 18-high decaying belfry with bell & 4 wing sockets."""
+    sb = V4StructureBuilder(13, 20, 13, fill_block=VOID)
+    for x in range(2, 11):
+        for z in range(2, 11):
+            sb.set(x, 0, z, masonry_at(x, 0, z))
+    sb.fill(2, 1, 2, 10, 4, 10, AIR)
 
-    for x, z, height in ((5, 19, 3), (41, 19, 2), (5, 27, 2), (41, 27, 4)):
+    for x0, x1, z0, z1 in ((5, 7, 0, 1), (5, 7, 11, 12), (0, 1, 5, 7), (11, 12, 5, 7)):
+        sb.fill(x0, 0, z0, x1, 0, z1, "minecraft:mossy_cobblestone")
+        sb.fill(x0, 1, z0, x1, 3, z1, AIR)
+
+    # Crumbling corner lantern posts
+    for lx, lz in ((2, 2), (10, 2), (2, 10), (10, 10)):
+        sb.set(lx, 1, lz, "minecraft:mossy_cobblestone")
+        sb.lantern(lx, 2, lz)
+
+    # 5x5 ruined belfry centered at (4..8, 4..8) climbing to y=18
+    for px, pz in ((4, 4), (8, 4), (4, 8), (8, 8)):
+        sb.fill(px, 1, pz, px, 17, pz, masonry_at(px, 3, pz))
+    for y in range(4, 13):
+        for i in range(4, 9):
+            for wx, wz in ((i, 4), (i, 8), (4, i), (8, i)):
+                if (wx, wz) in ((4, 4), (8, 4), (4, 8), (8, 8)):
+                    continue
+                if y in (6, 10) and i == 6:
+                    sb.set(wx, y, wz, "minecraft:iron_bars")
+                elif (wx + y * 3 + wz) % 7 != 0:
+                    sb.set(wx, y, wz, masonry_at(wx, y, wz))
+    sb.fill(5, 1, 5, 7, 15, 7, AIR)
+    for x in range(4, 9):
+        for z in range(4, 9):
+            sb.set(x, 16, z, masonry_at(x, 16, z))
+            if (x, z) not in ((4, 4), (8, 4)):
+                sb.set(x, 17, z, masonry_at(x, 17, z))
+    sb.fill(5, 18, 5, 7, 18, 7, "minecraft:mossy_stone_bricks")
+
+    sb.set(6, 15, 6, ("minecraft:bell", {"attachment": "ceiling", "facing": "north", "powered": "false"}))
+    sb.lantern(5, 15, 5, hanging=True)
+    sb.set(6, 1, 6, "minecraft:mossy_cobblestone")
+    sb.set(4, 2, 5, "minecraft:cobweb")
+    sb.set(7, 15, 5, "minecraft:cobweb")
+
+    sb.jigsaw(6, 1, 0, "north_up", "canopycavern:ruin_north", "canopycavern:ruin_north",
+              f"canopycavern:{VILLAGE_ID}/wing_north", AIR, "aligned")
+    sb.jigsaw(12, 1, 6, "east_up", "canopycavern:ruin_east", "canopycavern:ruin_east",
+              f"canopycavern:{VILLAGE_ID}/wing_east", AIR, "aligned")
+    sb.jigsaw(6, 1, 12, "south_up", "canopycavern:ruin_south", "canopycavern:ruin_south",
+              f"canopycavern:{VILLAGE_ID}/wing_south", AIR, "aligned")
+    sb.jigsaw(0, 1, 6, "west_up", "canopycavern:ruin_west", "canopycavern:ruin_west",
+              f"canopycavern:{VILLAGE_ID}/wing_west", AIR, "aligned")
+
+    stamp_uuids(sb, f"{VILLAGE_ID}/belfry_plaza")
+    sb.validate(f"{VILLAGE_ID}/belfry_plaza")
+    return sb
+
+
+def build_ruined_street(direction: str) -> V4StructureBuilder:
+    """Short 5x5x9 terrain-matching overgrown lane connecting plaza to a collapsed hall."""
+    sb = V4StructureBuilder(5, 5, 9, fill_block=VOID)
+    variant = DIRECTIONS.index(direction)
+    for z in range(9):
+        for x in range(1, 4):
+            block = "minecraft:coarse_dirt" if (x + z + variant) % 3 == 0 else "minecraft:mossy_cobblestone"
+            sb.set(x, 0, z, block)
+    sb.fill(1, 1, 0, 3, 3, 8, AIR)
+    sb.set(0, 0, 4, "minecraft:mossy_cobblestone")
+    sb.set(0, 1, 4, "minecraft:cobblestone_wall")
+    sb.lantern(0, 2, 4)
+
+    sb.jigsaw(2, 1, 0, "north_up", f"canopycavern:ruin_{direction}", f"canopycavern:ruin_{direction}",
+              "minecraft:empty", AIR, "aligned")
+    sb.jigsaw(2, 1, 8, "south_up", "canopycavern:ruin_link", "canopycavern:ruin_link",
+              f"canopycavern:{VILLAGE_ID}/hall_{direction}", AIR, "aligned")
+    return sb
+
+
+def build_ruined_hall(direction: str, variant: int) -> V4StructureBuilder:
+    """Compact 11x11x11 collapsed masonry hall with dark oak door, cobwebs, loot, and zombie villager."""
+    sb = V4StructureBuilder(11, 11, 11, fill_block=VOID)
+    sb.hollow_box(1, 0, 1, 9, 5, 9, "minecraft:stone_bricks", fill_spec=AIR)
+    for x in range(1, 10):
+        for z in range(1, 10):
+            sb.set(x, 0, z, masonry_at(x, 0, z, variant))
+            for y in range(1, 6):
+                if x in (1, 9) or z in (1, 9):
+                    sb.set(x, y, z, masonry_at(x, y, z, variant))
+
+    # Entrance threshold aligned with (5, 1, 0)
+    sb.fill(4, 0, 0, 6, 0, 0, "minecraft:mossy_cobblestone")
+    sb.fill(4, 1, 0, 6, 3, 0, AIR)
+    sb.door(5, 1, 1, "minecraft:dark_oak_door", "north")
+
+    # Barred windows
+    for wx, wz in ((3, 1), (7, 1), (1, 5), (9, 5), (5, 9)):
+        sb.set(wx, 2, wz, "minecraft:iron_bars")
+        sb.set(wx, 3, wz, "minecraft:iron_bars")
+
+    # Partial breached roof + dark_oak_stairs gables
+    for z in range(1, 10):
         for step in range(4):
-            for y in range(1, max(1, height - step) + 1):
-                ruins.set(x + step - 2, y, z, masonry(x + step, y, z))
-    for x, z in ((17, 18), (29, 17), (16, 30), (29, 30), (8, 23), (36, 24)):
-        ruins.set(x, 1, z, "minecraft:mossy_cobblestone")
-        ruins.set(x, 2, z, "minecraft:oak_leaves")
+            y = 5 + step
+            lx, rx = 1 + step, 9 - step
+            if (z + variant + step) % 5 != 0:
+                sb.stairs(lx, y, z, "minecraft:dark_oak_stairs", "east")
+            if (z + variant * 2 + step) % 4 != 0:
+                sb.stairs(rx, y, z, "minecraft:dark_oak_stairs", "west")
+        if (z + variant) % 3 != 0:
+            sb.set(5, 9, z, "minecraft:dark_oak_slab")
 
-    for index, (x, z) in enumerate(((8, 8), (36, 37))):
-        identifier = uuid5(NAMESPACE_URL, f"canopycavern:{ASSET}/{index}").bytes
-        ruins.add_entity(x + .5, 1., z + .5, "minecraft:zombie_villager", {
-            "UUID": v3.nbt_int_array([
-                int.from_bytes(identifier[i:i + 4], "big", signed=True) for i in range(0, 16, 4)
-            ]),
-            "VillagerData": {
-                "type": "minecraft:plains", "profession": "minecraft:none", "level": 1,
+    # Collapse a few upper edge blocks for authentic ruin silhouette without breaking chest/entity clearance
+    sb.set(1, 4, 8, AIR)
+    sb.set(9, 4, 2, AIR)
+    sb.set(2, 4, 2, "minecraft:cobweb")
+    sb.set(8, 4, 8, "minecraft:cobweb")
+    sb.set(2, 4, 8, "minecraft:cobweb")
+
+    sb.set(2, 1, 8, "minecraft:mossy_cobblestone")
+    sb.chest(8, 1, 8, "west", LOOT)
+    sb.lantern(2, 2, 8)
+    add_zombie_villager(sb, 5, 1, 5)
+
+    sb.jigsaw(5, 1, 0, "north_up", "canopycavern:ruin_link", "canopycavern:ruin_link",
+              "minecraft:empty", AIR, "aligned")
+    stamp_uuids(sb, f"{VILLAGE_ID}/ruined_hall_{direction}")
+    sb.validate(f"{VILLAGE_ID}/ruined_hall_{direction}")
+    return sb
+
+
+def write_pool(pool_name: str, piece_name: str, projection: str):
+    v3.write_json(f"worldgen/template_pool/{VILLAGE_ID}/{pool_name}.json", {
+        "elements": [{
+            "element": {
+                "element_type": "minecraft:single_pool_element",
+                "location": f"canopycavern:{VILLAGE_ID}/{piece_name}",
+                "processors": {"processors": []},
+                "projection": projection,
             },
-        })
-    ruins.validate("Abandoned Mega Village ruins")
-    return ruins
+            "weight": 1,
+        }],
+        "fallback": "minecraft:empty",
+    })
+
+
+def generate_all():
+    legacy = v3.STRUCT_DIR / VILLAGE_ID / "ruins.nbt"
+    if legacy.exists():
+        legacy.unlink()
+
+    build_belfry_plaza().save(f"{VILLAGE_ID}/belfry_plaza.nbt")
+    write_pool("start", "belfry_plaza", "rigid")
+
+    for index, direction in enumerate(DIRECTIONS):
+        build_ruined_street(direction).save(f"{VILLAGE_ID}/ruined_street_{direction}.nbt")
+        build_ruined_hall(direction, index).save(f"{VILLAGE_ID}/ruined_hall_{direction}.nbt")
+        write_pool(f"wing_{direction}", f"ruined_street_{direction}", "terrain_matching")
+        write_pool(f"hall_{direction}", f"ruined_hall_{direction}", "rigid")
+
+    v3.write_json(f"worldgen/structure/{VILLAGE_ID}.json", {
+        "type": "canopycavern:surface_jigsaw",
+        "biomes": f"#canopycavern:has_structure/{VILLAGE_ID}",
+        "max_distance_from_center": 48,
+        "project_start_to_heightmap": "WORLD_SURFACE_WG",
+        "size": 3,
+        "spawn_overrides": {},
+        "start_height": {"absolute": 0},
+        "start_pool": f"canopycavern:{VILLAGE_ID}/start",
+        "step": "surface_structures",
+        "terrain_adaptation": "beard_thin",
+        "terrain_guard": {
+            "allow_water": False,
+            "core_probe_radius": 8,
+            "foundation_block": "minecraft:mossy_stone_bricks",
+            "max_core_relief": 4,
+            "max_foundation_depth": 6,
+            "max_piece_embed": 3,
+            "max_piece_relief": 5,
+            "max_water_depth": 0,
+            "min_piece_y_above_sea": -64,
+            "min_rigid_pieces": 4,
+        },
+        "use_expansion_hack": False,
+    })
 
 
 if __name__ == "__main__":
-    build_ruins().save(ASSET)
+    generate_all()
+    print("Generated modular terrain-safe abandoned_mega_village!")

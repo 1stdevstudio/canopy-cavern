@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "canopycavern:surface_jigsaw",
   "biomes": "#canopycavern:has_structure/peak_watchtower_ruin",
   "max_distance_from_center": 64,
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
@@ -11,5 +11,17 @@
   "start_pool": "canopycavern:peak_watchtower_ruin/start",
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",
+  "terrain_guard": {
+    "allow_water": false,
+    "core_probe_radius": 7,
+    "foundation_block": "minecraft:mossy_cobblestone",
+    "max_core_relief": 6,
+    "max_foundation_depth": 7,
+    "max_piece_embed": 4,
+    "max_piece_relief": 6,
+    "max_water_depth": 0,
+    "min_piece_y_above_sea": -64,
+    "min_rigid_pieces": 1
+  },
   "use_expansion_hack": false
 }

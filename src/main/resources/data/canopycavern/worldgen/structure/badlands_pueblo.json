@@ -1,9 +1,9 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "canopycavern:surface_jigsaw",
   "biomes": "#canopycavern:has_structure/badlands_pueblo",
-  "max_distance_from_center": 80,
+  "max_distance_from_center": 112,
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
-  "size": 1,
+  "size": 7,
   "spawn_overrides": {},
   "start_height": {
     "absolute": 0
@@ -11,5 +11,17 @@
   "start_pool": "canopycavern:badlands_pueblo/start",
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",
+  "terrain_guard": {
+    "allow_water": false,
+    "core_probe_radius": 8,
+    "foundation_block": "minecraft:red_sandstone",
+    "max_core_relief": 5,
+    "max_foundation_depth": 6,
+    "max_piece_embed": 3,
+    "max_piece_relief": 5,
+    "max_water_depth": 0,
+    "min_piece_y_above_sea": -64,
+    "min_rigid_pieces": 4
+  },
   "use_expansion_hack": false
 }

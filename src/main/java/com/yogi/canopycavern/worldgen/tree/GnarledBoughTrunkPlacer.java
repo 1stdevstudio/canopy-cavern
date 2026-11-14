@@ -88,6 +88,10 @@ public final class GnarledBoughTrunkPlacer extends TrunkPlacer {
 			.toList();
 	}
 
+	public boolean isDoubleTrunk() {
+		return doubleTrunk;
+	}
+
 	private void placeBaseSoil(
 		WorldGenLevel level,
 		BiConsumer<BlockPos, BlockState> blockSetter,
@@ -95,13 +99,45 @@ public final class GnarledBoughTrunkPlacer extends TrunkPlacer {
 		BlockPos origin,
 		TreeFeature feature
 	) {
-		placeBelowTrunkBlock(level, blockSetter, random, origin.below(), feature);
-		if (!doubleTrunk) {
-			return;
+		BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+		for (BlockPos offset : TreeGroundingHelper.footprintOffsets(doubleTrunk)) {
+			BlockPos columnStart = origin.offset(offset.getX(), 0, offset.getZ());
+			// Anchor only if the block right below the trunk column isn't already supported by terrain or a stilt root.
+			BlockPos immediatelyBelow = columnStart.below();
+			boolean supportedByRoot = TreeGroundingHelper.isWoodOrRootAt(level, immediatelyBelow);
+			boolean hitGround = false;
+			for (int drop = 1; drop <= 10; drop++) {
+				cursor.set(columnStart.getX(), columnStart.getY() - drop, columnStart.getZ());
+				if (TreeGroundingHelper.isNaturalGroundAt(level, cursor)) {
+					if (level.isStateAtPosition(cursor, TreeGroundingHelper::isNaturalSoil)) {
+						placeBelowTrunkBlock(level, blockSetter, random, cursor.immutable(), feature);
+					}
+					hitGround = true;
+					break;
+				}
+				if (supportedByRoot && TreeGroundingHelper.isWoodOrRootAt(level, cursor)) {
+					continue;
+				}
+				if (!supportedByRoot && level.isStateAtPosition(cursor, TreeGroundingHelper::isReplaceableForRootOrTrunk)) {
+					BlockState trunkState = feature.trunkProvider().value().getState(level, random, cursor);
+					blockSetter.accept(cursor.immutable(), trunkState);
+					continue;
+				}
+				break;
+			}
+			// If a stilt root wasn't present right below the column, ensure it connects cleanly all the way down.
+			if (!hitGround && !supportedByRoot) {
+				for (int drop = 1; drop <= 6; drop++) {
+					cursor.set(columnStart.getX(), columnStart.getY() - drop, columnStart.getZ());
+					if (TreeGroundingHelper.isNaturalGroundAt(level, cursor)) {
+						break;
+					}
+					if (level.isStateAtPosition(cursor, TreeGroundingHelper::isReplaceableForRootOrTrunk)) {
+						blockSetter.accept(cursor.immutable(), feature.trunkProvider().value().getState(level, random, cursor));
+					}
+				}
+			}
 		}
-		placeBelowTrunkBlock(level, blockSetter, random, origin.below().east(), feature);
-		placeBelowTrunkBlock(level, blockSetter, random, origin.below().south(), feature);
-		placeBelowTrunkBlock(level, blockSetter, random, origin.below().east().south(), feature);
 	}
 
 	private static BlockState orientAxis(BlockState state, Direction.Axis axis) {

@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "canopycavern:frozen_ridge_village/hillside_village",
+        "location": "canopycavern:frozen_ridge_village/town_center",
         "processors": {
           "processors": []
         },

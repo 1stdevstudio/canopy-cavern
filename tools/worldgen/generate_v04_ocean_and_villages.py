@@ -1429,12 +1429,88 @@ def draw_grand_town_center(theme: str, p: dict) -> V4StructureBuilder:
     return sb
 
 
+def _vanilla_city_palette(theme: str, p: dict):
+    from grand_city_architecture import CityPalette
+
+    profile_by_theme = {
+        "desert": "adobe",
+        "snowy": "alpine",
+    }
+    roof_solid_by_theme = {
+        "desert": p["floor"],
+        "snowy": p["trim"],
+    }
+    log_block = "minecraft:stripped_acacia_log" if theme == "desert" else p["pillar"]
+    return CityPalette(
+        city_id=f"vanilla_revamp/{theme}",
+        biomes=(f"minecraft:{theme}",),
+        villager_type=p["vtype"],
+        profile=profile_by_theme.get(theme, "canopy"),
+        plinth=p["plinth"],
+        plinth_alt=p["plinth_alt"],
+        wall=p["wall"],
+        wall_alt=p["trim"],
+        log=log_block,
+        floor=p["floor"],
+        road=p["path"],
+        roof_stair=p["stair"],
+        roof_slab=p["slab"],
+        roof_solid=roof_solid_by_theme.get(theme, p["trim"]),
+        accent_roof=p["plinth_alt"],
+        fence=p["fence"],
+        door=p["door"],
+        pane=p["pane"],
+        stained_pane=p["stained"],
+        bed=p["bed"],
+        flower=p["flower"],
+        awning_a=p["awning_a"],
+        awning_b=p["awning_b"],
+        garden_soil=p["path"],
+        foundation=p["plinth"],
+    )
+
+
+def _draw_non_boxy_vanilla_building(theme: str, p: dict, role: str) -> V4StructureBuilder:
+    from grand_city_architecture import (
+        _stamp_uuids,
+        build_foundry_bastion,
+        build_rotunda_observatory,
+        build_villa_l_wing,
+    )
+
+    cp = _vanilla_city_palette(theme, p)
+    if role == "grand_manor":
+        sb = build_villa_l_wing(cp)
+        sb.add_sentinel(4, 1, 1)
+        sb.add_villager(7, 1, 10, p["vtype"], "minecraft:cleric")
+        sb.jigsaw(5, 1, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                  "minecraft:empty", "minecraft:structure_void", "aligned")
+    elif role == "guild_smithy":
+        sb = build_foundry_bastion(cp)
+        sb.add_sentinel(5, 1, 1)
+        sb.jigsaw(5, 1, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                  "minecraft:empty", "minecraft:structure_void", "aligned")
+    else:
+        sb = build_rotunda_observatory(cp)
+        sb.add_sentinel(8, 1, 0)
+        sb.add_villager(7, 1, 10, p["vtype"], "minecraft:cleric")
+        sb.jigsaw(7, 1, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance",
+                  "minecraft:empty", "minecraft:structure_void", "aligned")
+
+    _stamp_uuids(sb, f"vanilla_revamp/{theme}/{role}")
+    sb.validate(f"{theme}/{role}", require_outdoor_sentinel=True)
+    return sb
+
+
 def draw_revamp_house(theme: str, p: dict, role: str) -> V4StructureBuilder:
     """
-    13x15x13 Luxury Two-Story / Courtyard Civic Building for vanilla houses pools.
-    Uses y=0 foundation + [6, 1, 0] north_up `building_entrance` matching vanilla streets.
+    Non-boxy Multi-Wing / Rotunda / Bastion / Market Civic Buildings for vanilla houses pools.
+    Uses y=0 foundation + north_up `building_entrance` matching vanilla streets.
     Every role stations multiple Sentinels OUTSIDE on open verandas / courtyards + multiple Villagers.
     """
+    if role in ("grand_manor", "guild_smithy", "sanctuary_library"):
+        return _draw_non_boxy_vanilla_building(theme, p, role)
+
     sb = V4StructureBuilder(13, 16, 13, fill_block="minecraft:air")
     # y=0: Stepped Courtyard Terrace & Warm Interior Floor
     sb.fill(0, 0, 0, 12, 0, 12, p["path"])

@@ -15,6 +15,40 @@ from pathlib import Path
 DATA = Path(__file__).resolve().parents[2] / "src/main/resources/data/canopycavern"
 STRUCT_DIR = DATA / "structure"
 
+
+def surface_terrain_guard(
+    foundation_block: str,
+    max_core_relief: int = 5,
+    max_piece_relief: int = 5,
+    max_piece_embed: int = 3,
+    max_foundation_depth: int = 6,
+    min_rigid_pieces: int = 1,
+    core_probe_radius: int = 8,
+    foundation_start_only: bool = False,
+) -> dict:
+    guard = {
+        "allow_water": False,
+        "core_probe_radius": core_probe_radius,
+        "foundation_block": foundation_block,
+        "max_core_relief": max_core_relief,
+        "max_foundation_depth": max_foundation_depth,
+        "max_piece_embed": max_piece_embed,
+        "max_piece_relief": max_piece_relief,
+        "max_water_depth": 0,
+        "min_piece_y_above_sea": -64,
+        "min_rigid_pieces": min_rigid_pieces,
+    }
+    if foundation_start_only:
+        guard["foundation_start_only"] = True
+    return guard
+
+
+SURFACE_VILLAGE_GUARDS = {
+    "canopy_village": surface_terrain_guard("minecraft:cobblestone", max_core_relief=4, max_piece_relief=5, min_rigid_pieces=3),
+    "crystal_citadel": surface_terrain_guard("minecraft:stone_bricks", max_core_relief=5, max_piece_relief=6, min_rigid_pieces=2),
+    "peak_citadel": surface_terrain_guard("minecraft:cobblestone", max_core_relief=6, max_piece_relief=6, min_rigid_pieces=2),
+}
+
 # Tag constants for big-endian NBT serialization
 TAG_END = 0
 TAG_BYTE = 1
@@ -690,87 +724,73 @@ def draw_central_plaza(pal: dict, landmark: str, villager_pool: str) -> Structur
 
 
 def build_village_theme(village_id: str, biomes: list[str], pal: dict, landmark: str, villager_pool: str, spacing_seed: int):
-    # Streets: 5x3x15 staggered avenue with opposite-side plot entrances (zero cottage collision!)
-    st = StructureBuilder(5, 3, 15, fill_block="minecraft:air")
-    st.fill(1, 0, 0, 3, 0, 14, pal["road"])
-    for z in range(0, 15):
-        st.set(0, 0, z, pal["plinth"])
-        st.set(4, 0, z, pal["plinth"])
-    st.set(0, 1, 1, pal["fence"])
-    st.lantern(0, 2, 1, hanging=False)
-    st.set(4, 1, 13, pal["fence"])
-    st.lantern(4, 2, 13, hanging=False)
-    st.jigsaw(2, 1, 0, "north_up", "minecraft:street", "minecraft:street", pal["street_pool"], "minecraft:structure_void", "aligned")
-    st.jigsaw(2, 1, 14, "south_up", "minecraft:street", "minecraft:street", pal["street_pool"], "minecraft:structure_void", "aligned")
-    st.jigsaw(0, 1, 6, "west_up", "minecraft:building_entrance", "minecraft:building_entrance", pal["building_pool"], "minecraft:air", "aligned")
-    st.jigsaw(4, 1, 10, "east_up", "minecraft:building_entrance", "minecraft:building_entrance", pal["building_pool"], "minecraft:air", "aligned")
-    st.jigsaw(2, 0, 4, "up_north", "minecraft:bottom", "minecraft:bottom", "canopycavern:common/village_sentinel", pal["road"], "rollable")
-    st.jigsaw(2, 0, 11, "up_north", "minecraft:bottom", "minecraft:bottom", "canopycavern:common/village_sentinel", pal["road"], "rollable")
-    st.save(f"{village_id}/street_avenue.nbt")
+    # Lazy import breaks generate_v04_ocean_and_villages -> generate_v03_structures cycle.
+    from grand_city_architecture import CityPalette, generate_city
 
-    term = StructureBuilder(5, 3, 3, fill_block="minecraft:air")
-    term.fill(1, 0, 0, 3, 0, 2, pal["road"])
-    term.set(0, 0, 0, pal["plinth"])
-    term.set(4, 0, 0, pal["plinth"])
-    term.set(0, 1, 1, pal["plinth"])
-    term.set(4, 1, 1, pal["plinth"])
-    term.set(2, 1, 2, pal["fence"])
-    term.lantern(2, 2, 2, hanging=False)
-    term.jigsaw(2, 1, 0, "north_up", "minecraft:street", "minecraft:street", "minecraft:empty", "minecraft:structure_void", "aligned")
-    term.save(f"{village_id}/terminator.nbt")
+    struct_dir = STRUCT_DIR / village_id
+    if struct_dir.exists():
+        for obsolete in ("street_avenue.nbt", "terminator.nbt", "house.nbt", "forge.nbt", "library.nbt", "guardhouse.nbt"):
+            obsolete_path = struct_dir / obsolete
+            if obsolete_path.exists():
+                obsolete_path.unlink()
 
-    center = draw_central_plaza(pal, landmark, villager_pool)
-    center.save(f"{village_id}/town_center.nbt")
-
-    for role in ("house", "forge", "library", "guardhouse"):
-        b = draw_gabled_cottage(pal, role, villager_pool, "canopycavern:chests/village_supply")
-        b.save(f"{village_id}/{role}.nbt")
-
-    # Template pools
-    write_json(f"worldgen/template_pool/{village_id}/start.json", {
-        "elements": [{
-            "element": {"element_type": "minecraft:single_pool_element", "location": f"canopycavern:{village_id}/town_center", "processors": {"processors": []}, "projection": "rigid"},
-            "weight": 1,
-        }],
-        "fallback": "minecraft:empty",
-    })
-    write_json(f"worldgen/template_pool/{village_id}/streets.json", {
-        "elements": [{
-            "element": {"element_type": "minecraft:single_pool_element", "location": f"canopycavern:{village_id}/street_avenue", "processors": {"processors": []}, "projection": "terrain_matching"},
-            "weight": 1,
-        }],
-        "fallback": f"canopycavern:{village_id}/terminators",
-    })
-    write_json(f"worldgen/template_pool/{village_id}/terminators.json", {
-        "elements": [{
-            "element": {"element_type": "minecraft:single_pool_element", "location": f"canopycavern:{village_id}/terminator", "processors": {"processors": []}, "projection": "terrain_matching"},
-            "weight": 1,
-        }],
-        "fallback": "minecraft:empty",
-    })
-    write_json(f"worldgen/template_pool/{village_id}/buildings.json", {
-        "elements": [
-            {"element": {"element_type": "minecraft:single_pool_element", "location": f"canopycavern:{village_id}/{r}", "processors": {"processors": []}, "projection": "rigid"}, "weight": w}
-            for r, w in [("house", 3), ("forge", 2), ("library", 2), ("guardhouse", 2)]
-        ],
-        "fallback": "minecraft:empty",
-    })
-
-    # Structure + biome tag
-    write_json(f"tags/worldgen/biome/has_structure/{village_id}.json", {"replace": False, "values": biomes})
-    write_json(f"worldgen/structure/{village_id}.json", {
-        "type": "minecraft:jigsaw",
-        "biomes": f"#canopycavern:has_structure/{village_id}",
-        "max_distance_from_center": 80,
-        "project_start_to_heightmap": "WORLD_SURFACE_WG",
-        "size": 5,
-        "spawn_overrides": {},
-        "start_height": {"absolute": 0},
-        "start_pool": f"canopycavern:{village_id}/start",
-        "step": "surface_structures",
-        "terrain_adaptation": "beard_thin",
-        "use_expansion_hack": True,
-    })
+    guard = SURFACE_VILLAGE_GUARDS.get(village_id, {})
+    theme_defaults = {
+        "crystal_citadel": (
+            "minecraft:plains", "crystal", "minecraft:amethyst_block", "minecraft:amethyst_block",
+            "minecraft:glass_pane", "minecraft:cyan_wool", "minecraft:light_blue_wool",
+            "minecraft:oxeye_daisy",
+        ),
+        "peak_citadel": (
+            "minecraft:snow", "peak", "minecraft:cobbled_deepslate", "minecraft:cobbled_deepslate",
+            "minecraft:glass_pane", "minecraft:blue_wool", "minecraft:white_wool",
+            "minecraft:cornflower",
+        ),
+        "canopy_village": (
+            "minecraft:plains", "canopy", "minecraft:mossy_stone_bricks", "minecraft:moss_block",
+            "minecraft:glass_pane", "minecraft:green_wool", "minecraft:yellow_wool",
+            "minecraft:lily_of_the_valley",
+        ),
+    }
+    vtype, profile, wall_alt, accent_roof, clear_pane, aw_a, aw_b, flower = theme_defaults[village_id]
+    road_block = "minecraft:coarse_dirt" if pal["road"] == "minecraft:dirt_path" else pal["road"]
+    city_palette = CityPalette(
+        city_id=village_id,
+        biomes=tuple(biomes),
+        villager_type=vtype,
+        profile=profile,
+        plinth=pal["plinth"],
+        plinth_alt=pal["accent"],
+        wall=pal["wall"],
+        wall_alt=wall_alt,
+        log=pal["pillar"],
+        floor=pal["floor"],
+        road=road_block,
+        roof_stair=pal["roof_stairs"],
+        roof_slab=pal["roof_slab"],
+        roof_solid=pal["roof_solid"],
+        accent_roof=accent_roof,
+        fence=pal["fence"],
+        door=pal["door"],
+        pane=clear_pane,
+        stained_pane=pal["pane"] if "stained" in pal["pane"] else "minecraft:light_blue_stained_glass_pane",
+        bed=pal["bed"],
+        flower=flower,
+        awning_a=aw_a,
+        awning_b=aw_b,
+        garden_soil=pal["grass"],
+        foundation=guard.get("foundation_block", "minecraft:cobblestone"),
+        allow_water=guard.get("allow_water", False),
+        max_water_depth=guard.get("max_water_depth", 0),
+        min_piece_y_above_sea=guard.get("min_piece_y_above_sea", -64),
+        min_rigid_pieces=guard.get("min_rigid_pieces", 3),
+        core_relief=guard.get("max_core_relief", 5),
+        piece_relief=guard.get("max_piece_relief", 6),
+        core_probe_radius=guard.get("core_probe_radius", 8),
+        max_foundation_depth=guard.get("max_foundation_depth", 6),
+        max_piece_embed=guard.get("max_piece_embed", 3),
+    )
+    generate_city(city_palette, write_json, write_structure_set=False)
 
 
 def build_underground_grotto_town():
@@ -1014,7 +1034,7 @@ def build_peak_watchtower_ruin():
         "fallback": "minecraft:empty",
     })
     write_json("worldgen/structure/peak_watchtower_ruin.json", {
-        "type": "minecraft:jigsaw",
+        "type": "canopycavern:surface_jigsaw",
         "biomes": "#canopycavern:has_structure/peak_watchtower_ruin",
         "max_distance_from_center": 64,
         "project_start_to_heightmap": "WORLD_SURFACE_WG",
@@ -1024,6 +1044,15 @@ def build_peak_watchtower_ruin():
         "start_pool": "canopycavern:peak_watchtower_ruin/start",
         "step": "surface_structures",
         "terrain_adaptation": "beard_thin",
+        "terrain_guard": surface_terrain_guard(
+            "minecraft:mossy_cobblestone",
+            max_core_relief=6,
+            max_piece_relief=6,
+            max_piece_embed=4,
+            max_foundation_depth=7,
+            min_rigid_pieces=1,
+            core_probe_radius=7,
+        ),
         "use_expansion_hack": False,
     })
 
@@ -1213,7 +1242,7 @@ def build_canopy_treetop_bastion():
         "values": ["canopycavern:mossy_canopy", "#minecraft:is_forest"],
     })
     write_json("worldgen/structure/canopy_treetop_bastion.json", {
-        "type": "minecraft:jigsaw",
+        "type": "canopycavern:surface_jigsaw",
         "biomes": "#canopycavern:has_structure/canopy_treetop_bastion",
         "max_distance_from_center": 64,
         "project_start_to_heightmap": "WORLD_SURFACE_WG",
@@ -1223,6 +1252,16 @@ def build_canopy_treetop_bastion():
         "start_pool": "canopycavern:canopy_treetop_bastion/start",
         "step": "surface_structures",
         "terrain_adaptation": "beard_thin",
+        "terrain_guard": surface_terrain_guard(
+            "minecraft:mossy_cobblestone",
+            max_core_relief=5,
+            max_piece_relief=5,
+            max_piece_embed=3,
+            max_foundation_depth=6,
+            min_rigid_pieces=1,
+            core_probe_radius=7,
+            foundation_start_only=True,
+        ),
         "use_expansion_hack": False,
     })
     write_json("worldgen/structure_set/canopy_treetop_bastions.json", {
@@ -1339,9 +1378,8 @@ def build_echoing_mineshaft_hub():
 def build_all():
     build_common_entity_templates()
     build_peak_watchtower_ruin()
-    build_cavern_shrine()
+    # cavern_shrine -> generate_shrine_vault.py; echoing_mineshaft_hub -> generate_echoing_mineshaft.py
     build_canopy_treetop_bastion()
-    build_echoing_mineshaft_hub()
 
     # 3 surface Villager Civilizations + 1 underground Grotto Outpost Town
     build_village_theme(
@@ -1428,23 +1466,8 @@ def build_all():
         spacing_seed=33,
     )
 
-    build_underground_grotto_town()
-
-    # Combined Village structure set (surface & underground biome-specific towns + guards)
-    write_json("worldgen/structure_set/villages.json", {
-        "placement": {
-            "type": "minecraft:random_spread",
-            "salt": 42081519,
-            "separation": 7,
-            "spacing": 22,
-        },
-        "structures": [
-            {"structure": "canopycavern:crystal_citadel", "weight": 2},
-            {"structure": "canopycavern:peak_citadel", "weight": 2},
-            {"structure": "canopycavern:canopy_village", "weight": 2},
-            {"structure": "canopycavern:grotto_outpost_town", "weight": 1},
-        ],
-    })
+    # `grotto_outpost_town` is maintained in generate_grotto_outpost.py (non-boxy subterranean citadel).
+    # Each village now keeps its dedicated per-biome structure_set/{id}.json (no combined villages.json).
     print("Generated all 8 architectural structures + Multi-Piece Jigsaw pools + Villager Civilizations!")
 
 
