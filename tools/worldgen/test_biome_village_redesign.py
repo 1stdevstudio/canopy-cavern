@@ -115,6 +115,7 @@ class BiomeVillageRedesignTest(unittest.TestCase):
                             if bid.endswith("_bed") and props.get("part") == "head"
                         )
                         self.assertGreaterEqual(bed_heads, 2, f"{city_id}/{piece_name} needs >= 2 beds")
+                        _assert_framed_doors_and_panes(self, blocks, f"{city_id}/{piece_name}", require_door=True)
 
     def test_mangrove_marsh_keeps_water_stilt_guard_and_rigid_docks(self):
         struct = json.loads((DATA / "worldgen/structure/mangrove_marsh_village.json").read_text())
@@ -145,6 +146,57 @@ class BiomeVillageRedesignTest(unittest.TestCase):
                     ents = [e["id"] for e in nbt_entities(nbt)]
                     self.assertGreaterEqual(ents.count("canopycavern:village_sentinel"), 2)
                     self.assertGreaterEqual(ents.count("minecraft:villager"), 2)
+                    _assert_framed_doors_and_panes(self, blocks, f"vanilla_revamp/{theme}/{role}", require_door=True)
+
+            for role in ("bastion_gatehouse", "market_pavilion"):
+                with self.subTest(theme=theme, role=role):
+                    nbt = decode((DATA / f"structure/vanilla_revamp/{theme}/{role}.nbt").read_bytes())
+                    _assert_framed_doors_and_panes(
+                        self,
+                        nbt_blocks(nbt),
+                        f"vanilla_revamp/{theme}/{role}",
+                        require_door=(role == "bastion_gatehouse"),
+                    )
+
+
+def _is_solid_door_frame(block_id: str) -> bool:
+    if block_id in ("minecraft:air", "minecraft:structure_void", "minecraft:jigsaw"):
+        return False
+    return not block_id.endswith(("_door", "_pane", "_bed", "_carpet", "_fence", "_fence_gate", "_lantern"))
+
+
+def _assert_framed_doors_and_panes(testcase: unittest.TestCase, blocks: dict, label: str, require_door: bool = True):
+    doors = [(pos, bid, props) for pos, (bid, props, _) in blocks.items() if bid.endswith("_door") and props.get("half") != "upper"]
+    if require_door:
+        testcase.assertGreaterEqual(len(doors), 1, f"{label} missing framed exterior door(s)")
+    for (x, y, z), (bid, props) in ((d[0], (d[1], d[2])) for d in doors):
+        facing = props.get("facing", "north")
+        if facing in ("north", "south"):
+            jamb_offsets = ((-1, 0), (1, 0))
+            step_offsets = ((0, -1), (0, 1))
+        else:
+            jamb_offsets = ((0, -1), (0, 1))
+            step_offsets = ((-1, 0), (1, 0))
+        under = blocks.get((x, y - 1, z), ("minecraft:air", {}, None))[0]
+        testcase.assertTrue(_is_solid_door_frame(under), f"{label} door @{(x, y, z)} lacks solid floor ({under})")
+        for dy in (2, 3):
+            header = blocks.get((x, y + dy, z), ("minecraft:air", {}, None))[0]
+            testcase.assertTrue(_is_solid_door_frame(header), f"{label} door @{(x, y, z)} lacks solid lintel at y+{dy} ({header})")
+        for dx, dz in jamb_offsets:
+            for dy in (0, 1, 2):
+                jamb = blocks.get((x + dx, y + dy, z + dz), ("minecraft:air", {}, None))[0]
+                testcase.assertTrue(_is_solid_door_frame(jamb), f"{label} door @{(x, y, z)} missing jamb at {(x + dx, y + dy, z + dz)} ({jamb})")
+        for dx, dz in step_offsets:
+            for dy in (0, 1):
+                passage = blocks.get((x + dx, y + dy, z + dz), ("minecraft:air", {}, None))[0]
+                testcase.assertIn(passage, ("minecraft:air", "minecraft:structure_void", "minecraft:jigsaw"), f"{label} door @{(x, y, z)} blocked at {(x + dx, y + dy, z + dz)} ({passage})")
+
+    for (x, y, z), (bid, _, _) in blocks.items():
+        if not bid.endswith("_pane"):
+            continue
+        horiz = [blocks.get((x + dx, y, z + dz), ("minecraft:air", {}, None))[0] for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))]
+        open_sides = sum(1 for h in horiz if h in ("minecraft:air", "minecraft:structure_void", "minecraft:jigsaw"))
+        testcase.assertLessEqual(open_sides, 2, f"{label} exposed unframed glass pane {bid} at {(x, y, z)} horiz={horiz}")
 
 
 if __name__ == "__main__":

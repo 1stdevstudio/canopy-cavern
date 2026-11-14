@@ -225,7 +225,7 @@ def _extrude_footprint(
     stained_windows: bool = False,
 ):
     """Build floor + exterior walls/pillars + interior air strictly over a non-boxy 2D mask."""
-    # Precompute boundary vs interior
+    # Precompute boundary, corners, and straight flat walls suitable for framed window panes.
     boundary = {
         (x, z) for (x, z) in mask
         if any((x + dx, z + dz) not in mask for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)))
@@ -233,6 +233,13 @@ def _extrude_footprint(
     corners = {
         (x, z) for (x, z) in boundary
         if sum(1 for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1)) if (x + dx, z + dz) in mask) <= 2
+    }
+    straight_walls = {
+        (x, z) for (x, z) in boundary - corners
+        if (
+            ((x - 1, z) in boundary and (x + 1, z) in boundary and (x, z - 1) not in boundary and (x, z + 1) not in boundary)
+            or ((x, z - 1) in boundary and (x, z + 1) in boundary and (x - 1, z) not in boundary and (x + 1, z) not in boundary)
+        )
     }
 
     for x, z in mask:
@@ -245,7 +252,7 @@ def _extrude_footprint(
                     sb.set(x, y, z, p.plinth)
                 elif y == y_top:
                     sb.set(x, y, z, p.plinth_alt)
-                elif (y - deck_y) in window_ys and (x + z) % 3 == 0:
+                elif (x, z) in straight_walls and (y - deck_y) in window_ys and (x + z) % 3 == 0:
                     sb.set(x, y, z, p.stained_pane if stained_windows else p.pane)
                 else:
                     sb.set(x, y, z, p.wall if (y - deck_y) != 4 else p.wall_alt)
@@ -293,13 +300,31 @@ def _validate_city_piece(sb: V4StructureBuilder, label: str, deck_y: int, requir
                             raise AssertionError(f"{label}: golem at {(bx, by, bz)} collides with {cell} at {(bx+dx, by+dy, bz+dz)}")
 
 
+def _set_wall_column(sb: V4StructureBuilder, x: int, walk_y: int, z: int, p: CityPalette, middle_block: str | None = None):
+    """Build a solid 4-block ground-story wall column (with optional window pane at middle height)."""
+    mid = middle_block or p.wall
+    sb.set(x, walk_y - 1, z, p.plinth)
+    sb.set(x, walk_y, z, p.plinth)
+    sb.set(x, walk_y + 1, z, mid)
+    sb.set(x, walk_y + 2, z, mid)
+    sb.set(x, walk_y + 3, z, p.wall_alt)
+
+
 def _make_doorway_opening(sb: V4StructureBuilder, x: int, walk_y: int, z: int, p: CityPalette, facing: str, open_arch: bool = False):
     if open_arch:
         for dy in (0, 1, 2):
             sb.set(x, walk_y + dy, z, "minecraft:air")
     else:
+        sb.set(x, walk_y - 1, z, p.plinth)
+        jambs = ((x - 1, z), (x + 1, z)) if facing in ("north", "south") else ((x, z - 1), (x, z + 1))
+        for jx, jz in jambs:
+            cur = sb.grid.get((jx, walk_y + 1, jz), ("minecraft:air", ()))[0]
+            # Preserve existing corner pillars; replace air gaps or adjacent glass panes with solid door jambs.
+            if cur != p.log:
+                _set_wall_column(sb, jx, walk_y, jz, p)
         sb.door(x, walk_y, z, p.door, facing)
         sb.set(x, walk_y + 2, z, p.wall_alt)
+        sb.set(x, walk_y + 3, z, p.wall_alt)
 
 
 # ===========================================================================
@@ -707,11 +732,10 @@ def build_rotunda_observatory(p: CityPalette) -> V4StructureBuilder:
     }
     _extrude_footprint(sb, oct_mask, walk_y, walk_y + 7, p, deck_y, window_ys=(2, 3, 5, 6), stained_windows=True)
 
-    # Projecting entrance portico z=0..1
+    # Projecting entrance stoop at z=0 only (never clear the z=1 facade wall or corner pillars).
     for x in range(5, 10):
-        for z in (0, 1):
-            _solid_ground_block(sb, x, z, deck_y, p.road if 6 <= x <= 8 else p.plinth, p, force_pier=(z == 0 and x in (5, 9)))
-            _clear_column_air(sb, x, walk_y, walk_y + 3, z)
+        _solid_ground_block(sb, x, 0, deck_y, p.road if 6 <= x <= 8 else p.plinth, p, force_pier=(x in (5, 9)))
+        _clear_column_air(sb, x, walk_y, walk_y + 3, 0)
     _make_doorway_opening(sb, 7, walk_y, 1, p, "south", open_arch=False)
     sb.set(5, walk_y, 0, p.fence); sb.lantern(5, walk_y + 1, 0, hanging=False)
     sb.set(9, walk_y, 0, p.fence); sb.lantern(9, walk_y + 1, 0, hanging=False)
@@ -788,9 +812,10 @@ def build_market_t_hall(p: CityPalette) -> V4StructureBuilder:
     cross_roof = {(x, z) for x in range(2, 17) for z in range(3, 7)}
     _stamp_non_boxy_roof(sb, cross_roof | rear_hall, walk_y + 5, p, peak_cap=4)
 
-    # Wide open portal between Arcade <-> Rear Guildhall
-    for dx in (8, 9, 10):
-        _make_doorway_opening(sb, dx, walk_y, 7, p, "south", open_arch=True)
+    # Framed front doorway between Market Arcade <-> Rear Guildhall with symmetric flanked windows
+    _make_doorway_opening(sb, 9, walk_y, 7, p, "south", open_arch=False)
+    for wx in (7, 11):
+        _set_wall_column(sb, wx, walk_y, 7, p, middle_block=p.pane)
     # Market stalls cleanly against inner corners of Front Arcade (3x3 center around (9,4) open for Iron Golem!)
     sb.set(2, walk_y, 5, ("minecraft:barrel", {"facing": "south", "open": "false"}))
     sb.set(3, walk_y, 5, ("minecraft:smoker", {"facing": "south", "lit": "true"}))
@@ -850,11 +875,10 @@ def build_foundry_bastion(p: CityPalette) -> V4StructureBuilder:
             sb.set(x, walk_y + 4, z, p.floor)
             sb.set(x, walk_y + 8, z, p.floor)
 
-    # Open 3-wide connecting arch between Forge Hall <-> Tower Keep & wide Forge Yard Front Arch
+    # Open 3-wide interior arch between Forge Hall <-> Tower Keep & framed front forge door
     for z in range(10, 13):
         _make_doorway_opening(sb, 8, walk_y, z, p, "east", open_arch=True)
-    for x in (4, 5, 6):
-        _make_doorway_opening(sb, x, walk_y, 6, p, "south", open_arch=True)
+    _make_doorway_opening(sb, 5, walk_y, 6, p, "south", open_arch=False)
 
     # Ladder inside Tower Keep along East wall (x=14, z=11) rising to 2nd & 3rd floor
     for ly in range(walk_y, walk_y + 10):
@@ -917,8 +941,9 @@ def build_cruciform_guildhall(p: CityPalette) -> V4StructureBuilder:
         for z in (0, 1):
             _solid_ground_block(sb, x, z, deck_y, p.road, p, force_pier=(z == 0 and x in (7, 11)))
             _clear_column_air(sb, x, walk_y, walk_y + 4, z)
-    for x in (8, 9, 10):
-        _make_doorway_opening(sb, x, walk_y, 2, p, "south", open_arch=True)
+    _make_doorway_opening(sb, 9, walk_y, 2, p, "south", open_arch=False)
+    for wx in (7, 11):
+        _set_wall_column(sb, wx, walk_y, 2, p, middle_block=p.stained_pane)
     sb.set(7, walk_y, 1, p.fence); sb.lantern(7, walk_y + 1, 1, hanging=False)
     sb.set(11, walk_y, 1, p.fence); sb.lantern(11, walk_y + 1, 1, hanging=False)
 

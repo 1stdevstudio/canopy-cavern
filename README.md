@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.29`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.30`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,15 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.29.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.30.jar`.
+
+---
+
+## Perbaikan Pintu & Bingkai Jendela Structure Villager (`v0.5.0-beta.30`)
+
+- **Utuhkan Dinding Depan & Pilar `rotunda_observatory` / `sanctuary_library`**: Membatasi pembersihan ruang teras depan hanya pada `z=0` di [grand_city_architecture.py](tools/worldgen/grand_city_architecture.py) agar dinding depan `z=1` (`x=5..9`) dan pilar sudutnya tidak terhapus, lengkap dengan kusen dinding padat serta balok lintel 2-lapis di atas pintu masuk.
+- **Pintu Berbingkai Simetris & Anti-Kaca-Menggantung**: Mengganti bukaan lebar tanpa pintu pada fasad depan `market_t_hall`, `foundry_bastion` / `guild_smithy`, dan `cruciform_guildhall` menjadi pintu terpusat dengan kusen dinding di kedua sisi, membatasi penempatan panel kaca pada segmen dinding lurus (`straight_walls`) agar tidak menggantung di sudut L/pertemuan dinding, serta memasang pintu depan pada `bastion_gatehouse` di [generate_v04_ocean_and_villages.py](tools/worldgen/generate_v04_ocean_and_villages.py).
+- **Regresi Test**: Menambahkan pemeriksaan otomatis bingkai pintu dan panel kaca di [test_biome_village_redesign.py](tools/worldgen/test_biome_village_redesign.py) untuk seluruh `9` tema kota/biome kustom dan `5` tema `vanilla_revamp`.
 
 ---
 

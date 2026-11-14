@@ -1560,7 +1560,7 @@ def draw_revamp_house(theme: str, p: dict, role: str) -> V4StructureBuilder:
         sb.arch_opening_z(4, 7, 9, 6, 8, p["stair"])
         sb.arch_opening_z(8, 7, 9, 6, 8, p["stair"])
         for fx in (2, 10):
-            sb.set(fx, 1, 4, "minecraft:air"); sb.set(fx, 2, 4, "minecraft:air")
+            sb.door(fx, 1, 4, p["door"], "south")
             sb.set(fx, 8, 4, p["pane"]); sb.set(fx, 8, 11, p["pane"])
             sb.set(fx, 2, 11, p["pane"]); sb.set(fx, 3, 11, p["pane"])
         for oz in (6, 9):
