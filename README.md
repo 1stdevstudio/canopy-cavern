@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.31`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.32`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, struktur kaverna Nether & pulau luar The End, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,34 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.31.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.32.jar`.
+
+---
+
+## Struktur Nether & Pulau Luar The End (`v0.5.0-beta.32`)
+
+- **3 Struktur Kaverna Nether (`canopycavern:nether_cavern_jigsaw`)**: Menambatkan struktur di rak goa Nether antara lautan lava dan langit-langit bedrock (`Y <= 118`) dengan fondasi batu otomatis (`NetherCavernHelper` & [NetherCavernJigsawStructure.java](src/main/java/com/yogi/canopycavern/worldgen/NetherCavernJigsawStructure.java)), tanpa memotong atap bedrock maupun membuka aliran lava:
+  - **Cinder Vault Bastion** (`canopycavern:cinder_vault_bastion`, `nether_wastes` & `crimson_forest`): Benteng *blackstone* bersepuh emas dengan sayap brankas (`chests/nether_bastion_vault`), asrama *crimson* (`chests/nether_bastion_supply`), kisi tembaga, dan penjaga `piglin` / `piglin_brute` (`CannotHunt=1`, `PersistenceRequired=1`).
+  - **Soul Catacomb Reliquary** (`canopycavern:soul_catacomb_reliquary`, `soul_sand_valley`): Relikuari bertingkat *nether brick* berhias `soul_lantern` gantung, ruang alkimia & osuarium (`chests/nether_soul_reliquary`), dijaga `wither_skeleton` persisten.
+  - **Basalt Thermal Spire** (`canopycavern:basalt_thermal_spire`, `basalt_deltas`): Menara termal *basalt* bertingkat di tebing vulkanik (`min_rigid_pieces=1`) dengan jembatan penopang & peti `chests/nether_thermal_spire`, dijaga `blaze` & `piglin` persisten.
+- **3 Struktur Pulau Luar The End (`canopycavern:surface_jigsaw`)**: Eksklusif di `end_highlands` / `end_midlands` (mengeluarkan `minecraft:the_end`, `small_end_islands`, dan `end_barrens` dari tag bioma) dengan pemeriksaan ketebalan batu pulau padat (`min_solid_thickness` di [SurfaceJigsawStructure.java](src/main/java/com/yogi/canopycavern/worldgen/SurfaceJigsawStructure.java)):
+  - **Chorus Monastery Citadel** (`canopycavern:chorus_monastery_citadel`, `end_highlands`): Biara *purpur* & *end stone bricks* berpagoda bertingkat (`chests/end_monastery_vault`) dijaga `shulker` persisten.
+  - **Void Beacon Observatory** (`canopycavern:void_beacon_observatory`, `end_highlands` & `end_midlands`): Menara pengamatan berbalkon `end_rod` (`chests/end_observatory_cache`) dengan fondasi jangkar aman.
+  - **Ender Archive Vault** (`canopycavern:ender_archive_vault`, `end_midlands`, `min_solid_thickness=14`, `max_piece_embed=8`): Brankas arsip bawah tanah bertatah `crying_obsidian` & `amethyst_block` (`chests/end_archive_vault`) yang terpendam aman di pulau tengah tebal tanpa menembus kehampaan *void*.
+- **Navigasi, Iklim Mikro, Advancement & Panduan**:
+  - **Grotto Relic Compass (`#canopycavern:relic_compass_targets`)**: Mencakup seluruh `6` struktur Nether/End baru serta membuka resepnya saat memperoleh `minecraft:quartz` atau `minecraft:ender_pearl` ([PlayerClimateHandler.java](src/main/java/com/yogi/canopycavern/world/PlayerClimateHandler.java)).
+  - **Zona Iklim Adil**: [EnvironmentTelemetry.java](src/main/java/com/yogi/canopycavern/core/EnvironmentTelemetry.java) dan [ClimateSimulation.java](src/main/java/com/yogi/canopycavern/core/ClimateSimulation.java) menambahkan `NETHER_CAVERN` dan `END_ISLANDS` berkarakter *Vanilla-Plus* tanpa penalti *Overheat*/*Freezing* yang tidak adil jauh dari lava.
+  - **Buku Panduan & Advancement**: Menambahkan halaman `4 / 4` pada [CanopyFieldGuideScreen.java](src/client/java/com/yogi/canopycavern/client/gui/CanopyFieldGuideScreen.java) (`guide.canopycavern.section.nether_*` & `end_*`) serta `6` advancement eksplorasi baru (`discover_cinder_vault`, `discover_soul_reliquary`, `discover_basalt_spire`, `discover_chorus_monastery`, `discover_void_beacon`, `discover_ender_archive`).
+
+```mcfunction
+# Perintah uji cepat (Nether & Pulau Luar The End)
+/execute in minecraft:the_nether run locate structure canopycavern:cinder_vault_bastion
+/execute in minecraft:the_nether run locate structure canopycavern:soul_catacomb_reliquary
+/execute in minecraft:the_nether run locate structure canopycavern:basalt_thermal_spire
+/execute in minecraft:the_end positioned 2400 80 0 run locate structure canopycavern:chorus_monastery_citadel
+/execute in minecraft:the_end positioned 2400 80 0 run locate structure canopycavern:void_beacon_observatory
+/execute in minecraft:the_end positioned 2400 80 0 run locate structure canopycavern:ender_archive_vault
+```
 
 ---
 

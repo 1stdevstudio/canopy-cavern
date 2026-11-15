@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:attune_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:polished_basalt"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.discover_basalt_spire.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.discover_basalt_spire.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_basalt_spire": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:basalt_thermal_spire"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_basalt_spire"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

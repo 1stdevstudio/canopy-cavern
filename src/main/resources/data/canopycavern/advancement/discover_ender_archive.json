@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:attune_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:end_stone_bricks"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.discover_ender_archive.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.discover_ender_archive.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_ender_archive": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:ender_archive_vault"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_ender_archive"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

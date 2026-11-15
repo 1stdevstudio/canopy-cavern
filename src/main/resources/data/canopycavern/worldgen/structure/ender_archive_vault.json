@@ -1,0 +1,29 @@
+{
+  "type": "canopycavern:surface_jigsaw",
+  "biomes": "#canopycavern:has_structure/ender_archive_vault",
+  "max_distance_from_center": 48,
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "size": 2,
+  "spawn_overrides": {},
+  "start_height": {
+    "absolute": -4
+  },
+  "start_pool": "canopycavern:ender_archive_vault/start",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "terrain_guard": {
+    "core_probe_radius": 7,
+    "max_core_relief": 5,
+    "max_piece_relief": 6,
+    "max_piece_embed": 8,
+    "max_foundation_depth": 10,
+    "min_rigid_pieces": 1,
+    "min_piece_y_above_sea": 42,
+    "allow_water": false,
+    "max_water_depth": 0,
+    "foundation_start_only": false,
+    "foundation_block": "minecraft:end_stone_bricks",
+    "min_solid_thickness": 14
+  },
+  "use_expansion_hack": false
+}

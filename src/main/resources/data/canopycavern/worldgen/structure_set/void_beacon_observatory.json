@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 34,
+    "separation": 14,
+    "salt": 8243209
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:void_beacon_observatory",
+      "weight": 1
+    }
+  ]
+}

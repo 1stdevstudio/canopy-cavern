@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 12,
+    "salt": 8142311
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:basalt_thermal_spire",
+      "weight": 1
+    }
+  ]
+}

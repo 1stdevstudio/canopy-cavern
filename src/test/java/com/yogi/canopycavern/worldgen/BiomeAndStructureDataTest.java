@@ -100,7 +100,18 @@ class BiomeAndStructureDataTest {
 		assertTrue(tideValues.contains("canopycavern:reef_lighthouse_keep"));
 
 		JsonObject relicTag = readJson("data/canopycavern/tags/worldgen/structure/relic_compass_targets.json");
-		assertTrue(relicTag.getAsJsonArray("values").toString().contains("canopycavern:abyssal_sanctum_monument"));
+		String relicValues = relicTag.getAsJsonArray("values").toString();
+		for (String target : List.of(
+			"canopycavern:abyssal_sanctum_monument",
+			"canopycavern:cinder_vault_bastion",
+			"canopycavern:soul_catacomb_reliquary",
+			"canopycavern:basalt_thermal_spire",
+			"canopycavern:chorus_monastery_citadel",
+			"canopycavern:void_beacon_observatory",
+			"canopycavern:ender_archive_vault"
+		)) {
+			assertTrue(relicValues.contains(target), "Missing relic compass target " + target);
+		}
 	}
 
 	@Test

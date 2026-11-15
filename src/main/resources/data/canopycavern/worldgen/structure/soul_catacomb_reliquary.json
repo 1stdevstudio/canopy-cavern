@@ -1,0 +1,24 @@
+{
+  "type": "canopycavern:nether_cavern_jigsaw",
+  "biomes": "#canopycavern:has_structure/soul_catacomb_reliquary",
+  "max_distance_from_center": 48,
+  "size": 2,
+  "spawn_overrides": {},
+  "start_pool": "canopycavern:soul_catacomb_reliquary/start",
+  "step": "underground_structures",
+  "terrain_adaptation": "none",
+  "cavern_guard": {
+    "min_floor_y": 34,
+    "max_floor_y": 95,
+    "min_headroom": 15,
+    "max_ceiling_y": 118,
+    "core_probe_radius": 6,
+    "max_core_relief": 7,
+    "max_piece_relief": 8,
+    "max_piece_embed": 5,
+    "max_foundation_depth": 16,
+    "min_rigid_pieces": 2,
+    "foundation_block": "minecraft:nether_bricks"
+  },
+  "use_expansion_hack": false
+}

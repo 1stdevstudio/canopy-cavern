@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 38,
+    "separation": 16,
+    "salt": 8243107
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:chorus_monastery_citadel",
+      "weight": 1
+    }
+  ]
+}

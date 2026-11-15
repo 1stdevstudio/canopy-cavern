@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 36,
+    "separation": 14,
+    "salt": 8243311
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:ender_archive_vault",
+      "weight": 1
+    }
+  ]
+}

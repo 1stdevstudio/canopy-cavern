@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 14,
+    "salt": 8142209
+  },
+  "structures": [
+    {
+      "structure": "canopycavern:soul_catacomb_reliquary",
+      "weight": 1
+    }
+  ]
+}

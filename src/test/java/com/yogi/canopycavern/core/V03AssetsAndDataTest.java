@@ -50,7 +50,13 @@ class V03AssetsAndDataTest {
 		"explore_reef_lighthouse",
 		"dive_thermal_observatory",
 		"plunder_sunken_citadel",
-		"discover_abyssal_monument"
+		"discover_abyssal_monument",
+		"discover_cinder_vault",
+		"discover_soul_reliquary",
+		"discover_basalt_spire",
+		"discover_chorus_monastery",
+		"discover_void_beacon",
+		"discover_ender_archive"
 	);
 
 	@Test
@@ -109,6 +115,21 @@ class V03AssetsAndDataTest {
 		Set<String> idKeys = id.keySet();
 		assertEquals(enKeys, idKeys, "English and Indonesian translation keys must match exactly");
 		assertTrue(enKeys.size() >= 90, "Expected complete v0.4.0 localization catalog");
+		for (String requiredKey : List.of(
+			"hud.canopycavern.zone.nether_cavern",
+			"hud.canopycavern.zone.end_islands",
+			"guide.canopycavern.section.nether_bastions.title",
+			"guide.canopycavern.section.nether_bastions.body",
+			"guide.canopycavern.section.nether_sanctums.title",
+			"guide.canopycavern.section.nether_sanctums.body",
+			"guide.canopycavern.section.end_citadels.title",
+			"guide.canopycavern.section.end_citadels.body",
+			"guide.canopycavern.section.end_navigation.title",
+			"guide.canopycavern.section.end_navigation.body"
+		)) {
+			assertTrue(en.has(requiredKey) && !en.get(requiredKey).getAsString().isBlank(), "Missing en_us " + requiredKey);
+			assertTrue(id.has(requiredKey) && !id.get(requiredKey).getAsString().isBlank(), "Missing id_id " + requiredKey);
+		}
 	}
 
 

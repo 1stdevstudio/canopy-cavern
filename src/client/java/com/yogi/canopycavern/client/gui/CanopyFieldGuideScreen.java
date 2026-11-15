@@ -58,10 +58,10 @@ public class CanopyFieldGuideScreen extends Screen {
 			}).bounds(left + 14, top + PANEL_HEIGHT - 30, 22, 20).build());
 			prevBtn.active = guidePage > 0;
 			Button nextBtn = this.addRenderableWidget(Button.builder(Component.literal(">"), b -> {
-				guidePage = Math.min(2, guidePage + 1);
+				guidePage = Math.min(3, guidePage + 1);
 				this.init();
 			}).bounds(left + 40, top + PANEL_HEIGHT - 30, 22, 20).build());
-			nextBtn.active = guidePage < 2;
+			nextBtn.active = guidePage < 3;
 		} else if (activeTab == 1) {
 			Button prevGear = this.addRenderableWidget(Button.builder(Component.literal("<"), b -> {
 				equipmentScroll = Math.max(0, equipmentScroll - 4);
@@ -174,17 +174,24 @@ public class CanopyFieldGuideScreen extends Screen {
 				"guide.canopycavern.section.airlock",
 				"guide.canopycavern.section.villages"
 			};
-			default -> new String[] {
+			case 2 -> new String[] {
 				"guide.canopycavern.section.sanctuary_hub",
 				"guide.canopycavern.section.sanctuary_routes",
 				"guide.canopycavern.section.sanctuary_safety",
 				"guide.canopycavern.section.sanctuary_admin"
 			};
+			default -> new String[] {
+				"guide.canopycavern.section.nether_bastions",
+				"guide.canopycavern.section.nether_sanctums",
+				"guide.canopycavern.section.end_citadels",
+				"guide.canopycavern.section.end_navigation"
+			};
 		};
 		int[] colors = switch (guidePage) {
 			case 0 -> new int[] {0xFFAEE8A8, 0xFF9CD4FF, 0xFFF3C677, 0xFFC5A3FF};
 			case 1 -> new int[] {0xFF66E2D5, 0xFF8CC8FF, 0xFFF4B860, 0xFFAEE8A8};
-			default -> new int[] {0xFFAEE8A8, 0xFF66E2D5, 0xFF9CD4FF, 0xFFF3C677};
+			case 2 -> new int[] {0xFFAEE8A8, 0xFF66E2D5, 0xFF9CD4FF, 0xFFF3C677};
+			default -> new int[] {0xFFFF9866, 0xFF7BE8D8, 0xFFD9A6FF, 0xFFF3C677};
 		};
 		for (int i = 0; i < keys.length; i++) {
 			graphics.text(this.font, Component.translatable(keys[i] + ".title"), x, y, colors[i], false);
@@ -192,7 +199,7 @@ public class CanopyFieldGuideScreen extends Screen {
 			graphics.textWithWordWrap(this.font, Component.translatable(keys[i] + ".body"), x, y, wrapWidth, 0xFFD9E6DF, false);
 			y += 30;
 		}
-		graphics.text(this.font, Component.literal((guidePage + 1) + " / 3"), left + 68, top + PANEL_HEIGHT - 24, 0xFF9FB8AD, false);
+		graphics.text(this.font, Component.literal((guidePage + 1) + " / 4"), left + 68, top + PANEL_HEIGHT - 24, 0xFF9FB8AD, false);
 	}
 
 	private void renderGearTab(GuiGraphicsExtractor graphics, int left, int top) {

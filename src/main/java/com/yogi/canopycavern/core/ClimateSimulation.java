@@ -120,7 +120,7 @@ public final class ClimateSimulation {
 
 	/** Evaluates micro-weather, humidity, armor mitigation, and survival debuff flags. */
 	public static ClimateSnapshot evaluate(ClimateInput input) {
-		AmbientSnapshot base = EnvironmentTelemetry.evaluate(input.ambient());
+		AmbientSnapshot base = EnvironmentTelemetry.evaluateForBiome(input.ambient(), input.biomeId());
 		int thermalPieces = clampPieces(input.thermalArmorPieces());
 		int mossPieces = clampPieces(input.mossweaveArmorPieces());
 		int thermalInsulation = Math.min(100, thermalPieces * 25
@@ -163,10 +163,16 @@ public final class ClimateSimulation {
 			case "canopycavern:mossy_canopy" -> 76;
 			case "canopycavern:crystal_steppe" -> 46;
 			case "canopycavern:whispering_peaks" -> 54;
+			case "minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:soul_sand_valley" -> 24;
+			case "minecraft:crimson_forest", "minecraft:warped_forest" -> 38;
+			case "minecraft:the_end", "minecraft:end_highlands", "minecraft:end_midlands",
+				"minecraft:small_end_islands", "minecraft:end_barrens" -> 32;
 			default -> cave ? 66 : 52;
 		};
 
-		if (input.ambient().raining() && !cave) {
+		boolean extraterrestrial = base.depthZone() == DepthZone.NETHER_CAVERN
+			|| base.depthZone() == DepthZone.END_ISLANDS;
+		if (input.ambient().raining() && !cave && !extraterrestrial) {
 			humidity += 16;
 		}
 		if (base.dampCave()) {
@@ -189,6 +195,13 @@ public final class ClimateSimulation {
 	}
 
 	private static MicroWeather classifyMicroWeather(ClimateInput input, AmbientSnapshot base, int humidity) {
+		if (base.depthZone() == DepthZone.NETHER_CAVERN) {
+			return input.nearLava() ? MicroWeather.THERMAL_STEAM : MicroWeather.CLEAR;
+		}
+		if (base.depthZone() == DepthZone.END_ISLANDS) {
+			boolean highSpire = input.ambient().blockY() >= 100 && !input.enclosedShelter() && !input.nearCampfire();
+			return highSpire ? MicroWeather.MISTY_WIND : MicroWeather.CLEAR;
+		}
 		boolean cave = isCave(base.depthZone());
 		if (input.nearLava() && cave) {
 			return MicroWeather.THERMAL_STEAM;
@@ -217,10 +230,11 @@ public final class ClimateSimulation {
 		int mossPieces
 	) {
 		double temp = base.apparentCelsius();
+		double steamBoost = base.depthZone() == DepthZone.NETHER_CAVERN ? 4.0 : 8.5;
 		temp += switch (weather) {
 			case BLIZZARD_CHILL -> -5.5;
 			case MISTY_WIND -> -2.5;
-			case THERMAL_STEAM -> 8.5;
+			case THERMAL_STEAM -> steamBoost;
 			case CAVERN_HUMID -> 2.0;
 			case CLEAR -> 0.0;
 		};

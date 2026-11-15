@@ -18,6 +18,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -60,10 +63,40 @@ public final class SurfaceJigsawStructure extends Structure {
 		boolean allowWater,
 		int maxWaterDepth,
 		boolean foundationStartOnly,
-		Block foundationBlock
+		Block foundationBlock,
+		int minSolidThickness
 	) {
+		public TerrainGuard(
+			int coreProbeRadius,
+			int maxCoreRelief,
+			int maxPieceRelief,
+			int maxPieceEmbed,
+			int maxFoundationDepth,
+			int minRigidPieces,
+			int minPieceYAboveSea,
+			boolean allowWater,
+			int maxWaterDepth,
+			boolean foundationStartOnly,
+			Block foundationBlock
+		) {
+			this(
+				coreProbeRadius,
+				maxCoreRelief,
+				maxPieceRelief,
+				maxPieceEmbed,
+				maxFoundationDepth,
+				minRigidPieces,
+				minPieceYAboveSea,
+				allowWater,
+				maxWaterDepth,
+				foundationStartOnly,
+				foundationBlock,
+				0
+			);
+		}
+
 		public static final TerrainGuard DEFAULT = new TerrainGuard(
-			8, 4, 5, 3, 6, 1, -64, false, 0, false, Blocks.COBBLESTONE
+			8, 4, 5, 3, 6, 1, -64, false, 0, false, Blocks.COBBLESTONE, 0
 		);
 
 		public static final Codec<TerrainGuard> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -77,7 +110,8 @@ public final class SurfaceJigsawStructure extends Structure {
 			Codec.BOOL.optionalFieldOf("allow_water", DEFAULT.allowWater()).forGetter(TerrainGuard::allowWater),
 			Codec.intRange(0, 16).optionalFieldOf("max_water_depth", DEFAULT.maxWaterDepth()).forGetter(TerrainGuard::maxWaterDepth),
 			Codec.BOOL.optionalFieldOf("foundation_start_only", DEFAULT.foundationStartOnly()).forGetter(TerrainGuard::foundationStartOnly),
-			BuiltInRegistries.BLOCK.byNameCodec().optionalFieldOf("foundation_block", DEFAULT.foundationBlock()).forGetter(TerrainGuard::foundationBlock)
+			BuiltInRegistries.BLOCK.byNameCodec().optionalFieldOf("foundation_block", DEFAULT.foundationBlock()).forGetter(TerrainGuard::foundationBlock),
+			Codec.intRange(0, 32).optionalFieldOf("min_solid_thickness", DEFAULT.minSolidThickness()).forGetter(TerrainGuard::minSolidThickness)
 		).apply(instance, TerrainGuard::new));
 	}
 
@@ -245,6 +279,15 @@ public final class SurfaceJigsawStructure extends Structure {
 		)) {
 			return Optional.empty();
 		}
+		if (!hasSolidIslandBase(
+			context.chunkGenerator(),
+			context.heightAccessor(),
+			context.randomState(),
+			startBox,
+			terrainGuard.minSolidThickness()
+		)) {
+			return Optional.empty();
+		}
 
 		List<StructurePiece> accepted = filterConnectedPieces(context, rawPieces, startBox.minY(), seaLevel);
 		int rigidCount = 0;
@@ -308,6 +351,12 @@ public final class SurfaceJigsawStructure extends Structure {
 					seaLevel,
 					terrainGuard.allowWater(),
 					terrainGuard.maxWaterDepth()
+				) && hasSolidIslandBase(
+					context.chunkGenerator(),
+					context.heightAccessor(),
+					context.randomState(),
+					box,
+					terrainGuard.minSolidThickness()
 				);
 			} else {
 				ok = SurfaceTerrainHelper.fitsStartTerrain(
@@ -337,6 +386,50 @@ public final class SurfaceJigsawStructure extends Structure {
 	private static boolean isRigidPiece(StructurePiece piece) {
 		if (piece instanceof PoolElementStructurePiece poolPiece) {
 			return poolPiece.getElement().getProjection() == StructureTemplatePool.Projection.RIGID;
+		}
+		return true;
+	}
+
+	private static boolean hasSolidIslandBase(
+		ChunkGenerator generator,
+		LevelHeightAccessor heightAccessor,
+		RandomState randomState,
+		BoundingBox box,
+		int minThickness
+	) {
+		if (minThickness <= 0) {
+			return true;
+		}
+		int cx = (box.minX() + box.maxX()) >> 1;
+		int cz = (box.minZ() + box.maxZ()) >> 1;
+		int insetX0 = Math.min(cx, box.minX() + 2);
+		int insetX1 = Math.max(cx, box.maxX() - 2);
+		int insetZ0 = Math.min(cz, box.minZ() + 2);
+		int insetZ1 = Math.max(cz, box.maxZ() - 2);
+		int[][] probes = {
+			{cx, cz},
+			{insetX0, insetZ0},
+			{insetX0, insetZ1},
+			{insetX1, insetZ0},
+			{insetX1, insetZ1}
+		};
+		for (int[] p : probes) {
+			int surfaceY = generator.getBaseHeight(p[0], p[1], Heightmap.Types.WORLD_SURFACE_WG, heightAccessor, randomState);
+			if (surfaceY - minThickness < heightAccessor.getMinY()) {
+				return false;
+			}
+			NoiseColumn col = generator.getBaseColumn(p[0], p[1], heightAccessor, randomState);
+			boolean thickEnough = NetherCavernHelper.hasMinimumSolidThickness(
+				y -> {
+					BlockState s = col.getBlock(y);
+					return !s.isAir() && s.getFluidState().isEmpty() && !s.canBeReplaced();
+				},
+				surfaceY,
+				minThickness
+			);
+			if (!thickEnough) {
+				return false;
+			}
 		}
 		return true;
 	}

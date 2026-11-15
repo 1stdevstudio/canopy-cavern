@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:attune_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:gilded_blackstone"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.discover_cinder_vault.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.discover_cinder_vault.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_cinder_vault": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:cinder_vault_bastion"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_cinder_vault"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

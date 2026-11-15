@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:attune_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:soul_lantern"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.discover_soul_reliquary.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.discover_soul_reliquary.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_soul_reliquary": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:soul_catacomb_reliquary"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_soul_reliquary"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

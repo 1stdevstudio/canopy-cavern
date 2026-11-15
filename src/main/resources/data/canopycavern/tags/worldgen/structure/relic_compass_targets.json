@@ -4,6 +4,12 @@
     "canopycavern:cavern_shrine",
     "canopycavern:echoing_mineshaft_hub",
     "canopycavern:canopy_treetop_bastion",
-    "canopycavern:abyssal_sanctum_monument"
+    "canopycavern:abyssal_sanctum_monument",
+    "canopycavern:cinder_vault_bastion",
+    "canopycavern:soul_catacomb_reliquary",
+    "canopycavern:basalt_thermal_spire",
+    "canopycavern:chorus_monastery_citadel",
+    "canopycavern:void_beacon_observatory",
+    "canopycavern:ender_archive_vault"
   ]
 }

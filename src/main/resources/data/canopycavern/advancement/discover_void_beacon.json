@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:attune_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:end_rod"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.discover_void_beacon.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.discover_void_beacon.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_void_beacon": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:void_beacon_observatory"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_void_beacon"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

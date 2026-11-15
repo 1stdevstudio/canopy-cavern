@@ -66,12 +66,11 @@ public final class ClientEnvironmentSampler {
 			night,
 			player.isInWater()
 		);
-		AmbientSnapshot snapshot = EnvironmentTelemetry.evaluate(input);
-
 		String rawBiomeKey = biomeHolder.unwrapKey()
 			.map(ResourceKey::identifier)
 			.map(Identifier::toString)
 			.orElse("unknown");
+		AmbientSnapshot snapshot = EnvironmentTelemetry.evaluateForBiome(input, rawBiomeKey);
 		String biomeName = resolveBiomeName(biomeHolder.unwrapKey().map(ResourceKey::identifier).orElse(null), rawBiomeKey);
 		boolean forest = biomeHolder.is(BiomeTags.IS_FOREST) || biomeHolder.is(BiomeTags.IS_TAIGA);
 

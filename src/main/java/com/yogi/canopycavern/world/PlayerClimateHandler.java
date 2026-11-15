@@ -232,7 +232,7 @@ public final class PlayerClimateHandler {
 
 		boolean inCave = switch (snapshot.telemetry().depthZone()) {
 			case SHALLOW_CAVE, DEEP_CAVERN, ABYSSAL_DEPTHS -> true;
-			case SURFACE, HIGH_RIDGE -> false;
+			case SURFACE, HIGH_RIDGE, NETHER_CAVERN, END_ISLANDS -> false;
 		};
 		if (mossCount >= 4 && inCave) {
 			player.addEffect(new MobEffectInstance(MobEffects.SPEED, 40, 0, true, false, false));
@@ -274,6 +274,7 @@ public final class PlayerClimateHandler {
 		boolean hasWoolOrLeather = hasTaggedItem(inv, ItemTags.WOOL) || hasItem(inv, Items.LEATHER);
 		boolean hasMoss = hasItem(inv, Items.MOSS_BLOCK);
 		boolean hasAmethyst = hasItem(inv, Items.AMETHYST_SHARD);
+		boolean hasRelicCatalyst = hasAmethyst || hasItem(inv, Items.QUARTZ) || hasItem(inv, Items.ENDER_PEARL);
 		boolean hasIron = hasItem(inv, Items.IRON_INGOT);
 		boolean hasOceanMaterial =
 			hasItem(inv, Items.PRISMARINE_CRYSTALS)
@@ -297,6 +298,8 @@ public final class PlayerClimateHandler {
 		if (hasAmethyst) {
 			unlocks.add(recipeKey("grotto_crystal_pickaxe"));
 			unlocks.add(recipeKey("glow_lantern"));
+		}
+		if (hasRelicCatalyst) {
 			unlocks.add(recipeKey("grotto_relic_compass"));
 		}
 		if (hasIron) {

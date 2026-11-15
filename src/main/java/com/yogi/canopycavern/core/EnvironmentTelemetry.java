@@ -19,7 +19,9 @@ public final class EnvironmentTelemetry {
 		SURFACE("hud.canopycavern.zone.surface", 0xFFAEE8A8),
 		SHALLOW_CAVE("hud.canopycavern.zone.shallow_cave", 0xFF7BE0C3),
 		DEEP_CAVERN("hud.canopycavern.zone.deep_cavern", 0xFFF3C677),
-		ABYSSAL_DEPTHS("hud.canopycavern.zone.abyssal_depths", 0xFFD98BFF);
+		ABYSSAL_DEPTHS("hud.canopycavern.zone.abyssal_depths", 0xFFD98BFF),
+		NETHER_CAVERN("hud.canopycavern.zone.nether_cavern", 0xFFFF8855),
+		END_ISLANDS("hud.canopycavern.zone.end_islands", 0xFFD9A6FF);
 
 		private final String translationKey;
 		private final int accentColor;
@@ -93,6 +95,66 @@ public final class EnvironmentTelemetry {
 		ThermalBand band = classifyThermalBand(apparentCelsius);
 		boolean dampCave = underground && (input.inWater() || input.blockY() >= -12);
 		return new AmbientSnapshot(zone, apparentCelsius, band, dampCave);
+	}
+
+	/**
+	 * Biome-aware telemetry evaluator that classifies Nether caverns and outer End islands
+	 * cleanly alongside Overworld elevation and cavern zones without breaking Overworld defaults.
+	 */
+	public static AmbientSnapshot evaluateForBiome(AmbientInput input, String biomeId) {
+		if (isNetherBiome(biomeId)) {
+			double celsius = switch (biomeId) {
+				case "minecraft:soul_sand_valley" -> 24.5;
+				case "minecraft:warped_forest" -> 28.5;
+				case "minecraft:crimson_forest" -> 31.0;
+				case "minecraft:basalt_deltas" -> 33.5;
+				default -> 32.0;
+			};
+			if (input.inWater()) {
+				celsius -= 3.0;
+			}
+			celsius = roundTenths(celsius);
+			return new AmbientSnapshot(DepthZone.NETHER_CAVERN, celsius, classifyThermalBand(celsius), false);
+		}
+		if (isEndBiome(biomeId)) {
+			double celsius = input.blockY() >= 96 ? 6.0 : 8.5;
+			if (input.inWater()) {
+				celsius -= 2.5;
+			}
+			celsius = roundTenths(celsius);
+			return new AmbientSnapshot(DepthZone.END_ISLANDS, celsius, classifyThermalBand(celsius), false);
+		}
+		return evaluate(input);
+	}
+
+	/** Returns true if the namespaced biome ID belongs to the Nether dimension. */
+	public static boolean isNetherBiome(String biomeId) {
+		if (biomeId == null) {
+			return false;
+		}
+		return switch (biomeId) {
+			case "minecraft:nether_wastes",
+				"minecraft:crimson_forest",
+				"minecraft:warped_forest",
+				"minecraft:soul_sand_valley",
+				"minecraft:basalt_deltas" -> true;
+			default -> false;
+		};
+	}
+
+	/** Returns true if the namespaced biome ID belongs to The End dimension. */
+	public static boolean isEndBiome(String biomeId) {
+		if (biomeId == null) {
+			return false;
+		}
+		return switch (biomeId) {
+			case "minecraft:the_end",
+				"minecraft:end_highlands",
+				"minecraft:end_midlands",
+				"minecraft:small_end_islands",
+				"minecraft:end_barrens" -> true;
+			default -> false;
+		};
 	}
 
 	/** Classifies vertical exploration zones across surface ridges and cave tiers. */

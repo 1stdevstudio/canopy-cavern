@@ -1,0 +1,37 @@
+{
+  "parent": "canopycavern:attune_compass",
+  "display": {
+    "icon": {
+      "id": "minecraft:purpur_block"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.discover_chorus_monastery.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.discover_chorus_monastery.description"
+    },
+    "frame": "goal"
+  },
+  "criteria": {
+    "in_chorus_monastery": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "canopycavern:chorus_monastery_citadel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_chorus_monastery"
+    ]
+  ],
+  "sends_telemetry_event": false
+}
