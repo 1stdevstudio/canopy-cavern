@@ -1206,7 +1206,6 @@ def build_canopy_treetop_bastion():
     sb.lantern(6, 12, 6, hanging=True)
     sb.lantern(2, 8, 2, hanging=False)
     sb.lantern(10, 8, 10, hanging=False)
-    sb.jigsaw(6, 6, 4, "up_north", "minecraft:bottom", "minecraft:bottom", "canopycavern:common/village_sentinel", "minecraft:spruce_planks", "rollable")
     sb.set(11, 7, 6, "minecraft:air")
     sb.set(12, 6, 6, "minecraft:spruce_planks")
     sb.jigsaw(12, 7, 6, "east_up", "canopycavern:wing", "canopycavern:wing", "canopycavern:canopy_treetop_bastion/wings", "minecraft:air", "aligned")

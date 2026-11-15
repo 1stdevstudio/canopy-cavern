@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.30`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.31`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,15 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.30.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.31.jar`.
+
+---
+
+## Minimalisir Spawn Village Sentinel (`v0.5.0-beta.31`)
+
+- **Desa Vanilla Revamp (`plains`, `desert`, `savanna`, `snowy`, `taiga`)**: Memangkas spawn `canopycavern:village_sentinel` dari `9` → `2` di `grand_town_center`, `4` → `1` di `bastion_gatehouse`, `3` → `1` di `guild_smithy`, dan menghapus Sentinel dari `market_pavilion`, `grand_manor`, serta `sanctuary_library` di [generate_v04_ocean_and_villages.py](tools/worldgen/generate_v04_ocean_and_villages.py).
+- **9 Kota/Desa Biome Kustom (`grand_city_architecture.py`)**: Mengurangi `town_center` dari `4` → `2` Sentinel dan `foundry_bastion` dari `2` → `1` Sentinel, serta menghapus spawn Sentinel dari semua segmen jalan (`street_*`), ujung jalan (`terminator_*`), `side_garden`, dan bangunan sipil (`villa_l_wing`, `rotunda_observatory`, `market_t_hall`, `cruciform_guildhall`).
+- **Struktur Non-Desa & Regresi Test**: Mengurangi `reef_lighthouse_keep/island_keep_anchored` dari `3` → `1` Sentinel dan `canopy_treetop_bastion` dari `2` → `1` slot jigsaw Sentinel ([generate_v03_structures.py](tools/worldgen/generate_v03_structures.py)), serta mengunci kuota eksak Sentinel di [BiomeAndStructureDataTest.java](src/test/java/com/yogi/canopycavern/worldgen/BiomeAndStructureDataTest.java) dan [test_biome_village_redesign.py](tools/worldgen/test_biome_village_redesign.py).
 
 ---
 

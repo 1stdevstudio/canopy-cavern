@@ -144,7 +144,7 @@ class V4StructureBuilder(v3.StructureBuilder):
                 break
             layer += 1
 
-    def validate(self, label: str, require_outdoor_sentinel: bool = False):
+    def validate(self, label: str, require_outdoor_sentinel: bool = False, min_sentinels: int = 1):
         """Verifies every entity has solid footing and clear headroom/water."""
         for ent in self.entities:
             bx, by, bz = [int(v.value if isinstance(v, v3.NbtTyped) else v) for v in ent["blockPos"].value]
@@ -173,8 +173,8 @@ class V4StructureBuilder(v3.StructureBuilder):
                                 raise AssertionError(f"{label}: iron_golem hitbox obstructed at {(bx+dx, by+dy, bz+dz)} by {cell}")
         if require_outdoor_sentinel:
             sentinels = [e for e in self.entities if e["nbt"]["id"] == "canopycavern:village_sentinel"]
-            if len(sentinels) < 2:
-                raise AssertionError(f"{label}: expected >=2 sentinels, found {len(sentinels)}")
+            if len(sentinels) < min_sentinels:
+                raise AssertionError(f"{label}: expected >={min_sentinels} sentinels, found {len(sentinels)}")
             for e in sentinels:
                 by_s = int(e["blockPos"].value[1])
                 if by_s > 2 and "reef_lighthouse_keep" not in label:
@@ -919,10 +919,8 @@ def build_reef_lighthouse_keep():
     lh.set(18, 48, 12, "minecraft:oxidized_copper")
     lh.set(18, 49, 12, "minecraft:lightning_rod")
 
-    # Open-Air Harbor Keep Sentinels + Maritime Villagers (y=21 courtyard & pier)
+    # Open-Air Harbor Keep Sentinel + Maritime Villagers (y=21 courtyard & pier)
     lh.add_sentinel(13, 21, 22)
-    lh.add_sentinel(16, 21, 17)
-    lh.add_sentinel(8, 21, 19)
     lh.add_villager(13, 21, 19, "minecraft:plains", "minecraft:cartographer")
     lh.add_villager(14, 21, 24, "minecraft:plains", "minecraft:fisherman")
 
@@ -1337,7 +1335,7 @@ THEMES = {
 def draw_grand_town_center(theme: str, p: dict) -> V4StructureBuilder:
     """
     17x17x17 Grand Civic Town Center Piazza & Clock-Bell Pavilion.
-    Zero trapped sentinels: 4 Sentinels + 2 Iron Golems + 4 Villagers patrol OPEN flagstone plaza!
+    Zero trapped sentinels: 2 Sentinels + 2 Iron Golems + 5 Villagers patrol OPEN flagstone plaza!
     Cardinal street connectors sit at y=1 matching vanilla streets seamlessly.
     """
     sb = V4StructureBuilder(17, 17, 17, fill_block="minecraft:air")
@@ -1407,16 +1405,9 @@ def draw_grand_town_center(theme: str, p: dict) -> V4StructureBuilder:
     sb.jigsaw(8, 1, 0, "north_up", "minecraft:street", "minecraft:street", f"minecraft:village/{theme}/streets", "minecraft:structure_void", "aligned")
     sb.jigsaw(8, 1, 16, "south_up", "minecraft:street", "minecraft:street", f"minecraft:village/{theme}/streets", "minecraft:structure_void", "aligned")
 
-    # 9 Outdoor Sentinels (+5 reinforcement on base plaza) + 2 Iron Golems + 5 Villagers (Zero blocked doors!)
+    # 2 Outdoor Sentinels flanking central bell pavilion + 2 Iron Golems + 5 Villagers
     sb.add_sentinel(4, 1, 8)
     sb.add_sentinel(12, 1, 8)
-    sb.add_sentinel(8, 1, 4)
-    sb.add_sentinel(8, 1, 12)
-    sb.add_sentinel(1, 1, 8)
-    sb.add_sentinel(15, 1, 8)
-    sb.add_sentinel(8, 1, 1)
-    sb.add_sentinel(8, 1, 15)
-    sb.add_sentinel(4, 1, 13)
     sb.add_golem(3, 1, 11)
     sb.add_golem(13, 1, 11)
     sb.add_villager(3, 1, 5, p["vtype"], "minecraft:farmer")
@@ -1425,7 +1416,7 @@ def draw_grand_town_center(theme: str, p: dict) -> V4StructureBuilder:
     sb.add_villager(11, 1, 13, p["vtype"], "minecraft:cleric")
     sb.add_villager(7, 1, 2, p["vtype"], "minecraft:cartographer")
 
-    sb.validate(f"{theme}/grand_town_center", require_outdoor_sentinel=True)
+    sb.validate(f"{theme}/grand_town_center", require_outdoor_sentinel=True, min_sentinels=2)
     return sb
 
 
@@ -1481,24 +1472,21 @@ def _draw_non_boxy_vanilla_building(theme: str, p: dict, role: str) -> V4Structu
     cp = _vanilla_city_palette(theme, p)
     if role == "grand_manor":
         sb = build_villa_l_wing(cp)
-        sb.add_sentinel(4, 1, 1)
         sb.add_villager(7, 1, 10, p["vtype"], "minecraft:cleric")
         sb.jigsaw(5, 1, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance",
                   "minecraft:empty", "minecraft:structure_void", "aligned")
     elif role == "guild_smithy":
         sb = build_foundry_bastion(cp)
-        sb.add_sentinel(5, 1, 1)
         sb.jigsaw(5, 1, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance",
                   "minecraft:empty", "minecraft:structure_void", "aligned")
     else:
         sb = build_rotunda_observatory(cp)
-        sb.add_sentinel(8, 1, 0)
         sb.add_villager(7, 1, 10, p["vtype"], "minecraft:cleric")
         sb.jigsaw(7, 1, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance",
                   "minecraft:empty", "minecraft:structure_void", "aligned")
 
     _stamp_uuids(sb, f"vanilla_revamp/{theme}/{role}")
-    sb.validate(f"{theme}/{role}", require_outdoor_sentinel=True)
+    sb.validate(f"{theme}/{role}", require_outdoor_sentinel=(role == "guild_smithy"))
     return sb
 
 
@@ -1506,7 +1494,7 @@ def draw_revamp_house(theme: str, p: dict, role: str) -> V4StructureBuilder:
     """
     Non-boxy Multi-Wing / Rotunda / Bastion / Market Civic Buildings for vanilla houses pools.
     Uses y=0 foundation + north_up `building_entrance` matching vanilla streets.
-    Every role stations multiple Sentinels OUTSIDE on open verandas / courtyards + multiple Villagers.
+    Keeps Sentinels focused at defensive posts rather than spawning guards at every house or stall.
     """
     if role in ("grand_manor", "guild_smithy", "sanctuary_library"):
         return _draw_non_boxy_vanilla_building(theme, p, role)
@@ -1590,11 +1578,8 @@ def draw_revamp_house(theme: str, p: dict, role: str) -> V4StructureBuilder:
                 for z in range(4, 12):
                     if x in (left, right) or z in (4, 11):
                         sb.set(x, 12, z, p["fence"])
-        # Ground-only Sentinels outdoors & under wide open bastion archway!
+        # Ground-only Sentinel outside the gatehouse courtyard + Iron Golem
         sb.add_sentinel(4, 1, 2)
-        sb.add_sentinel(8, 1, 2)
-        sb.add_sentinel(5, 1, 7)
-        sb.add_sentinel(7, 1, 7)
         sb.add_golem(6, 1, 2)
         sb.add_villager(3, 1, 1, p["vtype"], "minecraft:fletcher")
         sb.add_villager(9, 1, 1, p["vtype"], "minecraft:armorer")
@@ -1633,9 +1618,6 @@ def draw_revamp_house(theme: str, p: dict, role: str) -> V4StructureBuilder:
         sb.chest(5, 6, 9, "north", "canopycavern:chests/village_supply")
         sb.lantern(6, 7, 7, hanging=True)
         sb.pitched_gable_roof(2, 10, 9, 4, 10, p["stair"], p["trim"], p["slab"], p["wall"])
-        sb.add_sentinel(4, 1, 1)
-        sb.add_sentinel(8, 1, 1)
-        sb.add_sentinel(6, 1, 7)
         sb.add_villager(4, 1, 6, p["vtype"], "minecraft:farmer")
         sb.add_villager(8, 1, 6, p["vtype"], "minecraft:butcher")
         sb.add_villager(6, 1, 11, p["vtype"], "minecraft:cartographer")
@@ -1786,7 +1768,7 @@ def draw_revamp_house(theme: str, p: dict, role: str) -> V4StructureBuilder:
     # Entrance connector at [6, 1, 0] facing north_up -> aligns cleanly with vanilla street `building_entrance` at y=1!
     sb.jigsaw(6, 1, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance",
               "minecraft:empty", "minecraft:structure_void", "aligned")
-    sb.validate(f"{theme}/{role}", require_outdoor_sentinel=True)
+    sb.validate(f"{theme}/{role}", require_outdoor_sentinel=(role == "bastion_gatehouse"))
     return sb
 
 

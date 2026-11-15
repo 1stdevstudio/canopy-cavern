@@ -115,12 +115,12 @@ class BiomeAndStructureDataTest {
 			assertTrue(housesRaw.contains("canopycavern:vanilla_revamp/" + theme + "/grand_manor"));
 			assertTrue(housesRaw.contains("canopycavern:vanilla_revamp/" + theme + "/bastion_gatehouse"));
 
-			assertRevampNbtIntegrity(theme, "grand_town_center", 9, 5, 2);
-			assertRevampNbtIntegrity(theme, "bastion_gatehouse", 4, 2, 1);
-			assertRevampNbtIntegrity(theme, "guild_smithy", 3, 2, 0);
-			assertRevampNbtIntegrity(theme, "market_pavilion", 3, 3, 0);
-			assertRevampNbtIntegrity(theme, "grand_manor", 2, 3, 0);
-			assertRevampNbtIntegrity(theme, "sanctuary_library", 2, 3, 0);
+			assertRevampNbtIntegrity(theme, "grand_town_center", 2, 5, 2);
+			assertRevampNbtIntegrity(theme, "bastion_gatehouse", 1, 2, 1);
+			assertRevampNbtIntegrity(theme, "guild_smithy", 1, 2, 0);
+			assertRevampNbtIntegrity(theme, "market_pavilion", 0, 3, 0);
+			assertRevampNbtIntegrity(theme, "grand_manor", 0, 3, 0);
+			assertRevampNbtIntegrity(theme, "sanctuary_library", 0, 3, 0);
 		}
 	}
 
@@ -158,15 +158,15 @@ class BiomeAndStructureDataTest {
 	private static void assertRevampNbtIntegrity(
 		String theme,
 		String piece,
-		int minSentinels,
+		int expectedSentinels,
 		int minVillagers,
 		int minGolems
 	) throws IOException {
 		String nbtPath = "data/canopycavern/structure/vanilla_revamp/" + theme + "/" + piece + ".nbt";
 		String ascii = decompressNbtLatin1(nbtPath);
 		assertTrue(ascii.contains("DataVersion"), nbtPath + " missing DataVersion");
-		assertEquals(true, countOccurrences(ascii, "canopycavern:village_sentinel") >= minSentinels,
-			nbtPath + " expected >= " + minSentinels + " sentinels");
+		assertEquals(expectedSentinels, countOccurrences(ascii, "canopycavern:village_sentinel"),
+			nbtPath + " expected exact sentinel count " + expectedSentinels);
 		assertEquals(true, countOccurrences(ascii, "minecraft:villager") >= minVillagers,
 			nbtPath + " expected >= " + minVillagers + " villagers");
 		if (minGolems > 0) {

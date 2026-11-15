@@ -117,6 +117,23 @@ class BiomeVillageRedesignTest(unittest.TestCase):
                         self.assertGreaterEqual(bed_heads, 2, f"{city_id}/{piece_name} needs >= 2 beds")
                         _assert_framed_doors_and_panes(self, blocks, f"{city_id}/{piece_name}", require_door=True)
 
+                expected_city_sentinels = {
+                    "town_center": 2,
+                    "foundry_bastion": 1,
+                    "villa_l_wing": 0,
+                    "rotunda_observatory": 0,
+                    "market_t_hall": 0,
+                    "cruciform_guildhall": 0,
+                    "side_garden": 0,
+                    "terminator_gate": 0,
+                    "terminator_roundabout": 0,
+                    **{street_name: 0 for street_name in EXPECTED_STREETS},
+                }
+                for piece_name, expected_count in expected_city_sentinels.items():
+                    piece_nbt = decode((struct_dir / f"{piece_name}.nbt").read_bytes())
+                    piece_sentinels = [e["id"] for e in nbt_entities(piece_nbt)].count("canopycavern:village_sentinel")
+                    self.assertEqual(expected_count, piece_sentinels, f"{city_id}/{piece_name} sentinel count")
+
     def test_mangrove_marsh_keeps_water_stilt_guard_and_rigid_docks(self):
         struct = json.loads((DATA / "worldgen/structure/mangrove_marsh_village.json").read_text())
         guard = struct["terrain_guard"]
@@ -144,13 +161,19 @@ class BiomeVillageRedesignTest(unittest.TestCase):
                     self.assertEqual(1, len(jigsaws))
                     self.assertEqual("minecraft:building_entrance", jigsaws[0][2]["name"])
                     ents = [e["id"] for e in nbt_entities(nbt)]
-                    self.assertGreaterEqual(ents.count("canopycavern:village_sentinel"), 2)
+                    expected_sentinels = 1 if role == "guild_smithy" else 0
+                    self.assertEqual(expected_sentinels, ents.count("canopycavern:village_sentinel"), f"{theme}/{role}")
                     self.assertGreaterEqual(ents.count("minecraft:villager"), 2)
                     _assert_framed_doors_and_panes(self, blocks, f"vanilla_revamp/{theme}/{role}", require_door=True)
+
+            center_nbt = decode((DATA / f"structure/vanilla_revamp/{theme}/grand_town_center.nbt").read_bytes())
+            self.assertEqual(2, [e["id"] for e in nbt_entities(center_nbt)].count("canopycavern:village_sentinel"))
 
             for role in ("bastion_gatehouse", "market_pavilion"):
                 with self.subTest(theme=theme, role=role):
                     nbt = decode((DATA / f"structure/vanilla_revamp/{theme}/{role}.nbt").read_bytes())
+                    expected_sentinels = 1 if role == "bastion_gatehouse" else 0
+                    self.assertEqual(expected_sentinels, [e["id"] for e in nbt_entities(nbt)].count("canopycavern:village_sentinel"), f"{theme}/{role}")
                     _assert_framed_doors_and_panes(
                         self,
                         nbt_blocks(nbt),

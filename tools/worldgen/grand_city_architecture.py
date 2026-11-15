@@ -424,8 +424,6 @@ def build_grand_octagonal_plaza(p: CityPalette, street_pool: str) -> V4Structure
     sb.add_golem(10, walk_y, 17)
     sb.add_sentinel(3, walk_y, 10)
     sb.add_sentinel(17, walk_y, 10)
-    sb.add_sentinel(7, walk_y, 10)
-    sb.add_sentinel(13, walk_y, 10)
 
     _stamp_uuids(sb, f"{p.city_id}/town_center")
     _validate_city_piece(sb, f"{p.city_id}/town_center", deck_y)
@@ -467,7 +465,6 @@ def build_street_boulevard(p: CityPalette, street_pool: str, building_pool: str,
             sb.set(4, walk_y, z, p.fence)
         sb.set(4, walk_y, 10, p.garden_soil)
         sb.set(4, walk_y + 1, 10, p.flower)
-    sb.add_sentinel(2, walk_y, 6)
     _stamp_uuids(sb, f"{p.city_id}/street_boulevard_{'dual' if dual_sided else 'single'}")
     _validate_city_piece(sb, f"{p.city_id}/street_boulevard", deck_y)
     return sb
@@ -529,7 +526,6 @@ def build_street_junction(p: CityPalette, street_pool: str, building_pool: str, 
         sb.set(7, walk_y, 9, p.garden_soil)
         sb.set(7, walk_y + 1, 9, p.flower)
 
-    sb.add_sentinel(8, walk_y, 5)
     sb.jigsaw(7, walk_y, 0, "north_up", "minecraft:street", "minecraft:street", street_pool, "minecraft:air", "aligned")
     sb.jigsaw(0, walk_y, 7, "west_up", "minecraft:street", "minecraft:street", street_pool, "minecraft:air", "aligned")
     sb.jigsaw(14, walk_y, 7, "east_up", "minecraft:street", "minecraft:street", street_pool, "minecraft:air", "aligned")
@@ -585,7 +581,6 @@ def build_terminator_gate(p: CityPalette) -> V4StructureBuilder:
         sb.set(x, walk_y + 4, z, p.plinth_alt)
     _stamp_non_boxy_roof(sb, gate_mask, walk_y + 5, p, peak_cap=3)
     sb.lantern(4, walk_y + 3, 2, hanging=True)
-    sb.add_sentinel(4, walk_y, 2)
     sb.jigsaw(4, walk_y, 0, "north_up", "minecraft:street", "minecraft:street", "minecraft:empty", "minecraft:air", "aligned")
     _stamp_uuids(sb, f"{p.city_id}/terminator_gate")
     _validate_city_piece(sb, f"{p.city_id}/terminator_gate", deck_y)
@@ -620,7 +615,6 @@ def build_side_garden(p: CityPalette, is_terminator: bool = False) -> V4Structur
     sb.set(5, walk_y + 1, 5, p.accent_roof)
     sb.lantern(5, walk_y + 2, 5, hanging=False)
     sb.add_villager(5, walk_y, 3, p.villager_type, "minecraft:farmer")
-    sb.add_sentinel(4, walk_y, 2)
     conn_type = "minecraft:street" if is_terminator else "minecraft:building_entrance"
     sb.jigsaw(5, walk_y, 0, "north_up", conn_type, conn_type, "minecraft:empty", "minecraft:air", "aligned")
     label = "terminator_roundabout" if is_terminator else "side_garden"
@@ -713,7 +707,6 @@ def build_villa_l_wing(p: CityPalette) -> V4StructureBuilder:
 
     sb.add_villager(6, walk_y, 9, p.villager_type, "minecraft:cartographer")
     sb.add_villager(12, walk_y, 12, p.villager_type, "minecraft:farmer")
-    sb.add_sentinel(5, walk_y, 2)
     sb.jigsaw(5, walk_y, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance", "minecraft:empty", "minecraft:air", "aligned")
     _stamp_uuids(sb, f"{p.city_id}/villa_l_wing")
     _validate_city_piece(sb, f"{p.city_id}/villa_l_wing", deck_y)
@@ -775,7 +768,6 @@ def build_rotunda_observatory(p: CityPalette) -> V4StructureBuilder:
 
     sb.add_villager(6, walk_y, 6, p.villager_type, "minecraft:librarian")
     sb.add_villager(8, walk_y, 8, p.villager_type, "minecraft:cartographer")
-    sb.add_sentinel(6, walk_y, 0)
     sb.jigsaw(7, walk_y, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance", "minecraft:empty", "minecraft:air", "aligned")
     _stamp_uuids(sb, f"{p.city_id}/rotunda_observatory")
     _validate_city_piece(sb, f"{p.city_id}/rotunda_observatory", deck_y)
@@ -840,7 +832,6 @@ def build_market_t_hall(p: CityPalette) -> V4StructureBuilder:
     sb.add_villager(14, walk_y, 4, p.villager_type, "minecraft:cleric")
     sb.add_villager(9, walk_y, 10, p.villager_type, "minecraft:farmer")
     sb.add_golem(9, walk_y, 4)
-    sb.add_sentinel(9, walk_y, 1)
     sb.jigsaw(9, walk_y, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance", "minecraft:empty", "minecraft:air", "aligned")
     _stamp_uuids(sb, f"{p.city_id}/market_t_hall")
     _validate_city_piece(sb, f"{p.city_id}/market_t_hall", deck_y)
@@ -917,7 +908,6 @@ def build_foundry_bastion(p: CityPalette) -> V4StructureBuilder:
     sb.add_villager(5, walk_y, 9, p.villager_type, "minecraft:weaponsmith")
     sb.add_villager(11, walk_y, 11, p.villager_type, "minecraft:armorer")
     sb.add_sentinel(4, walk_y, 2)
-    sb.add_sentinel(6, walk_y, 4)
     sb.jigsaw(5, walk_y, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance", "minecraft:empty", "minecraft:air", "aligned")
     _stamp_uuids(sb, f"{p.city_id}/foundry_bastion")
     _validate_city_piece(sb, f"{p.city_id}/foundry_bastion", deck_y)
@@ -982,8 +972,6 @@ def build_cruciform_guildhall(p: CityPalette) -> V4StructureBuilder:
     sb.add_villager(12, walk_y, 7, p.villager_type, "minecraft:toolsmith")
     sb.add_villager(9, walk_y, 12, p.villager_type, "minecraft:librarian")
     sb.add_golem(9, walk_y, 9)
-    sb.add_sentinel(8, walk_y, 1)
-    sb.add_sentinel(10, walk_y, 1)
     sb.jigsaw(9, walk_y, 0, "north_up", "minecraft:building_entrance", "minecraft:building_entrance", "minecraft:empty", "minecraft:air", "aligned")
     _stamp_uuids(sb, f"{p.city_id}/cruciform_guildhall")
     _validate_city_piece(sb, f"{p.city_id}/cruciform_guildhall", deck_y)
