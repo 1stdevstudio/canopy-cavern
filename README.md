@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.32`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, biome & pohon kompleks, samudra dalam, monumen bawah tanah megah, struktur kaverna Nether & pulau luar The End, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.5.0-beta.33`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, 8 biome kustom & pohon kompleks, samudra dalam, monumen bawah tanah megah, struktur kaverna Nether & pulau luar The End, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,7 +100,20 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.32.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.33.jar`.
+
+---
+
+## Biome Pegunungan & Tebing Curam (`v0.5.0-beta.33`)
+
+- **Frostspire Crags** (`canopycavern:frostspire_crags`): Biome pegunungan glasial dan puncak tajam yang menempati slot `JAGGED_PEAKS` & `FROZEN_PEAKS` di [CanopyOverworldRegion.java](src/main/java/com/yogi/canopycavern/worldgen/CanopyOverworldRegion.java), dilapisi salju/es padat (`Y >= 165`), urat `calcite` & `tuff`, serta dinding terjal `deepslate` ([CanopyMaterialRules.java](src/main/java/com/yogi/canopycavern/worldgen/CanopyMaterialRules.java)) bersama fitur `canopycavern:frostspire_slate_outcrop`, spawn fauna dingin (`goat`, `wolf`, `snow fox`, `white rabbit`), struktur `frozen_ridge_village` & `peak_watchtower_ruin`, serta advancement `find_frostspire_crags`.
+- **Windcarved Cliffs** (`canopycavern:windcarved_cliffs`): Biome tebing terjal berlapis geologi yang menempati slot `WINDSWEPT_SAVANNA`, `WINDSWEPT_GRAVELLY_HILLS`, & `STONY_SHORE`, memadukan dinding curam berstrata (`granite`/`terracotta` atas, `andesite`/`tuff` tengah, dan `smooth_basalt`/`deepslate` bawah), tonjolan `canopycavern:windcarved_basalt_outcrop`, `goat` & `llama`, struktur `peak_watchtower_ruin` & `frontier_pillager_outpost`, angin lembap pegunungan di [ClimateSimulation.java](src/main/java/com/yogi/canopycavern/core/ClimateSimulation.java), serta advancement `find_windcarved_cliffs`.
+
+```mcfunction
+# Perintah uji cepat biome pegunungan & tebing baru
+/locate biome canopycavern:frostspire_crags
+/locate biome canopycavern:windcarved_cliffs
+```
 
 ---
 

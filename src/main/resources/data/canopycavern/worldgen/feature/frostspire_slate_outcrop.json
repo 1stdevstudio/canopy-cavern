@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block_blob",
+  "can_place_on": {
+    "type": "minecraft:matching_blocks",
+    "blocks": [
+      "minecraft:snow_block",
+      "minecraft:packed_ice",
+      "minecraft:calcite",
+      "minecraft:tuff",
+      "minecraft:deepslate",
+      "minecraft:stone"
+    ]
+  },
+  "state": "minecraft:cobbled_deepslate"
+}

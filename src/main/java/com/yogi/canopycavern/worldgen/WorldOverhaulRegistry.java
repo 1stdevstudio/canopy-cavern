@@ -71,6 +71,16 @@ public final class WorldOverhaulRegistry {
 				WorldOverhaulKeys.CRYSTAL_STEPPE_OUTCROP
 			);
 			BiomeModifications.addFeature(
+				BiomeSelectors.includeByKey(ModBiomes.FROSTSPIRE_CRAGS),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.FROSTSPIRE_SLATE_OUTCROP
+			);
+			BiomeModifications.addFeature(
+				BiomeSelectors.includeByKey(ModBiomes.WINDCARVED_CLIFFS),
+				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
+				WorldOverhaulKeys.WINDCARVED_BASALT_OUTCROP
+			);
+			BiomeModifications.addFeature(
 				BiomeSelectors.includeByKey(Biomes.END_HIGHLANDS, Biomes.END_MIDLANDS),
 				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
 				WorldOverhaulKeys.END_CHORUS_OUTCROP
@@ -94,7 +104,7 @@ public final class WorldOverhaulRegistry {
 				WorldOverhaulKeys.STRATIFIED_COPPER_VEIN
 			);
 			BiomeModifications.addFeature(
-				BiomeSelectors.tag(BiomeTags.IS_MOUNTAIN),
+				BiomeSelectors.tag(BiomeTags.IS_MOUNTAIN).or(BiomeSelectors.includeByKey(ModBiomes.WINDCARVED_CLIFFS)),
 				GenerationStep.Decoration.UNDERGROUND_ORES,
 				WorldOverhaulKeys.STRATIFIED_EMERALD_SEAM
 			);

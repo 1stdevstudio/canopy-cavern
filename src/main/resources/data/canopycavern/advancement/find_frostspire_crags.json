@@ -1,0 +1,36 @@
+{
+  "parent": "canopycavern:enter_peaks",
+  "display": {
+    "icon": {
+      "id": "minecraft:packed_ice"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.find_frostspire_crags.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.find_frostspire_crags.description"
+    }
+  },
+  "criteria": {
+    "in_frostspire_crags": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:frostspire_crags"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_frostspire_crags"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

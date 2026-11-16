@@ -17,6 +17,8 @@ public final class ModBiomes {
 	public static final ResourceKey<Biome> CRYSTAL_STEPPE = key("crystal_steppe");
 	public static final ResourceKey<Biome> AMBER_CAVERNS = key("amber_caverns");
 	public static final ResourceKey<Biome> ELDER_BOUGH_GROVE = key("elder_bough_grove");
+	public static final ResourceKey<Biome> FROSTSPIRE_CRAGS = key("frostspire_crags");
+	public static final ResourceKey<Biome> WINDCARVED_CLIFFS = key("windcarved_cliffs");
 
 	public static final List<ResourceKey<Biome>> ALL_BIOMES = List.of(
 		WHISPERING_PEAKS,
@@ -24,7 +26,9 @@ public final class ModBiomes {
 		VERDANT_GROTTO,
 		CRYSTAL_STEPPE,
 		AMBER_CAVERNS,
-		ELDER_BOUGH_GROVE
+		ELDER_BOUGH_GROVE,
+		FROSTSPIRE_CRAGS,
+		WINDCARVED_CLIFFS
 	);
 
 	private ModBiomes() {

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:block_blob",
+  "can_place_on": {
+    "type": "minecraft:matching_blocks",
+    "blocks": [
+      "minecraft:grass_block",
+      "minecraft:moss_block",
+      "minecraft:coarse_dirt",
+      "minecraft:gravel",
+      "minecraft:stone",
+      "minecraft:tuff",
+      "minecraft:granite",
+      "minecraft:andesite"
+    ]
+  },
+  "state": "minecraft:smooth_basalt"
+}

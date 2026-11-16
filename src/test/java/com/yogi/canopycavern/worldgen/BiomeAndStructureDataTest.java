@@ -23,15 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BiomeAndStructureDataTest {
 	@Test
-	void exposesSixCohesiveCustomBiomes() {
-		assertEquals(6, ModBiomes.ALL_BIOMES.size());
+	void exposesEightCohesiveCustomBiomes() {
+		assertEquals(8, ModBiomes.ALL_BIOMES.size());
 		List<String> expected = List.of(
 			"whispering_peaks",
 			"mossy_canopy",
 			"verdant_grotto",
 			"crystal_steppe",
 			"amber_caverns",
-			"elder_bough_grove"
+			"elder_bough_grove",
+			"frostspire_crags",
+			"windcarved_cliffs"
 		);
 		List<String> actual = ModBiomes.ALL_BIOMES.stream().map(k -> k.identifier().getPath()).toList();
 		assertEquals(expected, actual);
@@ -56,9 +58,32 @@ class BiomeAndStructureDataTest {
 		assertTrue(raw.contains("canopycavern:crystal_steppe"));
 		assertTrue(raw.contains("canopycavern:amber_caverns"));
 		assertTrue(raw.contains("canopycavern:elder_bough_grove"));
+		assertTrue(raw.contains("canopycavern:frostspire_crags"));
+		assertTrue(raw.contains("canopycavern:windcarved_cliffs"));
 
 		JsonObject mountainTag = readJson("data/minecraft/tags/worldgen/biome/is_mountain.json");
-		assertTrue(mountainTag.getAsJsonArray("values").toString().contains("canopycavern:whispering_peaks"));
+		String mountainValues = mountainTag.getAsJsonArray("values").toString();
+		assertTrue(mountainValues.contains("canopycavern:whispering_peaks"));
+		assertTrue(mountainValues.contains("canopycavern:frostspire_crags"));
+
+		JsonObject hillTag = readJson("data/minecraft/tags/worldgen/biome/is_hill.json");
+		assertEquals(false, hillTag.get("replace").getAsBoolean());
+		assertTrue(hillTag.getAsJsonArray("values").toString().contains("canopycavern:windcarved_cliffs"));
+
+		for (String coldTag : List.of("spawns_cold_variant_farm_animals", "spawns_snow_foxes", "spawns_white_rabbits")) {
+			JsonObject t = readJson("data/minecraft/tags/worldgen/biome/" + coldTag + ".json");
+			assertEquals(false, t.get("replace").getAsBoolean());
+			assertTrue(t.getAsJsonArray("values").toString().contains("canopycavern:frostspire_crags"), coldTag);
+		}
+
+		assertTrue(readJson("data/canopycavern/tags/worldgen/biome/has_structure/frozen_ridge_village.json")
+			.getAsJsonArray("values").toString().contains("canopycavern:frostspire_crags"));
+		String watchtowerBiomes = readJson("data/canopycavern/tags/worldgen/biome/has_structure/peak_watchtower_ruin.json")
+			.getAsJsonArray("values").toString();
+		assertTrue(watchtowerBiomes.contains("canopycavern:frostspire_crags"));
+		assertTrue(watchtowerBiomes.contains("canopycavern:windcarved_cliffs"));
+		assertTrue(readJson("data/canopycavern/tags/worldgen/biome/has_structure/frontier_pillager_outpost.json")
+			.getAsJsonArray("values").toString().contains("canopycavern:windcarved_cliffs"));
 
 		JsonObject forestTag = readJson("data/minecraft/tags/worldgen/biome/is_forest.json");
 		String forestValues = forestTag.getAsJsonArray("values").toString();

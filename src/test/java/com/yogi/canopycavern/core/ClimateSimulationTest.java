@@ -102,4 +102,21 @@ class ClimateSimulationTest {
 		assertEquals(exposed.humidityPercent(), filtered.humidityPercent());
 		assertEquals(exposed.microWeather(), filtered.microWeather());
 	}
+
+	@Test
+	void frostspireCragsAndWindcarvedCliffsExposeAlpineAndCliffMicroClimates() {
+		AmbientInput icyPeak = new AmbientInput(-0.55f, 165, 63, true, 15, false, true, false);
+		ClimateSnapshot crags = ClimateSimulation.evaluate(
+			new ClimateInput(icyPeak, "canopycavern:frostspire_crags", 0, 0, false, false, false, false, 0L)
+		);
+		assertEquals(48, crags.humidityPercent());
+		assertEquals(MicroWeather.BLIZZARD_CHILL, crags.microWeather());
+
+		AmbientInput cliffRidge = new AmbientInput(0.45f, 108, 63, true, 15, false, false, false);
+		ClimateSnapshot cliffs = ClimateSimulation.evaluate(
+			new ClimateInput(cliffRidge, "canopycavern:windcarved_cliffs", 0, 0, false, false, false, false, 1200L)
+		);
+		assertEquals(44, cliffs.humidityPercent());
+		assertEquals(MicroWeather.MISTY_WIND, cliffs.microWeather());
+	}
 }

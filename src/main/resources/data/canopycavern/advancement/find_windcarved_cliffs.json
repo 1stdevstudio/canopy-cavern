@@ -1,0 +1,36 @@
+{
+  "parent": "canopycavern:enter_peaks",
+  "display": {
+    "icon": {
+      "id": "minecraft:smooth_basalt"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.find_windcarved_cliffs.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.find_windcarved_cliffs.description"
+    }
+  },
+  "criteria": {
+    "in_windcarved_cliffs": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:windcarved_cliffs"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "in_windcarved_cliffs"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

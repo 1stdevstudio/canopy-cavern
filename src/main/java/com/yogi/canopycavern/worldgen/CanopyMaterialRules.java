@@ -28,6 +28,11 @@ public final class CanopyMaterialRules {
 	private static final MaterialRule SMOOTH_BASALT = stateRule(Blocks.SMOOTH_BASALT);
 	private static final MaterialRule TERRACOTTA = stateRule(Blocks.TERRACOTTA);
 	private static final MaterialRule DRIPSTONE_BLOCK = stateRule(Blocks.DRIPSTONE_BLOCK);
+	private static final MaterialRule SNOW_BLOCK = stateRule(Blocks.SNOW_BLOCK);
+	private static final MaterialRule PACKED_ICE = stateRule(Blocks.PACKED_ICE);
+	private static final MaterialRule DEEPSLATE = stateRule(Blocks.DEEPSLATE);
+	private static final MaterialRule ANDESITE = stateRule(Blocks.ANDESITE);
+	private static final MaterialRule GRAVEL = stateRule(Blocks.GRAVEL);
 
 	private CanopyMaterialRules() {
 	}
@@ -172,7 +177,9 @@ public final class CanopyMaterialRules {
 						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.WHISPERING_PEAKS), peaksFloorSurface),
 						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.MOSSY_CANOPY), mossyCanopyFloorSurface),
 						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.ELDER_BOUGH_GROVE), elderBoughSurface),
-						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.CRYSTAL_STEPPE), crystalSteppeSurface)
+						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.CRYSTAL_STEPPE), crystalSteppeSurface),
+						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.FROSTSPIRE_CRAGS), buildFrostspireCragsSurface()),
+						MaterialRules.ifTrue(MaterialRules.isBiome(biomes, ModBiomes.WINDCARVED_CLIFFS), buildWindcarvedCliffsSurface())
 					)
 				),
 				MaterialRules.ifTrue(
@@ -182,6 +189,100 @@ public final class CanopyMaterialRules {
 				MaterialRules.ifTrue(
 					MaterialRules.isBiome(biomes, ModBiomes.AMBER_CAVERNS),
 					amberCavernsSurface
+				)
+			)
+		);
+	}
+
+	private static MaterialRule buildFrostspireCragsSurface() {
+		MaterialRule steepRock = MaterialRules.sequence(
+			MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.15D, 1.8D), TUFF),
+			DEEPSLATE
+		);
+		return MaterialRules.sequence(
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, false, CaveSurface.FLOOR),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.steep(), steepRock),
+					MaterialRules.ifTrue(
+						MaterialRules.yBlockCheck(VerticalAnchor.absolute(165), 0),
+						MaterialRules.sequence(
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, 0.28D, 1.8D), PACKED_ICE),
+							SNOW_BLOCK
+						)
+					),
+					MaterialRules.ifTrue(
+						MaterialRules.waterBlockCheck(-1, 0),
+						MaterialRules.sequence(
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.26D, 1.8D), CALCITE),
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, -0.55D, -0.15D), TUFF),
+							SNOW_BLOCK
+						)
+					)
+				)
+			),
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, true, CaveSurface.FLOOR),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.steep(), DEEPSLATE),
+					MaterialRules.ifTrue(MaterialRules.yBlockCheck(VerticalAnchor.absolute(165), 0), PACKED_ICE),
+					TUFF
+				)
+			)
+		);
+	}
+
+	private static MaterialRule buildWindcarvedCliffsSurface() {
+		MaterialRule stratifiedSteepWall = MaterialRules.sequence(
+			MaterialRules.ifTrue(
+				MaterialRules.yBlockCheck(VerticalAnchor.absolute(115), 0),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.10D, 1.8D), TERRACOTTA),
+					GRANITE
+				)
+			),
+			MaterialRules.ifTrue(
+				MaterialRules.yBlockCheck(VerticalAnchor.absolute(88), 0),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, 0.05D, 1.8D), ANDESITE),
+					TUFF
+				)
+			),
+			MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.15D, 1.8D), DEEPSLATE),
+			SMOOTH_BASALT
+		);
+		return MaterialRules.sequence(
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, false, CaveSurface.FLOOR),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.steep(), stratifiedSteepWall),
+					MaterialRules.ifTrue(
+						MaterialRules.waterBlockCheck(-1, 0),
+						MaterialRules.sequence(
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, 0.35D, 1.8D), SMOOTH_BASALT),
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.08D, 1.8D), TUFF),
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, -0.60D, -0.35D), GRAVEL),
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE_SECONDARY, -0.60D, -0.30D), MOSS_BLOCK),
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, -0.25D, -0.05D), COARSE_DIRT),
+							GRASS_BLOCK
+						)
+					),
+					TUFF
+				)
+			),
+			MaterialRules.ifTrue(
+				MaterialRules.stoneDepthCheck(0, true, CaveSurface.FLOOR),
+				MaterialRules.sequence(
+					MaterialRules.ifTrue(MaterialRules.steep(), TUFF),
+					MaterialRules.ifTrue(
+						MaterialRules.waterBlockCheck(-1, 0),
+						MaterialRules.sequence(
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, 0.08D, 1.8D), TUFF),
+							MaterialRules.ifTrue(MaterialRules.noiseCondition2d(Noises.SURFACE, -0.55D, -0.25D), COARSE_DIRT),
+							DIRT
+						)
+					),
+					SMOOTH_BASALT
 				)
 			)
 		);

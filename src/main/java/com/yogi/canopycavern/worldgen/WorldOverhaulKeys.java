@@ -26,6 +26,8 @@ public final class WorldOverhaulKeys {
 	public static final ResourceKey<PlacedFeature> SWAMP_PEAT_PATCH = placed("swamp_peat_patch");
 	public static final ResourceKey<PlacedFeature> BEACH_DRIFT_PEBBLE = placed("beach_drift_pebble");
 	public static final ResourceKey<PlacedFeature> CRYSTAL_STEPPE_OUTCROP = placed("crystal_steppe_outcrop");
+	public static final ResourceKey<PlacedFeature> FROSTSPIRE_SLATE_OUTCROP = placed("frostspire_slate_outcrop");
+	public static final ResourceKey<PlacedFeature> WINDCARVED_BASALT_OUTCROP = placed("windcarved_basalt_outcrop");
 
 	public static final ResourceKey<PlacedFeature> STRATIFIED_COPPER_VEIN = placed("stratified_copper_vein");
 	public static final ResourceKey<PlacedFeature> STRATIFIED_EMERALD_SEAM = placed("stratified_emerald_seam");

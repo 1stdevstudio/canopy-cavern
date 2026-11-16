@@ -56,7 +56,9 @@ class V03AssetsAndDataTest {
 		"discover_basalt_spire",
 		"discover_chorus_monastery",
 		"discover_void_beacon",
-		"discover_ender_archive"
+		"discover_ender_archive",
+		"find_frostspire_crags",
+		"find_windcarved_cliffs"
 	);
 
 	@Test

@@ -163,6 +163,8 @@ public final class ClimateSimulation {
 			case "canopycavern:mossy_canopy" -> 76;
 			case "canopycavern:crystal_steppe" -> 46;
 			case "canopycavern:whispering_peaks" -> 54;
+			case "canopycavern:frostspire_crags" -> 48;
+			case "canopycavern:windcarved_cliffs" -> 44;
 			case "minecraft:nether_wastes", "minecraft:basalt_deltas", "minecraft:soul_sand_valley" -> 24;
 			case "minecraft:crimson_forest", "minecraft:warped_forest" -> 38;
 			case "minecraft:the_end", "minecraft:end_highlands", "minecraft:end_midlands",
@@ -210,13 +212,18 @@ public final class ClimateSimulation {
 			return humidity >= 74 ? MicroWeather.CAVERN_HUMID : MicroWeather.CLEAR;
 		}
 
-		boolean peakZone = base.depthZone() == DepthZone.HIGH_RIDGE || "canopycavern:whispering_peaks".equals(input.biomeId());
+		boolean peakZone = base.depthZone() == DepthZone.HIGH_RIDGE
+			|| "canopycavern:whispering_peaks".equals(input.biomeId())
+			|| "canopycavern:frostspire_crags".equals(input.biomeId());
 		boolean snowing = input.ambient().raining() && input.ambient().biomeBaseTemperature() <= 0.15f;
 		boolean blizzardCycle = snowing || ((input.worldTimeTicks() / 2400L) % 3L == 0L);
 		if (peakZone && base.apparentCelsius() <= 2.0 && blizzardCycle) {
 			return MicroWeather.BLIZZARD_CHILL;
 		}
-		if (peakZone || "canopycavern:mossy_canopy".equals(input.biomeId()) || (input.worldTimeTicks() / 3600L) % 4L == 1L) {
+		if (peakZone
+			|| "canopycavern:mossy_canopy".equals(input.biomeId())
+			|| "canopycavern:windcarved_cliffs".equals(input.biomeId())
+			|| (input.worldTimeTicks() / 3600L) % 4L == 1L) {
 			return MicroWeather.MISTY_WIND;
 		}
 		return MicroWeather.CLEAR;

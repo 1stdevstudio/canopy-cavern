@@ -30,6 +30,12 @@ public final class CanopyOverworldRegion extends Region {
 			builder.replaceBiome(Biomes.MEADOW, ModBiomes.WHISPERING_PEAKS);
 			builder.replaceBiome(Biomes.STONY_PEAKS, ModBiomes.WHISPERING_PEAKS);
 			builder.replaceBiome(Biomes.WINDSWEPT_HILLS, ModBiomes.WHISPERING_PEAKS);
+			builder.replaceBiome(Biomes.JAGGED_PEAKS, ModBiomes.FROSTSPIRE_CRAGS);
+			builder.replaceBiome(Biomes.FROZEN_PEAKS, ModBiomes.FROSTSPIRE_CRAGS);
+
+			builder.replaceBiome(Biomes.WINDSWEPT_SAVANNA, ModBiomes.WINDCARVED_CLIFFS);
+			builder.replaceBiome(Biomes.WINDSWEPT_GRAVELLY_HILLS, ModBiomes.WINDCARVED_CLIFFS);
+			builder.replaceBiome(Biomes.STONY_SHORE, ModBiomes.WINDCARVED_CLIFFS);
 
 			builder.replaceBiome(Biomes.OLD_GROWTH_PINE_TAIGA, ModBiomes.MOSSY_CANOPY);
 			builder.replaceBiome(Biomes.DARK_FOREST, ModBiomes.MOSSY_CANOPY);
