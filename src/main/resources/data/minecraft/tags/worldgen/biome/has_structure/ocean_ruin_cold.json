@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:temperate_sound",
+    "canopycavern:abyssal_trench",
+    "canopycavern:kelpwood_sea",
+    "canopycavern:floe_sea"
+  ]
+}

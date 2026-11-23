@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:sunlit_shallows",
+    "canopycavern:coral_drift",
+    "canopycavern:temperate_sound",
+    "canopycavern:abyssal_trench",
+    "canopycavern:kelpwood_sea",
+    "canopycavern:floe_sea",
+    "canopycavern:meandering_river",
+    "canopycavern:frostbound_river",
+    "canopycavern:golden_strand",
+    "canopycavern:frostline_shore"
+  ]
+}

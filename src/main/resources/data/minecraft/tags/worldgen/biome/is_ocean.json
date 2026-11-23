@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:sunlit_shallows",
+    "canopycavern:coral_drift",
+    "canopycavern:temperate_sound",
+    "canopycavern:kelpwood_sea",
+    "canopycavern:floe_sea"
+  ]
+}
