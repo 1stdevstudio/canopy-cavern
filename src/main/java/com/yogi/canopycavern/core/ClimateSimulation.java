@@ -160,6 +160,16 @@ public final class ClimateSimulation {
 		int humidity = switch (biome) {
 			case "canopycavern:verdant_grotto", "minecraft:lush_caves" -> 84;
 			case "canopycavern:luminous_depths" -> 88;
+			case "canopycavern:sunlit_shallows" -> 82;
+			case "canopycavern:coral_drift" -> 80;
+			case "canopycavern:temperate_sound" -> 78;
+			case "canopycavern:abyssal_trench" -> 78;
+			case "canopycavern:kelpwood_sea" -> 74;
+			case "canopycavern:floe_sea" -> 66;
+			case "canopycavern:meandering_river" -> 72;
+			case "canopycavern:frostbound_river" -> 60;
+			case "canopycavern:golden_strand" -> 64;
+			case "canopycavern:frostline_shore" -> 56;
 			case "canopycavern:elder_bough_grove" -> 82;
 			case "canopycavern:mossy_canopy" -> 76;
 			case "canopycavern:crystal_steppe" -> 46;

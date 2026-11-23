@@ -343,5 +343,15 @@
   "advancements.canopycavern.discover_void_beacon.title": "Observatory Above the Void",
   "advancements.canopycavern.discover_void_beacon.description": "Reach a Void Beacon Observatory towering over the outer End islands.",
   "advancements.canopycavern.discover_ender_archive.title": "Archive of the Midlands",
-  "advancements.canopycavern.discover_ender_archive.description": "Descend into an Ender Archive Vault embedded within solid End midlands stone."
+  "advancements.canopycavern.discover_ender_archive.description": "Descend into an Ender Archive Vault embedded within solid End midlands stone.",
+  "biome.canopycavern.sunlit_shallows": "Sunlit Shallows",
+  "biome.canopycavern.coral_drift": "Coral Drift",
+  "biome.canopycavern.temperate_sound": "Temperate Sound",
+  "biome.canopycavern.abyssal_trench": "Abyssal Trench",
+  "biome.canopycavern.kelpwood_sea": "Kelpwood Sea",
+  "biome.canopycavern.floe_sea": "Floe Sea",
+  "biome.canopycavern.meandering_river": "Meandering River",
+  "biome.canopycavern.frostbound_river": "Frostbound River",
+  "biome.canopycavern.golden_strand": "Golden Strand",
+  "biome.canopycavern.frostline_shore": "Frostline Shore"
 }

@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "canopycavern:frostspire_crags"
+    "canopycavern:frostspire_crags",
+    "canopycavern:kelpwood_sea",
+    "canopycavern:floe_sea",
+    "canopycavern:frostbound_river",
+    "canopycavern:frostline_shore"
   ]
 }

@@ -20,14 +20,14 @@ public final class CanopyBiomeMap {
 	private static final String DEPTHS = "canopycavern:luminous_depths";
 
 	public static final Map<String, String> VANILLA_TO_CANOPY = Map.ofEntries(
-		// Water and coast (placeholder until Phase 1 adds dedicated biomes)
-		Map.entry("minecraft:ocean", CLIFFS), Map.entry("minecraft:deep_ocean", CLIFFS),
-		Map.entry("minecraft:warm_ocean", CLIFFS), Map.entry("minecraft:lukewarm_ocean", CLIFFS),
-		Map.entry("minecraft:deep_lukewarm_ocean", CLIFFS), Map.entry("minecraft:cold_ocean", CLIFFS),
-		Map.entry("minecraft:deep_cold_ocean", CLIFFS), Map.entry("minecraft:frozen_ocean", FROST),
-		Map.entry("minecraft:deep_frozen_ocean", FROST), Map.entry("minecraft:river", CLIFFS),
-		Map.entry("minecraft:frozen_river", FROST), Map.entry("minecraft:beach", CLIFFS),
-		Map.entry("minecraft:snowy_beach", FROST), Map.entry("minecraft:stony_shore", CLIFFS),
+		// Water and coast (Phase 1); stony shore keeps Windcarved Cliffs
+		Map.entry("minecraft:ocean", "canopycavern:temperate_sound"), Map.entry("minecraft:deep_ocean", "canopycavern:abyssal_trench"),
+		Map.entry("minecraft:warm_ocean", "canopycavern:sunlit_shallows"), Map.entry("minecraft:lukewarm_ocean", "canopycavern:coral_drift"),
+		Map.entry("minecraft:deep_lukewarm_ocean", "canopycavern:abyssal_trench"), Map.entry("minecraft:cold_ocean", "canopycavern:kelpwood_sea"),
+		Map.entry("minecraft:deep_cold_ocean", "canopycavern:abyssal_trench"), Map.entry("minecraft:frozen_ocean", "canopycavern:floe_sea"),
+		Map.entry("minecraft:deep_frozen_ocean", "canopycavern:floe_sea"), Map.entry("minecraft:river", "canopycavern:meandering_river"),
+		Map.entry("minecraft:frozen_river", "canopycavern:frostbound_river"), Map.entry("minecraft:beach", "canopycavern:golden_strand"),
+		Map.entry("minecraft:snowy_beach", "canopycavern:frostline_shore"), Map.entry("minecraft:stony_shore", CLIFFS),
 		Map.entry("minecraft:mushroom_fields", GROTTO),
 		// Lowlands
 		Map.entry("minecraft:plains", STEPPE), Map.entry("minecraft:sunflower_plains", STEPPE),

@@ -343,5 +343,15 @@
   "advancements.canopycavern.discover_void_beacon.title": "Observatorium Di Atas Kehampaan",
   "advancements.canopycavern.discover_void_beacon.description": "Capai Void Beacon Observatory yang menjulang di pulau End luar.",
   "advancements.canopycavern.discover_ender_archive.title": "Arsip Pulau Menengah",
-  "advancements.canopycavern.discover_ender_archive.description": "Turuni Ender Archive Vault yang tertanam kokoh di batu End midlands."
+  "advancements.canopycavern.discover_ender_archive.description": "Turuni Ender Archive Vault yang tertanam kokoh di batu End midlands.",
+  "biome.canopycavern.sunlit_shallows": "Perairan Terang",
+  "biome.canopycavern.coral_drift": "Arus Karang",
+  "biome.canopycavern.temperate_sound": "Selat Sedang",
+  "biome.canopycavern.abyssal_trench": "Palung Abisal",
+  "biome.canopycavern.kelpwood_sea": "Laut Rimba Kelp",
+  "biome.canopycavern.floe_sea": "Laut Bongkahan Es",
+  "biome.canopycavern.meandering_river": "Sungai Berkelok",
+  "biome.canopycavern.frostbound_river": "Sungai Membeku",
+  "biome.canopycavern.golden_strand": "Pantai Keemasan",
+  "biome.canopycavern.frostline_shore": "Pesisir Garis Beku"
 }
