@@ -5,6 +5,7 @@ import com.yogi.canopycavern.core.ShelterBlueprints;
 import com.yogi.canopycavern.core.ShelterBlueprints.BlockSpec;
 import com.yogi.canopycavern.core.ShelterBlueprints.BlueprintDefinition;
 import com.yogi.canopycavern.core.ShelterBlueprints.MaterialCost;
+import com.yogi.canopycavern.world.spawn.SpawnSanctuaryProtection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,6 +32,8 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Authoritative server-side material verification and safe 3D construction service
@@ -38,7 +41,25 @@ import java.util.Map;
  */
 public final class BlueprintBuilderService {
 
+	/** Minimum server ticks between two build requests from the same player (2 seconds). */
+	static final long BUILD_COOLDOWN_TICKS = 40L;
+	private static final Map<UUID, Long> LAST_BUILD_TICK = new ConcurrentHashMap<>();
+
 	private BlueprintBuilderService() {
+	}
+
+	/** Returns true when a request at {@code nowTick} is allowed after a previous one at {@code lastTick}. */
+	static boolean isCooldownElapsed(Long lastTick, long nowTick) {
+		return lastTick == null || nowTick - lastTick >= BUILD_COOLDOWN_TICKS || nowTick < lastTick;
+	}
+
+	/** Drops cooldown state for a disconnected player or a stopped server. */
+	public static void forget(UUID playerId) {
+		LAST_BUILD_TICK.remove(playerId);
+	}
+
+	public static void clearCooldowns() {
+		LAST_BUILD_TICK.clear();
 	}
 
 	/** Aggregates player inventory counts keyed by namespaced item ID. */
@@ -62,6 +83,12 @@ public final class BlueprintBuilderService {
 			return;
 		}
 
+		long now = level.getServer().getTickCount();
+		if (!isCooldownElapsed(LAST_BUILD_TICK.get(player.getUUID()), now)) {
+			return;
+		}
+		LAST_BUILD_TICK.put(player.getUUID(), now);
+
 		boolean creative = player.isCreative();
 		if (!creative && !ShelterBlueprints.hasAllMaterials(countInventoryItems(player.getInventory()), blueprint.materials())) {
 			player.sendSystemMessage(Component.translatable("canopycavern.builder.missing_materials"), false);
@@ -74,9 +101,13 @@ public final class BlueprintBuilderService {
 
 		for (BlockSpec spec : blueprint.blocks()) {
 			BlockPos targetPos = transformOffset(origin, forward, right, spec);
-			if (!level.isInWorldBounds(targetPos)
-				|| !level.getWorldBorder().isWithinBounds(targetPos)
-				|| !isSafeToPlace(level, targetPos, spec.dy())) {
+			if (!canBuildAt(level, player, targetPos, spec.dy())) {
+				player.sendSystemMessage(Component.translatable("canopycavern.builder.obstructed"), false);
+				return;
+			}
+			// Doors also occupy the block above their spec; validate it even if the blueprint omits it.
+			if (BuiltInRegistries.BLOCK.getValue(Identifier.parse(spec.blockId())) instanceof DoorBlock
+				&& !canBuildAt(level, player, targetPos.above(), spec.dy() + 1)) {
 				player.sendSystemMessage(Component.translatable("canopycavern.builder.obstructed"), false);
 				return;
 			}
@@ -103,6 +134,15 @@ public final class BlueprintBuilderService {
 
 	private static BlockPos transformOffset(BlockPos origin, Direction forward, Direction right, BlockSpec spec) {
 		return origin.relative(right, spec.dx()).relative(forward, spec.dz()).offset(0, spec.dy(), 0);
+	}
+
+	private static boolean canBuildAt(ServerLevel level, ServerPlayer player, BlockPos pos, int localY) {
+		return level.isInWorldBounds(pos)
+			&& level.getWorldBorder().isWithinBounds(pos)
+			// Blocks are placed with setBlock, so honour vanilla spawn protection and the Sanctuary explicitly.
+			&& level.mayInteract(player, pos)
+			&& SpawnSanctuaryProtection.canModifyProtectedBlock(level, player, pos)
+			&& isSafeToPlace(level, pos, localY);
 	}
 
 	private static boolean isSafeToPlace(ServerLevel level, BlockPos pos, int localY) {
