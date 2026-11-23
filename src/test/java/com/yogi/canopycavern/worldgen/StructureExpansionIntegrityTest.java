@@ -558,4 +558,16 @@ class StructureExpansionIntegrityTest {
             org.junit.jupiter.api.Assertions.assertTrue(raw.contains("canopycavern:crystal_steppe"));
         }
     }
+
+    @org.junit.jupiter.api.Test
+    void survivalFriendlyEnchantmentsAreDataDrivenTreasure() throws Exception {
+        String[][] expected = {{"frost_ward", "minecraft:damage_protection"}, {"prospector", "minecraft:block_experience"},
+            {"hunters_tally", "minecraft:mob_experience"}};
+        String treasure = java.nio.file.Files.readString(java.nio.file.Path.of("src/main/resources/data/minecraft/tags/enchantment/treasure.json"));
+        for (String[] entry : expected) {
+            String raw = java.nio.file.Files.readString(java.nio.file.Path.of("src/main/resources/data/canopycavern/enchantment/" + entry[0] + ".json"));
+            org.junit.jupiter.api.Assertions.assertTrue(raw.contains(entry[1]), entry[0] + " effect");
+            org.junit.jupiter.api.Assertions.assertTrue(treasure.contains("canopycavern:" + entry[0]), entry[0] + " must stay treasure-only");
+        }
+    }
 }

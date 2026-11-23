@@ -173,7 +173,8 @@
             "options": [
               "canopycavern:deep_focus",
               "canopycavern:torchkeeper",
-              "canopycavern:resonant_survey"
+              "canopycavern:resonant_survey",
+              "canopycavern:prospector"
             ]
           }
         }
