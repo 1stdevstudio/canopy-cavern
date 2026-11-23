@@ -69,6 +69,12 @@ class BiomeAndStructureDataTest {
 	}
 
 	@Test
+	void mossyCanopyKeepsDarkOakAsDarkForestReplacement() {
+		JsonObject root = readJson("data/canopycavern/worldgen/biome/mossy_canopy.json");
+		assertTrue(root.getAsJsonArray("features").get(9).toString().contains("minecraft:dark_forest_vegetation"));
+	}
+
+	@Test
 	void registersBiomesInOverworldAndCategoryTags() {
 		JsonObject overworldTag = readJson("data/minecraft/tags/worldgen/biome/is_overworld.json");
 		assertEquals(false, overworldTag.get("replace").getAsBoolean());
