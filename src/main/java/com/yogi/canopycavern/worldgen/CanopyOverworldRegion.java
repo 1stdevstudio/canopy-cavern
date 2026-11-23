@@ -35,7 +35,6 @@ public final class CanopyOverworldRegion extends Region {
 
 			builder.replaceBiome(Biomes.WINDSWEPT_SAVANNA, ModBiomes.WINDCARVED_CLIFFS);
 			builder.replaceBiome(Biomes.WINDSWEPT_GRAVELLY_HILLS, ModBiomes.WINDCARVED_CLIFFS);
-			builder.replaceBiome(Biomes.STONY_SHORE, ModBiomes.WINDCARVED_CLIFFS);
 
 			builder.replaceBiome(Biomes.OLD_GROWTH_PINE_TAIGA, ModBiomes.MOSSY_CANOPY);
 			builder.replaceBiome(Biomes.DARK_FOREST, ModBiomes.MOSSY_CANOPY);
@@ -43,7 +42,6 @@ public final class CanopyOverworldRegion extends Region {
 			builder.replaceBiome(Biomes.OLD_GROWTH_SPRUCE_TAIGA, ModBiomes.ELDER_BOUGH_GROVE);
 
 			builder.replaceBiome(Biomes.SUNFLOWER_PLAINS, ModBiomes.CRYSTAL_STEPPE);
-			builder.replaceBiome(Biomes.SAVANNA_PLATEAU, ModBiomes.CRYSTAL_STEPPE);
 
 			builder.replaceBiome(Biomes.LUSH_CAVES, ModBiomes.VERDANT_GROTTO);
 			builder.replaceBiome(Biomes.DRIPSTONE_CAVES, ModBiomes.AMBER_CAVERNS);

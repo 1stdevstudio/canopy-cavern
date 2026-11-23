@@ -48,6 +48,32 @@ class BiomeAndStructureDataTest {
 	}
 
 	@Test
+	void replacedVanillaBiomesKeepTheirVanillaStructures() {
+		String[][] expected = {
+			{"has_structure/woodland_mansion", "mossy_canopy"},
+			{"has_structure/village_plains", "whispering_peaks"},
+			{"has_structure/village_plains", "crystal_steppe"},
+			{"has_structure/pillager_outpost", "whispering_peaks"},
+			{"has_structure/pillager_outpost", "frostspire_crags"},
+			{"has_structure/trail_ruins", "elder_bough_grove"},
+			{"has_structure/igloo", "frostspire_crags"},
+			{"is_taiga", "elder_bough_grove"},
+		};
+		for (String[] entry : expected) {
+			JsonObject tag = readJson("data/minecraft/tags/worldgen/biome/" + entry[0] + ".json");
+			assertEquals(false, tag.get("replace").getAsBoolean(), entry[0] + " must merge with vanilla");
+			assertTrue(tag.getAsJsonArray("values").toString().contains("canopycavern:" + entry[1]),
+				entry[0] + " should include " + entry[1]);
+		}
+	}
+
+	@Test
+	void mossyCanopyKeepsDarkOakAsDarkForestReplacement() {
+		JsonObject root = readJson("data/canopycavern/worldgen/biome/mossy_canopy.json");
+		assertTrue(root.getAsJsonArray("features").get(9).toString().contains("minecraft:dark_forest_vegetation"));
+	}
+
+	@Test
 	void registersBiomesInOverworldAndCategoryTags() {
 		JsonObject overworldTag = readJson("data/minecraft/tags/worldgen/biome/is_overworld.json");
 		assertEquals(false, overworldTag.get("replace").getAsBoolean());
