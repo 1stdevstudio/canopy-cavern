@@ -6,6 +6,7 @@
     "DeepFocusPlayerMixin",
     "LecternMenuMixin",
     "NaturalSpawnerMixin",
+    "PowderSnowBlockMixin",
     "ServerExplosionMixin"
   ],
   "injectors": {

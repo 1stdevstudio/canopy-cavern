@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  A",
+    " C ",
+    "S  "
+  ],
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "C": "minecraft:copper_ingot",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "canopycavern:seismic_rod",
+    "count": 1
+  }
+}

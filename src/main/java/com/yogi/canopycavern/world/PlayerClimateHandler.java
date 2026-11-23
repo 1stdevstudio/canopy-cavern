@@ -56,9 +56,14 @@ public final class PlayerClimateHandler {
 
 	public static void register() {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> onPlayerJoin(handler.player));
-		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
-			CLIMATE_UPDATES.forget(handler.player.getUUID(), handler.player));
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> CLIMATE_UPDATES.clear());
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			CLIMATE_UPDATES.forget(handler.player.getUUID(), handler.player);
+			ClimateShield.forget(handler.player.getUUID());
+		});
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			CLIMATE_UPDATES.clear();
+			ClimateShield.clear();
+		});
 		ServerTickEvents.END_SERVER_TICK.register(PlayerClimateHandler::onServerTick);
 	}
 
@@ -114,6 +119,7 @@ public final class PlayerClimateHandler {
 		}
 		boolean enclosedShelter = isEnclosedShelter(level, pos);
 		boolean inSanctuarySafeZone = SpawnSanctuaryProtection.isInsideArrivalClimateSafeZone(level, pos, CanopyCavernMod.getConfig());
+		boolean climateShield = inSanctuarySafeZone || ClimateShield.isActive(player.getUUID(), level.getGameTime());
 
 		int thermalCount = ModItems.countThermalArmor(player);
 		int mossCount = ModItems.countMossweaveArmor(player);
@@ -149,8 +155,8 @@ public final class PlayerClimateHandler {
 			snapshot.thermalInsulationPercent(),
 			snapshot.cavernCoolingPercent(),
 			snapshot.perceivedCelsius(),
-			!inSanctuarySafeZone && snapshot.frostPenaltyActive(),
-			!inSanctuarySafeZone && snapshot.heatPenaltyActive(),
+			!climateShield && snapshot.frostPenaltyActive(),
+			!climateShield && snapshot.heatPenaltyActive(),
 			snapshot.warmthRecoveryActive(),
 			nearCampfire,
 			enclosedShelter || inSanctuarySafeZone
@@ -159,7 +165,7 @@ public final class PlayerClimateHandler {
 			ServerPlayNetworking.send(player, payload);
 		}
 
-		applySurvivalEffects(player, level, snapshot, mossCount, nearCampfire, inSanctuarySafeZone);
+		applySurvivalEffects(player, level, snapshot, mossCount, nearCampfire, climateShield);
 		pulseReactiveCaveFlora(level, pos, snapshot, biomeId);
 	}
 
@@ -308,6 +314,13 @@ public final class PlayerClimateHandler {
 		if (hasOceanMaterial) {
 			unlocks.add(recipeKey("abyssal_tide_compass"));
 			unlocks.add(recipeKey("sea_glass_charm"));
+		}
+		if (hasItem(inv, Items.COPPER_INGOT)) {
+			unlocks.add(recipeKey("ember_canteen"));
+			unlocks.add(recipeKey("seismic_rod"));
+		}
+		if (hasItem(inv, ModItems.THERMAL_BOOTS)) {
+			unlocks.add(recipeKey("frostspire_crampons"));
 		}
 		if (!unlocks.isEmpty()) {
 			player.awardRecipesByKey(unlocks);
