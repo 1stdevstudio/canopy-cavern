@@ -56,9 +56,14 @@ public final class PlayerClimateHandler {
 
 	public static void register() {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> onPlayerJoin(handler.player));
-		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) ->
-			CLIMATE_UPDATES.forget(handler.player.getUUID(), handler.player));
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> CLIMATE_UPDATES.clear());
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			CLIMATE_UPDATES.forget(handler.player.getUUID(), handler.player);
+			BlueprintBuilderService.forget(handler.player.getUUID());
+		});
+		ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			CLIMATE_UPDATES.clear();
+			BlueprintBuilderService.clearCooldowns();
+		});
 		ServerTickEvents.END_SERVER_TICK.register(PlayerClimateHandler::onServerTick);
 	}
 
