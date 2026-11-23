@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.world.level.biome.Climate;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -23,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BiomeAndStructureDataTest {
 	@Test
-	void exposesEightCohesiveCustomBiomes() {
-		assertEquals(8, ModBiomes.ALL_BIOMES.size());
+	void exposesNineCohesiveCustomBiomes() {
+		assertEquals(9, ModBiomes.ALL_BIOMES.size());
 		List<String> expected = List.of(
 			"whispering_peaks",
 			"mossy_canopy",
@@ -33,7 +34,8 @@ class BiomeAndStructureDataTest {
 			"amber_caverns",
 			"elder_bough_grove",
 			"frostspire_crags",
-			"windcarved_cliffs"
+			"windcarved_cliffs",
+			"luminous_depths"
 		);
 		List<String> actual = ModBiomes.ALL_BIOMES.stream().map(k -> k.identifier().getPath()).toList();
 		assertEquals(expected, actual);
@@ -65,6 +67,14 @@ class BiomeAndStructureDataTest {
 			assertTrue(tag.getAsJsonArray("values").toString().contains("canopycavern:" + entry[1]),
 				entry[0] + " should include " + entry[1]);
 		}
+	}
+
+	@Test
+	void luminousDepthsSitsBelowGrottoAndAvoidsDeepDark() {
+		var point = CanopyOverworldRegion.LUMINOUS_DEPTHS_POINT;
+		assertTrue(point.depth().min() >= Climate.quantizeCoord(1.0F), "must be a deep layer");
+		assertTrue(point.erosion().min() >= Climate.quantizeCoord(-0.375F), "must not overlap Deep Dark erosion");
+		assertTrue(readJson("data/minecraft/tags/worldgen/biome/is_overworld.json").toString().contains("canopycavern:luminous_depths"));
 	}
 
 	@Test

@@ -244,7 +244,7 @@ public final class PlayerClimateHandler {
 	}
 
 	private static void pulseReactiveCaveFlora(ServerLevel level, BlockPos center, ClimateSnapshot snapshot, String biomeId) {
-		if (snapshot.humidityPercent() < 70 && !biomeId.equals("canopycavern:verdant_grotto")) {
+		if (snapshot.humidityPercent() < 70 && !biomeId.equals("canopycavern:verdant_grotto") && !biomeId.equals("canopycavern:luminous_depths")) {
 			return;
 		}
 		if (level.getGameTime() % 20L != 0L) {
