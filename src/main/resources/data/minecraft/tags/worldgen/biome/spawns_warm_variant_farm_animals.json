@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "canopycavern:sunlit_shallows",
-    "canopycavern:coral_drift"
+    "canopycavern:coral_drift",
+    "canopycavern:dune_expanse",
+    "canopycavern:mangrove_tangle"
   ]
 }

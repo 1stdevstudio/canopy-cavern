@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "canopycavern:mossy_canopy"
+    "canopycavern:mossy_canopy",
+    "canopycavern:ashen_garden"
   ]
 }

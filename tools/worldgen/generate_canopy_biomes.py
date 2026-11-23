@@ -27,6 +27,23 @@ BIOMES = {
     "frostbound_river":  ("frozen_river",   dict(water="#5a9686", fog="#3a7064", sky="#b0ccc0"), "Frostbound River", "Sungai Membeku", 60),
     "golden_strand":     ("beach",          dict(water="#2fb29a", fog="#1f8a76", sky="#9cc8a6"), "Golden Strand", "Pantai Keemasan", 64),
     "frostline_shore":   ("snowy_beach",    dict(water="#4f8f82", fog="#2f6b60", sky="#b4cfc2"), "Frostline Shore", "Pesisir Garis Beku", 56),
+    # Phase 2: lowlands, forests, wetlands, drylands
+    "wildgrass_plains":   ("plains",                   dict(water="#2e9a78", fog="#1e7058", sky="#8fc4a0"), "Wildgrass Plains", "Padang Rumput Liar", 50),
+    "sunbaked_savanna":   ("savanna",                  dict(water="#3a9a72", fog="#2a7052", sky="#b8c88c"), "Sunbaked Savanna", "Sabana Terik", 30),
+    "dune_expanse":       ("desert",                   dict(water="#3aa07c", fog="#2a7a5c", sky="#d4c890"), "Dune Expanse", "Hamparan Bukit Pasir", 12),
+    "rustrock_badlands":  ("badlands",                 dict(water="#4a9a76", fog="#3a7054", sky="#d8b48a"), "Rustrock Badlands", "Tanah Tandus Karat", 10),
+    "oakhollow_woods":    ("forest",                   dict(water="#2a8a6e", fog="#1c6650", sky="#86b896"), "Oakhollow Woods", "Hutan Oak Rongga", 70),
+    "bloomveil_forest":   ("flower_forest",            dict(water="#2a8f74", fog="#1c6a56", sky="#9ac2a0"), "Bloomveil Forest", "Hutan Tirai Bunga", 72),
+    "silverbirch_glade":  ("birch_forest",             dict(water="#2c8c72", fog="#1d6854", sky="#94c0a2"), "Silverbirch Glade", "Lembah Birch Perak", 66),
+    "blossom_terrace":    ("cherry_grove",             dict(water="#3a9e86", fog="#2a7a66", sky="#c8b8a8"), "Blossom Terrace", "Teras Sakura", 64),
+    "dapplelight_wood":   ("dappled_forest",           dict(water="#2c8a6c", fog="#1d6650", sky="#8eb898"), "Dapplelight Wood", "Hutan Cahaya Belang", 68),
+    "ashen_garden":       ("pale_garden",              dict(water="#6a8a7e", fog="#4c6a60", sky="#b4bcb4"), "Ashen Garden", "Taman Kelabu", 62),
+    "spruce_hollow":      ("taiga",                    dict(water="#287a68", fog="#1a584a", sky="#8ab2a0"), "Spruce Hollow", "Lembah Cemara", 74),
+    "giant_spruce_reach": ("old_growth_spruce_taiga",  dict(water="#26766a", fog="#18544a", sky="#84ac9a"), "Giant Spruce Reach", "Bentang Cemara Raksasa", 78),
+    "tanglewild_jungle":  ("jungle",                   dict(water="#2a9a76", fog="#1c7456", sky="#86c094"), "Tanglewild Jungle", "Rimba Kusut", 92),
+    "bamboo_thicket":     ("bamboo_jungle",            dict(water="#2a9a78", fog="#1c7458", sky="#8ec49a"), "Bamboo Thicket", "Belukar Bambu", 90),
+    "bogwater_fen":       ("swamp",                    dict(water="#4a7a52", fog="#36583c", sky="#8aa286"), "Bogwater Fen", "Rawa Air Gambut", 94),
+    "mangrove_tangle":    ("mangrove_swamp",           dict(water="#3e7a5a", fog="#2c5842", sky="#88a690"), "Mangrove Tangle", "Belantara Bakau", 96),
 }
 
 

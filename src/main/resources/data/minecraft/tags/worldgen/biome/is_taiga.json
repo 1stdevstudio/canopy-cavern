@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "canopycavern:elder_bough_grove",
-    "canopycavern:mossy_canopy"
+    "canopycavern:mossy_canopy",
+    "canopycavern:spruce_hollow",
+    "canopycavern:giant_spruce_reach"
   ]
 }

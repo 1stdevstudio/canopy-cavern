@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BiomeAndStructureDataTest {
 	@Test
 	void exposesAllCohesiveCustomBiomes() {
-		assertEquals(19, ModBiomes.ALL_BIOMES.size());
+		assertEquals(35, ModBiomes.ALL_BIOMES.size());
 		List<String> expected = List.of(
 			"whispering_peaks",
 			"mossy_canopy",
@@ -45,7 +45,23 @@ class BiomeAndStructureDataTest {
 			"meandering_river",
 			"frostbound_river",
 			"golden_strand",
-			"frostline_shore"
+			"frostline_shore",
+			"wildgrass_plains",
+			"sunbaked_savanna",
+			"dune_expanse",
+			"rustrock_badlands",
+			"oakhollow_woods",
+			"bloomveil_forest",
+			"silverbirch_glade",
+			"blossom_terrace",
+			"dapplelight_wood",
+			"ashen_garden",
+			"spruce_hollow",
+			"giant_spruce_reach",
+			"tanglewild_jungle",
+			"bamboo_thicket",
+			"bogwater_fen",
+			"mangrove_tangle"
 		);
 		List<String> actual = ModBiomes.ALL_BIOMES.stream().map(k -> k.identifier().getPath()).toList();
 		assertEquals(expected, actual);
