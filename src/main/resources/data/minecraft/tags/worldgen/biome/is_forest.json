@@ -2,6 +2,11 @@
   "replace": false,
   "values": [
     "canopycavern:mossy_canopy",
-    "canopycavern:elder_bough_grove"
+    "canopycavern:elder_bough_grove",
+    "canopycavern:oakhollow_woods",
+    "canopycavern:bloomveil_forest",
+    "canopycavern:silverbirch_glade",
+    "canopycavern:dapplelight_wood",
+    "canopycavern:ashen_garden"
   ]
 }

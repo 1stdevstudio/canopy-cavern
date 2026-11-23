@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:wildgrass_plains",
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:dune_expanse",
+    "canopycavern:rustrock_badlands",
+    "canopycavern:oakhollow_woods",
+    "canopycavern:bloomveil_forest",
+    "canopycavern:silverbirch_glade",
+    "canopycavern:blossom_terrace",
+    "canopycavern:ashen_garden",
+    "canopycavern:spruce_hollow",
+    "canopycavern:giant_spruce_reach",
+    "canopycavern:tanglewild_jungle",
+    "canopycavern:bamboo_thicket"
+  ]
+}

@@ -19,6 +19,22 @@
     "canopycavern:meandering_river",
     "canopycavern:frostbound_river",
     "canopycavern:golden_strand",
-    "canopycavern:frostline_shore"
+    "canopycavern:frostline_shore",
+    "canopycavern:wildgrass_plains",
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:dune_expanse",
+    "canopycavern:rustrock_badlands",
+    "canopycavern:oakhollow_woods",
+    "canopycavern:bloomveil_forest",
+    "canopycavern:silverbirch_glade",
+    "canopycavern:blossom_terrace",
+    "canopycavern:dapplelight_wood",
+    "canopycavern:ashen_garden",
+    "canopycavern:spruce_hollow",
+    "canopycavern:giant_spruce_reach",
+    "canopycavern:tanglewild_jungle",
+    "canopycavern:bamboo_thicket",
+    "canopycavern:bogwater_fen",
+    "canopycavern:mangrove_tangle"
   ]
 }

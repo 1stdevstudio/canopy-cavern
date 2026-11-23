@@ -3,6 +3,10 @@
   "values": [
     "canopycavern:whispering_peaks",
     "canopycavern:frostspire_crags",
-    "canopycavern:crystal_steppe"
+    "canopycavern:crystal_steppe",
+    "canopycavern:wildgrass_plains",
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:dune_expanse",
+    "canopycavern:spruce_hollow"
   ]
 }

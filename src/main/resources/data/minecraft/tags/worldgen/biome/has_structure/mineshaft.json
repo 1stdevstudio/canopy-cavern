@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "canopycavern:wildgrass_plains",
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:dune_expanse",
+    "canopycavern:bogwater_fen",
+    "canopycavern:mangrove_tangle"
+  ]
+}

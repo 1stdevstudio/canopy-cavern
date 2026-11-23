@@ -30,6 +30,22 @@ public final class ModBiomes {
 	public static final ResourceKey<Biome> FROSTBOUND_RIVER = key("frostbound_river");
 	public static final ResourceKey<Biome> GOLDEN_STRAND = key("golden_strand");
 	public static final ResourceKey<Biome> FROSTLINE_SHORE = key("frostline_shore");
+	public static final ResourceKey<Biome> WILDGRASS_PLAINS = key("wildgrass_plains");
+	public static final ResourceKey<Biome> SUNBAKED_SAVANNA = key("sunbaked_savanna");
+	public static final ResourceKey<Biome> DUNE_EXPANSE = key("dune_expanse");
+	public static final ResourceKey<Biome> RUSTROCK_BADLANDS = key("rustrock_badlands");
+	public static final ResourceKey<Biome> OAKHOLLOW_WOODS = key("oakhollow_woods");
+	public static final ResourceKey<Biome> BLOOMVEIL_FOREST = key("bloomveil_forest");
+	public static final ResourceKey<Biome> SILVERBIRCH_GLADE = key("silverbirch_glade");
+	public static final ResourceKey<Biome> BLOSSOM_TERRACE = key("blossom_terrace");
+	public static final ResourceKey<Biome> DAPPLELIGHT_WOOD = key("dapplelight_wood");
+	public static final ResourceKey<Biome> ASHEN_GARDEN = key("ashen_garden");
+	public static final ResourceKey<Biome> SPRUCE_HOLLOW = key("spruce_hollow");
+	public static final ResourceKey<Biome> GIANT_SPRUCE_REACH = key("giant_spruce_reach");
+	public static final ResourceKey<Biome> TANGLEWILD_JUNGLE = key("tanglewild_jungle");
+	public static final ResourceKey<Biome> BAMBOO_THICKET = key("bamboo_thicket");
+	public static final ResourceKey<Biome> BOGWATER_FEN = key("bogwater_fen");
+	public static final ResourceKey<Biome> MANGROVE_TANGLE = key("mangrove_tangle");
 
 	public static final List<ResourceKey<Biome>> ALL_BIOMES = List.of(
 		WHISPERING_PEAKS,
@@ -50,7 +66,23 @@ public final class ModBiomes {
 		MEANDERING_RIVER,
 		FROSTBOUND_RIVER,
 		GOLDEN_STRAND,
-		FROSTLINE_SHORE
+		FROSTLINE_SHORE,
+		WILDGRASS_PLAINS,
+		SUNBAKED_SAVANNA,
+		DUNE_EXPANSE,
+		RUSTROCK_BADLANDS,
+		OAKHOLLOW_WOODS,
+		BLOOMVEIL_FOREST,
+		SILVERBIRCH_GLADE,
+		BLOSSOM_TERRACE,
+		DAPPLELIGHT_WOOD,
+		ASHEN_GARDEN,
+		SPRUCE_HOLLOW,
+		GIANT_SPRUCE_REACH,
+		TANGLEWILD_JUNGLE,
+		BAMBOO_THICKET,
+		BOGWATER_FEN,
+		MANGROVE_TANGLE
 	);
 
 	private ModBiomes() {
