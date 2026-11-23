@@ -159,6 +159,7 @@ public final class ClimateSimulation {
 		boolean cave = isCave(base.depthZone());
 		int humidity = switch (biome) {
 			case "canopycavern:verdant_grotto", "minecraft:lush_caves" -> 84;
+			case "canopycavern:luminous_depths" -> 88;
 			case "canopycavern:elder_bough_grove" -> 82;
 			case "canopycavern:mossy_canopy" -> 76;
 			case "canopycavern:crystal_steppe" -> 46;

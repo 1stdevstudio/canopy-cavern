@@ -19,6 +19,7 @@ public final class ModBiomes {
 	public static final ResourceKey<Biome> ELDER_BOUGH_GROVE = key("elder_bough_grove");
 	public static final ResourceKey<Biome> FROSTSPIRE_CRAGS = key("frostspire_crags");
 	public static final ResourceKey<Biome> WINDCARVED_CLIFFS = key("windcarved_cliffs");
+	public static final ResourceKey<Biome> LUMINOUS_DEPTHS = key("luminous_depths");
 
 	public static final List<ResourceKey<Biome>> ALL_BIOMES = List.of(
 		WHISPERING_PEAKS,
@@ -28,7 +29,8 @@ public final class ModBiomes {
 		AMBER_CAVERNS,
 		ELDER_BOUGH_GROVE,
 		FROSTSPIRE_CRAGS,
-		WINDCARVED_CLIFFS
+		WINDCARVED_CLIFFS,
+		LUMINOUS_DEPTHS
 	);
 
 	private ModBiomes() {

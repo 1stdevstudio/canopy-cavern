@@ -17,6 +17,16 @@ import java.util.function.Consumer;
  * subterranean cavern biomes without leaving gaps in vanilla climate noise space.
  */
 public final class CanopyOverworldRegion extends Region {
+	static final Climate.ParameterPoint LUMINOUS_DEPTHS_POINT = Climate.parameters(
+		Climate.Parameter.span(-1.0F, 1.0F),
+		Climate.Parameter.span(0.7F, 1.0F),
+		Climate.Parameter.span(-0.11F, 1.0F),
+		Climate.Parameter.span(-0.375F, 1.0F),
+		Climate.Parameter.point(1.1F),
+		Climate.Parameter.span(-1.0F, 1.0F),
+		0.0F
+	);
+
 	public CanopyOverworldRegion(Identifier name, int weight) {
 		super(name, RegionType.OVERWORLD, weight);
 	}
@@ -46,5 +56,9 @@ public final class CanopyOverworldRegion extends Region {
 			builder.replaceBiome(Biomes.LUSH_CAVES, ModBiomes.VERDANT_GROTTO);
 			builder.replaceBiome(Biomes.DRIPSTONE_CAVES, ModBiomes.AMBER_CAVERNS);
 		});
+
+		// Luminous Depths: a deep (below ~Y 0) humid cave layer under the Verdant Grotto band.
+		// Erosion stays above Deep Dark's band so Ancient Cities keep their biome.
+		this.addBiome(mapper, LUMINOUS_DEPTHS_POINT, ModBiomes.LUMINOUS_DEPTHS);
 	}
 }
