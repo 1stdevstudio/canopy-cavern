@@ -16,7 +16,7 @@ STONE = "minecraft:deepslate_bricks"
 LOG = "minecraft:stripped_spruce_log"
 WOOD = "minecraft:spruce_planks"
 ROAD = "minecraft:polished_tuff"
-SUPPLY = "canopycavern:chests/village_supply"
+SUPPLY = "canopycavern:chests/mining_depot"
 MINING_LOOT = "canopycavern:chests/echoing_mineshaft"
 RAIL = ("minecraft:rail", {"shape": "east_west", "waterlogged": "false"})
 

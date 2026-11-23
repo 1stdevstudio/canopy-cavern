@@ -534,4 +534,28 @@ class StructureExpansionIntegrityTest {
             }
         }
     }
+
+    @org.junit.jupiter.api.Test
+    void lootTablesUse263ModifierSyntax() throws Exception {
+        var dir = java.nio.file.Path.of("src/main/resources/data/canopycavern/loot_table");
+        try (var files = java.nio.file.Files.walk(dir)) {
+            for (var file : files.filter(p -> p.toString().endsWith(".json")).toList()) {
+                String raw = java.nio.file.Files.readString(file);
+                org.junit.jupiter.api.Assertions.assertFalse(raw.contains("\"functions\""),
+                    file + " uses pre-26.3 'functions'; use 'modifier' with 'type'");
+            }
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void miningCityUsesDedicatedDepotLootAndModBiomes() throws Exception {
+        try (var in = getClass().getResourceAsStream("/data/canopycavern/loot_table/chests/mining_depot.json")) {
+            org.junit.jupiter.api.Assertions.assertNotNull(in, "mining_depot loot table");
+        }
+        try (var in = getClass().getResourceAsStream("/data/canopycavern/tags/worldgen/biome/has_structure/mining_city.json")) {
+            String raw = new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            org.junit.jupiter.api.Assertions.assertTrue(raw.contains("canopycavern:whispering_peaks"));
+            org.junit.jupiter.api.Assertions.assertTrue(raw.contains("canopycavern:crystal_steppe"));
+        }
+    }
 }
