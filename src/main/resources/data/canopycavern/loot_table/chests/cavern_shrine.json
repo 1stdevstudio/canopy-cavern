@@ -151,7 +151,9 @@
             "type": "minecraft:enchant_randomly",
             "options": [
               "canopycavern:spore_filter",
-              "canopycavern:cave_grip"
+              "canopycavern:cave_grip",
+              "canopycavern:hunters_tally",
+              "canopycavern:prospector"
             ]
           }
         }

@@ -152,7 +152,8 @@
             "type": "minecraft:enchant_randomly",
             "options": [
               "canopycavern:thermal_weave",
-              "canopycavern:ridge_step"
+              "canopycavern:ridge_step",
+              "canopycavern:frost_ward"
             ]
           }
         }

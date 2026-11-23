@@ -286,6 +286,19 @@
         {
           "type": "minecraft:empty",
           "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 3,
+          "modifier": {
+            "type": "minecraft:enchant_randomly",
+            "options": [
+              "canopycavern:prospector",
+              "canopycavern:torchkeeper",
+              "canopycavern:deep_focus"
+            ]
+          }
         }
       ]
     }
