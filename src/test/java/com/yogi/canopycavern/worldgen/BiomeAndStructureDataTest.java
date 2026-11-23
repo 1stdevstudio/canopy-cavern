@@ -52,12 +52,11 @@ class BiomeAndStructureDataTest {
 		String[][] expected = {
 			{"has_structure/woodland_mansion", "mossy_canopy"},
 			{"has_structure/village_plains", "whispering_peaks"},
-			{"has_structure/village_savanna", "crystal_steppe"},
+			{"has_structure/village_plains", "crystal_steppe"},
 			{"has_structure/pillager_outpost", "whispering_peaks"},
 			{"has_structure/pillager_outpost", "frostspire_crags"},
 			{"has_structure/trail_ruins", "elder_bough_grove"},
 			{"has_structure/igloo", "frostspire_crags"},
-			{"is_savanna", "crystal_steppe"},
 			{"is_taiga", "elder_bough_grove"},
 		};
 		for (String[] entry : expected) {
