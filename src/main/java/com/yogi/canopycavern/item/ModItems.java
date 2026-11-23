@@ -129,6 +129,16 @@ public final class ModItems {
 		props -> new SeaGlassCharmItem(props.stacksTo(1))
 	);
 
+	public static final Item EMBER_CANTEEN = register(
+		"ember_canteen",
+		props -> new EmberCanteenItem(props.durability(6))
+	);
+	public static final Item FROSTSPIRE_CRAMPONS = registerArmor("frostspire_crampons", PEAK_THERMAL_MATERIAL, ArmorType.BOOTS);
+	public static final Item SEISMIC_ROD = register(
+		"seismic_rod",
+		props -> new SeismicRodItem(props.durability(96))
+	);
+
 	public static final CreativeModeTab GENERAL_TAB = Registry.register(
 		BuiltInRegistries.CREATIVE_MODE_TAB,
 		CanopyCavernMod.id("general"),
@@ -173,6 +183,10 @@ public final class ModItems {
 	/** Returns true when player holds Sea Glass Charm in either hand. */
 	public static boolean hasSeaGlassCharm(Player player) {
 		return hasHeldItem(player, SEA_GLASS_CHARM);
+	}
+
+	public static boolean wearsFrostspireCrampons(net.minecraft.world.entity.LivingEntity entity) {
+		return entity.getItemBySlot(EquipmentSlot.FEET).is(FROSTSPIRE_CRAMPONS);
 	}
 
 	private static boolean hasHeldItem(Player player, Item item) {
@@ -495,6 +509,75 @@ public final class ModItems {
 		public InteractionResult use(Level level, Player player, InteractionHand hand) {
 			if (player instanceof ServerPlayer serverPlayer) {
 				ServerPlayNetworking.send(serverPlayer, new OpenGuidePayload(false));
+			}
+			return InteractionResult.SUCCESS;
+		}
+	}
+
+	/** Copper canteen of spiced blaze tea: shields the drinker from climate penalties for two minutes. */
+	private static final class EmberCanteenItem extends DescribedItem {
+		EmberCanteenItem(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		public InteractionResult use(Level level, Player player, InteractionHand hand) {
+			ItemStack stack = player.getItemInHand(hand);
+			if (player.getCooldowns().isOnCooldown(stack)) {
+				return InteractionResult.FAIL;
+			}
+			if (level instanceof ServerLevel serverLevel) {
+				com.yogi.canopycavern.world.ClimateShield.grant(player.getUUID(), serverLevel.getGameTime());
+				player.setTicksFrozen(0);
+				player.getCooldowns().addCooldown(stack, 600);
+				if (!player.isCreative()) {
+					stack.hurtAndBreak(1, player, hand);
+				}
+				serverLevel.playSound(null, player.blockPosition(), SoundEvents.GENERIC_DRINK.value(), SoundSource.PLAYERS, 0.9F, 0.9F);
+				serverLevel.sendParticles(ParticleTypes.SMALL_FLAME, player.getX(), player.getY() + 1.2, player.getZ(), 10, 0.3, 0.3, 0.3, 0.01);
+				sendActionBar(player, Component.translatable("item.canopycavern.ember_canteen.activated"));
+			}
+			return InteractionResult.SUCCESS;
+		}
+	}
+
+	/** Copper-and-amethyst rod that chimes toward the nearest ore within a short radius, without naming it. */
+	private static final class SeismicRodItem extends DescribedItem {
+		private static final int RADIUS = 8;
+
+		SeismicRodItem(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		public InteractionResult use(Level level, Player player, InteractionHand hand) {
+			ItemStack stack = player.getItemInHand(hand);
+			if (player.getCooldowns().isOnCooldown(stack)) {
+				return InteractionResult.FAIL;
+			}
+			if (level instanceof ServerLevel serverLevel) {
+				BlockPos origin = player.blockPosition();
+				BlockPos nearest = com.yogi.canopycavern.core.SeismicSurvey.nearest(origin, RADIUS,
+					pos -> serverLevel.getBlockState(pos).is(BlockTags.ORES));
+				player.getCooldowns().addCooldown(stack, 200);
+				if (!player.isCreative()) {
+					stack.hurtAndBreak(1, player, hand);
+				}
+				if (nearest == null) {
+					serverLevel.playSound(null, origin, SoundEvents.STONE_HIT, SoundSource.PLAYERS, 0.8F, 0.6F);
+					sendActionBar(player, Component.translatable("item.canopycavern.seismic_rod.silent"));
+				} else {
+					double distance = Math.sqrt(origin.distSqr(nearest));
+					float pitch = (float) com.yogi.canopycavern.core.SeismicSurvey.pitchForDistance(distance, RADIUS);
+					serverLevel.playSound(null, origin, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.PLAYERS, 1.0F, pitch);
+					Vec3 from = player.getEyePosition();
+					Vec3 dir = Vec3.atCenterOf(nearest).subtract(from).normalize();
+					for (int i = 1; i <= 4; i++) {
+						Vec3 p = from.add(dir.scale(0.6 * i));
+						serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, p.x, p.y, p.z, 2, 0.03, 0.03, 0.03, 0.0);
+					}
+					sendActionBar(player, Component.translatable("item.canopycavern.seismic_rod.resonance"));
+				}
 			}
 			return InteractionResult.SUCCESS;
 		}
