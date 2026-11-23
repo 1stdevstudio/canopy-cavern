@@ -515,4 +515,23 @@ class StructureExpansionIntegrityTest {
         if (count < 0 || count > 1_000_000) throw new IOException("Invalid NBT length " + count);
         return count;
     }
+
+    @org.junit.jupiter.api.Test
+    void surfaceSettlementsKeepDistanceFromVanillaVillages() throws Exception {
+        String[] sets = {"canopy_village", "crystal_citadel", "peak_citadel", "jungle_canopy_hamlet", "badlands_pueblo",
+            "mangrove_marsh_village", "cherry_grove_hamlet", "mushroom_island_outpost", "frozen_ridge_village",
+            "abandoned_mega_village", "frontier_pillager_outpost"};
+        for (String id : sets) {
+            String path = "/data/canopycavern/worldgen/structure_set/" + id + ".json";
+            try (var in = getClass().getResourceAsStream(path)) {
+                org.junit.jupiter.api.Assertions.assertNotNull(in, path);
+                var placement = com.google.gson.JsonParser.parseString(new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8))
+                    .getAsJsonObject().getAsJsonObject("placement");
+                var zone = placement.getAsJsonObject("exclusion_zone");
+                org.junit.jupiter.api.Assertions.assertNotNull(zone, id + " needs an exclusion zone");
+                org.junit.jupiter.api.Assertions.assertEquals("minecraft:villages", zone.get("other_set").getAsString(), id);
+                org.junit.jupiter.api.Assertions.assertTrue(placement.get("spacing").getAsInt() >= 28, id + " is too dense");
+            }
+        }
+    }
 }
