@@ -3,6 +3,13 @@
   "values": [
     "canopycavern:floe_sea",
     "canopycavern:frostbound_river",
-    "canopycavern:frostline_shore"
+    "canopycavern:frostline_shore",
+    "canopycavern:snowbound_tundra",
+    "canopycavern:rime_spires",
+    "canopycavern:frostpine_taiga",
+    "canopycavern:hoarfrost_grove",
+    "canopycavern:powder_slopes",
+    "canopycavern:glacier_crown",
+    "canopycavern:hushed_depths"
   ]
 }

@@ -2,6 +2,10 @@
   "replace": false,
   "values": [
     "canopycavern:wildgrass_plains",
-    "canopycavern:sunbaked_savanna"
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:snowbound_tundra",
+    "canopycavern:rime_spires",
+    "canopycavern:mycelium_isles",
+    "canopycavern:sulfur_hollows"
   ]
 }
