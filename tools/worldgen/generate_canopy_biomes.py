@@ -44,6 +44,20 @@ BIOMES = {
     "bamboo_thicket":     ("bamboo_jungle",            dict(water="#2a9a78", fog="#1c7458", sky="#8ec49a"), "Bamboo Thicket", "Belukar Bambu", 90),
     "bogwater_fen":       ("swamp",                    dict(water="#4a7a52", fog="#36583c", sky="#8aa286"), "Bogwater Fen", "Rawa Air Gambut", 94),
     "mangrove_tangle":    ("mangrove_swamp",           dict(water="#3e7a5a", fog="#2c5842", sky="#88a690"), "Mangrove Tangle", "Belantara Bakau", 96),
+    # Phase 3: cold, mountains, islands, deep caves
+    "snowbound_tundra":   ("snowy_plains",             dict(water="#5a9686", fog="#3a7064", sky="#bcd2c6"), "Snowbound Tundra", "Tundra Bersalju", 40),
+    "rime_spires":        ("ice_spikes",               dict(water="#5a9686", fog="#3a7064", sky="#c4d8cc"), "Rime Spires", "Menara Embun Beku", 36),
+    "frostpine_taiga":    ("snowy_taiga",              dict(water="#4a8a7a", fog="#2e665a", sky="#a8c4b6"), "Frostpine Taiga", "Taiga Pinus Beku", 58),
+    "hoarfrost_grove":    ("grove",                    dict(water="#4a8a7a", fog="#2e665a", sky="#b0c8bc"), "Hoarfrost Grove", "Rimbun Bunga Es", 54),
+    "powder_slopes":      ("snowy_slopes",             dict(water="#5a9686", fog="#3a7064", sky="#c0d4c8"), "Powder Slopes", "Lereng Salju Halus", 46),
+    "glacier_crown":      ("frozen_peaks",             dict(water="#5a9686", fog="#3a7064", sky="#cadcd2"), "Glacier Crown", "Mahkota Gletser", 38),
+    "slatestone_peaks":   ("stony_peaks",              dict(water="#3a8a72", fog="#286852", sky="#a8bca8"), "Slatestone Peaks", "Puncak Batu Sabak", 40),
+    "gravel_barrens":     ("windswept_gravelly_hills", dict(water="#3a8072", fog="#285e52", sky="#a4b8aa"), "Gravel Barrens", "Tandus Kerikil", 42),
+    "windbent_forest":    ("windswept_forest",         dict(water="#2e7e6a", fog="#1e5c4c", sky="#98b4a2"), "Windbent Forest", "Hutan Condong Angin", 56),
+    "gale_savanna":       ("windswept_savanna",        dict(water="#3a9a72", fog="#2a7052", sky="#c0c494"), "Gale Savanna", "Sabana Badai", 28),
+    "mycelium_isles":     ("mushroom_fields",          dict(water="#5a8a72", fog="#3e6a56", sky="#b4a8b0"), "Mycelium Isles", "Kepulauan Miselium", 88),
+    "hushed_depths":      ("deep_dark",                dict(water="#2a5a50", fog="#1a3a34", sky="#3a4a44"), "Hushed Depths", "Kedalaman Senyap", 70),
+    "sulfur_hollows":     ("sulfur_caves",             dict(water="#5a8a4a", fog="#4a6a34", sky="#8a9a5a"), "Sulfur Hollows", "Rongga Belerang", 58),
 }
 
 

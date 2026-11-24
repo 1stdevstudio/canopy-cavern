@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "canopycavern:windcarved_cliffs"
+    "canopycavern:windcarved_cliffs",
+    "canopycavern:gravel_barrens",
+    "canopycavern:windbent_forest"
   ]
 }

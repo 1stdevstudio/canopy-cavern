@@ -28,11 +28,11 @@ public final class CanopyBiomeMap {
 		Map.entry("minecraft:deep_frozen_ocean", "canopycavern:floe_sea"), Map.entry("minecraft:river", "canopycavern:meandering_river"),
 		Map.entry("minecraft:frozen_river", "canopycavern:frostbound_river"), Map.entry("minecraft:beach", "canopycavern:golden_strand"),
 		Map.entry("minecraft:snowy_beach", "canopycavern:frostline_shore"), Map.entry("minecraft:stony_shore", CLIFFS),
-		Map.entry("minecraft:mushroom_fields", GROTTO),
+		Map.entry("minecraft:mushroom_fields", "canopycavern:mycelium_isles"),
 		// Lowlands
 		Map.entry("minecraft:plains", "canopycavern:wildgrass_plains"), Map.entry("minecraft:sunflower_plains", STEPPE),
 		Map.entry("minecraft:meadow", PEAKS), Map.entry("minecraft:savanna", "canopycavern:sunbaked_savanna"),
-		Map.entry("minecraft:savanna_plateau", "canopycavern:sunbaked_savanna"), Map.entry("minecraft:windswept_savanna", CLIFFS),
+		Map.entry("minecraft:savanna_plateau", "canopycavern:sunbaked_savanna"), Map.entry("minecraft:windswept_savanna", "canopycavern:gale_savanna"),
 		Map.entry("minecraft:desert", "canopycavern:dune_expanse"), Map.entry("minecraft:badlands", "canopycavern:rustrock_badlands"),
 		Map.entry("minecraft:eroded_badlands", "canopycavern:rustrock_badlands"), Map.entry("minecraft:wooded_badlands", "canopycavern:rustrock_badlands"),
 		// Forests and wetlands
@@ -45,15 +45,15 @@ public final class CanopyBiomeMap {
 		Map.entry("minecraft:bamboo_jungle", "canopycavern:bamboo_thicket"), Map.entry("minecraft:swamp", "canopycavern:bogwater_fen"),
 		Map.entry("minecraft:mangrove_swamp", "canopycavern:mangrove_tangle"),
 		// Cold and mountains
-		Map.entry("minecraft:snowy_plains", FROST), Map.entry("minecraft:ice_spikes", FROST),
-		Map.entry("minecraft:snowy_taiga", FROST), Map.entry("minecraft:grove", FROST),
-		Map.entry("minecraft:snowy_slopes", FROST), Map.entry("minecraft:frozen_peaks", FROST),
-		Map.entry("minecraft:jagged_peaks", PEAKS), Map.entry("minecraft:stony_peaks", PEAKS),
-		Map.entry("minecraft:windswept_hills", CLIFFS), Map.entry("minecraft:windswept_gravelly_hills", CLIFFS),
-		Map.entry("minecraft:windswept_forest", PEAKS),
+		Map.entry("minecraft:snowy_plains", "canopycavern:snowbound_tundra"), Map.entry("minecraft:ice_spikes", "canopycavern:rime_spires"),
+		Map.entry("minecraft:snowy_taiga", "canopycavern:frostpine_taiga"), Map.entry("minecraft:grove", "canopycavern:hoarfrost_grove"),
+		Map.entry("minecraft:snowy_slopes", "canopycavern:powder_slopes"), Map.entry("minecraft:frozen_peaks", "canopycavern:glacier_crown"),
+		Map.entry("minecraft:jagged_peaks", "canopycavern:frostspire_crags"), Map.entry("minecraft:stony_peaks", "canopycavern:slatestone_peaks"),
+		Map.entry("minecraft:windswept_hills", CLIFFS), Map.entry("minecraft:windswept_gravelly_hills", "canopycavern:gravel_barrens"),
+		Map.entry("minecraft:windswept_forest", "canopycavern:windbent_forest"),
 		// Caves
 		Map.entry("minecraft:lush_caves", GROTTO), Map.entry("minecraft:dripstone_caves", AMBER),
-		Map.entry("minecraft:deep_dark", DEPTHS), Map.entry("minecraft:sulfur_caves", AMBER)
+		Map.entry("minecraft:deep_dark", "canopycavern:hushed_depths"), Map.entry("minecraft:sulfur_caves", "canopycavern:sulfur_hollows")
 	);
 
 	private CanopyBiomeMap() {

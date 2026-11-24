@@ -52,8 +52,12 @@ class CanopyWorldPresetTest {
 
 	static String build() throws Exception {
 		JsonArray biomes = new JsonArray();
-		for (var pair : vanillaPoints()) {
-			String target = CanopyBiomeMap.VANILLA_TO_CANOPY.get(pair.getSecond());
+		List<Pair<Climate.ParameterPoint, String>> points = new ArrayList<>(vanillaPoints());
+		// Canopy-only slots with no vanilla counterpart (same points the TerraBlender region uses).
+		points.add(Pair.of(CanopyOverworldRegion.LUMINOUS_DEPTHS_POINT, "canopycavern:luminous_depths"));
+		for (var pair : points) {
+			String target = pair.getSecond().startsWith("canopycavern:") ? pair.getSecond()
+				: CanopyBiomeMap.VANILLA_TO_CANOPY.get(pair.getSecond());
 			assertNotNull(target, "No Canopy biome mapped for " + pair.getSecond());
 			Climate.ParameterPoint p = pair.getFirst();
 			JsonObject params = new JsonObject();
@@ -112,7 +116,7 @@ class CanopyWorldPresetTest {
 		var biomes = JsonParser.parseString(Files.readString(PRESET)).getAsJsonObject()
 			.getAsJsonObject("dimensions").getAsJsonObject("minecraft:overworld").getAsJsonObject("generator")
 			.getAsJsonObject("biome_source").getAsJsonArray("biomes");
-		assertEquals(vanillaPoints().size(), biomes.size());
+		assertEquals(vanillaPoints().size() + 1, biomes.size());
 		for (var entry : biomes) {
 			var result = Climate.ParameterPoint.CODEC.parse(com.mojang.serialization.JsonOps.INSTANCE,
 				entry.getAsJsonObject().get("parameters"));

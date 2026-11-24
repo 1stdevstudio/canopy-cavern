@@ -35,6 +35,19 @@
     "canopycavern:tanglewild_jungle",
     "canopycavern:bamboo_thicket",
     "canopycavern:bogwater_fen",
-    "canopycavern:mangrove_tangle"
+    "canopycavern:mangrove_tangle",
+    "canopycavern:snowbound_tundra",
+    "canopycavern:rime_spires",
+    "canopycavern:frostpine_taiga",
+    "canopycavern:hoarfrost_grove",
+    "canopycavern:powder_slopes",
+    "canopycavern:glacier_crown",
+    "canopycavern:slatestone_peaks",
+    "canopycavern:gravel_barrens",
+    "canopycavern:windbent_forest",
+    "canopycavern:gale_savanna",
+    "canopycavern:mycelium_isles",
+    "canopycavern:hushed_depths",
+    "canopycavern:sulfur_hollows"
   ]
 }

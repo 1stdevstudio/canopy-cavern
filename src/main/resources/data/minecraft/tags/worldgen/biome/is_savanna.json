@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "canopycavern:sunbaked_savanna"
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:gale_savanna"
   ]
 }

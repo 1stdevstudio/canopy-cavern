@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "canopycavern:frostspire_crags"
+    "canopycavern:frostspire_crags",
+    "canopycavern:snowbound_tundra",
+    "canopycavern:frostpine_taiga",
+    "canopycavern:powder_slopes"
   ]
 }

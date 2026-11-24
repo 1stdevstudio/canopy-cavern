@@ -369,5 +369,18 @@
   "biome.canopycavern.tanglewild_jungle": "Tanglewild Jungle",
   "biome.canopycavern.bamboo_thicket": "Bamboo Thicket",
   "biome.canopycavern.bogwater_fen": "Bogwater Fen",
-  "biome.canopycavern.mangrove_tangle": "Mangrove Tangle"
+  "biome.canopycavern.mangrove_tangle": "Mangrove Tangle",
+  "biome.canopycavern.snowbound_tundra": "Snowbound Tundra",
+  "biome.canopycavern.rime_spires": "Rime Spires",
+  "biome.canopycavern.frostpine_taiga": "Frostpine Taiga",
+  "biome.canopycavern.hoarfrost_grove": "Hoarfrost Grove",
+  "biome.canopycavern.powder_slopes": "Powder Slopes",
+  "biome.canopycavern.glacier_crown": "Glacier Crown",
+  "biome.canopycavern.slatestone_peaks": "Slatestone Peaks",
+  "biome.canopycavern.gravel_barrens": "Gravel Barrens",
+  "biome.canopycavern.windbent_forest": "Windbent Forest",
+  "biome.canopycavern.gale_savanna": "Gale Savanna",
+  "biome.canopycavern.mycelium_isles": "Mycelium Isles",
+  "biome.canopycavern.hushed_depths": "Hushed Depths",
+  "biome.canopycavern.sulfur_hollows": "Sulfur Hollows"
 }

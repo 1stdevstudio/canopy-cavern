@@ -46,6 +46,19 @@ public final class ModBiomes {
 	public static final ResourceKey<Biome> BAMBOO_THICKET = key("bamboo_thicket");
 	public static final ResourceKey<Biome> BOGWATER_FEN = key("bogwater_fen");
 	public static final ResourceKey<Biome> MANGROVE_TANGLE = key("mangrove_tangle");
+	public static final ResourceKey<Biome> SNOWBOUND_TUNDRA = key("snowbound_tundra");
+	public static final ResourceKey<Biome> RIME_SPIRES = key("rime_spires");
+	public static final ResourceKey<Biome> FROSTPINE_TAIGA = key("frostpine_taiga");
+	public static final ResourceKey<Biome> HOARFROST_GROVE = key("hoarfrost_grove");
+	public static final ResourceKey<Biome> POWDER_SLOPES = key("powder_slopes");
+	public static final ResourceKey<Biome> GLACIER_CROWN = key("glacier_crown");
+	public static final ResourceKey<Biome> SLATESTONE_PEAKS = key("slatestone_peaks");
+	public static final ResourceKey<Biome> GRAVEL_BARRENS = key("gravel_barrens");
+	public static final ResourceKey<Biome> WINDBENT_FOREST = key("windbent_forest");
+	public static final ResourceKey<Biome> GALE_SAVANNA = key("gale_savanna");
+	public static final ResourceKey<Biome> MYCELIUM_ISLES = key("mycelium_isles");
+	public static final ResourceKey<Biome> HUSHED_DEPTHS = key("hushed_depths");
+	public static final ResourceKey<Biome> SULFUR_HOLLOWS = key("sulfur_hollows");
 
 	public static final List<ResourceKey<Biome>> ALL_BIOMES = List.of(
 		WHISPERING_PEAKS,
@@ -82,7 +95,20 @@ public final class ModBiomes {
 		TANGLEWILD_JUNGLE,
 		BAMBOO_THICKET,
 		BOGWATER_FEN,
-		MANGROVE_TANGLE
+		MANGROVE_TANGLE,
+		SNOWBOUND_TUNDRA,
+		RIME_SPIRES,
+		FROSTPINE_TAIGA,
+		HOARFROST_GROVE,
+		POWDER_SLOPES,
+		GLACIER_CROWN,
+		SLATESTONE_PEAKS,
+		GRAVEL_BARRENS,
+		WINDBENT_FOREST,
+		GALE_SAVANNA,
+		MYCELIUM_ISLES,
+		HUSHED_DEPTHS,
+		SULFUR_HOLLOWS
 	);
 
 	private ModBiomes() {
