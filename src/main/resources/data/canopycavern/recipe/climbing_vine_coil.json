@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "tools",
+  "pattern": [
+    "VVV",
+    "VSV",
+    "VVV"
+  ],
+  "key": {
+    "V": "minecraft:vine",
+    "S": "minecraft:string"
+  },
+  "result": {
+    "id": "canopycavern:climbing_vine_coil",
+    "count": 1
+  }
+}

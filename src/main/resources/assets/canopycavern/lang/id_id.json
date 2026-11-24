@@ -384,5 +384,18 @@
   "biome.canopycavern.hushed_depths": "Kedalaman Senyap",
   "biome.canopycavern.sulfur_hollows": "Rongga Belerang",
   "advancements.canopycavern.canopy_cartographer.title": "Kartografer Canopy",
-  "advancements.canopycavern.canopy_cartographer.description": "Kunjungi setiap biome Canopy Cavern"
+  "advancements.canopycavern.canopy_cartographer.description": "Kunjungi setiap biome Canopy Cavern",
+  "item.canopycavern.trail_rations": "Ransum Perjalanan",
+  "item.canopycavern.trail_rations.tooltip": "Makanan ekspedisi yang mengenyangkan.",
+  "item.canopycavern.trail_rations.tooltip.detail": "Mengisi 8 lapar dengan saturasi tinggi; lambat dimakan.",
+  "item.canopycavern.herbal_bandage": "Perban Herbal",
+  "item.canopycavern.herbal_bandage.tooltip": "Balut luka: Regenerasi selama 10 detik.",
+  "item.canopycavern.herbal_bandage.tooltip.detail": "Juga menyembuhkan racun. Jeda 15 detik.",
+  "item.canopycavern.voidwalker_tether": "Tali Penjelajah Hampa",
+  "item.canopycavern.voidwalker_tether.tooltip": "Menarikmu kembali saat jatuh ke hampa The End.",
+  "item.canopycavern.voidwalker_tether.tooltip.detail": "Habis setelah menyelamatkan. Berfungsi dari mana saja di inventori.",
+  "item.canopycavern.voidwalker_tether.snapped": "Tali menegang dan menarikmu kembali dari hampa!",
+  "item.canopycavern.climbing_vine_coil": "Gulungan Sulur Panjat",
+  "item.canopycavern.climbing_vine_coil.tooltip": "Gunakan di dinding untuk menggantung sulur hingga 16 blok.",
+  "item.canopycavern.climbing_vine_coil.tooltip.detail": "4 kali pakai. Sulur bisa dipanjat dan dipotong lagi."
 }

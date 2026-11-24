@@ -45,6 +45,7 @@ public final class CanopyCavernMod implements ModInitializer {
 		ModEntities.register();
 		ModNetworking.register();
 		PlayerClimateHandler.register();
+		com.yogi.canopycavern.world.VoidTether.register();
 		WorldOverhaulRegistry.register(config);
 		CanopyTreePlacers.register();
 		MiningCityStructure.register();

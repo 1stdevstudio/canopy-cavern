@@ -384,5 +384,18 @@
   "biome.canopycavern.hushed_depths": "Hushed Depths",
   "biome.canopycavern.sulfur_hollows": "Sulfur Hollows",
   "advancements.canopycavern.canopy_cartographer.title": "Canopy Cartographer",
-  "advancements.canopycavern.canopy_cartographer.description": "Visit every Canopy Cavern biome"
+  "advancements.canopycavern.canopy_cartographer.description": "Visit every Canopy Cavern biome",
+  "item.canopycavern.trail_rations": "Trail Rations",
+  "item.canopycavern.trail_rations.tooltip": "Hearty expedition food.",
+  "item.canopycavern.trail_rations.tooltip.detail": "Fills 8 hunger with high saturation; slow to eat.",
+  "item.canopycavern.herbal_bandage": "Herbal Bandage",
+  "item.canopycavern.herbal_bandage.tooltip": "Wrap a wound: Regeneration for 10 seconds.",
+  "item.canopycavern.herbal_bandage.tooltip.detail": "Also cures poison. 15s cooldown.",
+  "item.canopycavern.voidwalker_tether": "Voidwalker Tether",
+  "item.canopycavern.voidwalker_tether.tooltip": "Pulls you back if you fall into the End's void.",
+  "item.canopycavern.voidwalker_tether.tooltip.detail": "Used up on rescue. Works from anywhere in your inventory.",
+  "item.canopycavern.voidwalker_tether.snapped": "The tether snaps taut and drags you back from the void!",
+  "item.canopycavern.climbing_vine_coil": "Climbing Vine Coil",
+  "item.canopycavern.climbing_vine_coil.tooltip": "Use on a wall to hang up to 16 blocks of vine.",
+  "item.canopycavern.climbing_vine_coil.tooltip.detail": "4 uses. Vines can be climbed and sheared back."
 }
