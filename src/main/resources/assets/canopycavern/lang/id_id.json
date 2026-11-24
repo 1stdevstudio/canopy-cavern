@@ -382,5 +382,7 @@
   "biome.canopycavern.gale_savanna": "Sabana Badai",
   "biome.canopycavern.mycelium_isles": "Kepulauan Miselium",
   "biome.canopycavern.hushed_depths": "Kedalaman Senyap",
-  "biome.canopycavern.sulfur_hollows": "Rongga Belerang"
+  "biome.canopycavern.sulfur_hollows": "Rongga Belerang",
+  "advancements.canopycavern.canopy_cartographer.title": "Kartografer Canopy",
+  "advancements.canopycavern.canopy_cartographer.description": "Kunjungi setiap biome Canopy Cavern"
 }

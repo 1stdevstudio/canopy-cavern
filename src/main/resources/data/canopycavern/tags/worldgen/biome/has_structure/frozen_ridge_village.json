@@ -6,6 +6,10 @@
     "minecraft:jagged_peaks",
     "minecraft:grove",
     "minecraft:ice_spikes",
-    "canopycavern:frostspire_crags"
+    "canopycavern:frostspire_crags",
+    "canopycavern:powder_slopes",
+    "canopycavern:glacier_crown",
+    "canopycavern:hoarfrost_grove",
+    "canopycavern:rime_spires"
   ]
 }

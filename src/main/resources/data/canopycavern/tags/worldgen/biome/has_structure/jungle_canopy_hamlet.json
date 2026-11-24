@@ -3,6 +3,8 @@
   "values": [
     "minecraft:jungle",
     "minecraft:bamboo_jungle",
-    "minecraft:sparse_jungle"
+    "minecraft:sparse_jungle",
+    "canopycavern:tanglewild_jungle",
+    "canopycavern:bamboo_thicket"
   ]
 }

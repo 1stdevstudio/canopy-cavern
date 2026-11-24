@@ -75,7 +75,7 @@ class CanopyWorldPresetTest {
 		}
 		String template = """
 			{"dimensions":{
-			  "minecraft:overworld":{"type":"canopycavern:overworld","generator":{"type":"minecraft:noise","settings":"minecraft:overworld",
+			  "minecraft:overworld":{"type":"canopycavern:overworld","generator":{"type":"minecraft:noise","settings":"canopycavern:overworld",
 			    "biome_source":{"type":"minecraft:multi_noise","biomes":BIOMES}}},
 			  "minecraft:the_nether":{"type":"minecraft:the_nether","generator":{"type":"minecraft:noise","settings":"minecraft:nether",
 			    "biome_source":{"type":"minecraft:multi_noise","preset":"minecraft:nether"}}},
@@ -122,6 +122,32 @@ class CanopyWorldPresetTest {
 				entry.getAsJsonObject().get("parameters"));
 			assertTrue(result.isSuccess(), () -> "bad climate point: " + entry);
 		}
+	}
+
+	@Test
+	void surfaceRulesCoverEveryCanopyStandInForVanillaBiomes() throws Exception {
+		Path dir = Path.of("src/main/resources/data/canopycavern/worldgen/material_rule");
+		assertTrue(Files.exists(dir.resolve("overworld.json")), "run tools/worldgen/generate_canopy_material_rules.py");
+		String root = Files.readString(dir.resolve("overworld.json"));
+		assertTrue(root.contains("canopycavern:overworld/canopy_biomes"), "Canopy biome rules must be wired in");
+		assertFalse(root.contains("\"minecraft:overworld/"), "rule tree must stay in the canopycavern namespace");
+		try (var files = Files.walk(dir)) {
+			for (Path file : files.filter(f -> f.toString().endsWith(".json")).toList()) {
+				var text = Files.readString(file);
+				var matcher = java.util.regex.Pattern.compile("\"biome_is\": \\[([^\\]]*)\\]").matcher(text);
+				while (matcher.find()) {
+					String list = matcher.group(1);
+					for (var entry : CanopyBiomeMap.VANILLA_TO_CANOPY.entrySet()) {
+						if (list.contains("\"" + entry.getKey() + "\"")) {
+							assertTrue(list.contains("\"" + entry.getValue() + "\""),
+								file.getFileName() + ": " + entry.getKey() + " rule missing " + entry.getValue());
+						}
+					}
+				}
+			}
+		}
+		String noise = Files.readString(Path.of("src/main/resources/data/canopycavern/worldgen/noise_settings/overworld.json"));
+		assertTrue(noise.contains("\"material_rule\": \"canopycavern:overworld\""));
 	}
 
 	@Test

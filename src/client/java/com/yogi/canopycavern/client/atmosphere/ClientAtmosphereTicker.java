@@ -71,14 +71,15 @@ public final class ClientAtmosphereTicker {
 		MicroWeather weather,
 		RandomSource random
 	) {
-		if (sample.biomeId().contains("elder_bough_grove")
+		String biome = sample.biomeId();
+		if ((biome.contains("elder_bough_grove") || biome.contains("bloomveil_forest") || biome.contains("dapplelight_wood"))
 			&& (weather == MicroWeather.CLEAR || weather == MicroWeather.CAVERN_HUMID)) {
 			return random.nextInt(4) == 0 ? ParticleTypes.FIREFLY : ParticleTypes.SPORE_BLOSSOM_AIR;
 		}
 		return switch (weather) {
 			case BLIZZARD_CHILL -> ParticleTypes.SNOWFLAKE;
 			case MISTY_WIND -> ParticleTypes.WHITE_ASH;
-			case CAVERN_HUMID -> sample.biomeId().contains("verdant_grotto") || sample.biomeId().contains("lush_caves")
+			case CAVERN_HUMID -> biome.contains("verdant_grotto") || biome.contains("lush_caves") || biome.contains("luminous_depths")
 				? ParticleTypes.SPORE_BLOSSOM_AIR
 				: ParticleTypes.GLOW;
 			case THERMAL_STEAM -> ParticleTypes.ASH;

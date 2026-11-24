@@ -1,0 +1,839 @@
+{
+  "parent": "canopycavern:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:filled_map"
+    },
+    "title": {
+      "translate": "advancements.canopycavern.canopy_cartographer.title"
+    },
+    "description": {
+      "translate": "advancements.canopycavern.canopy_cartographer.description"
+    },
+    "frame": "challenge"
+  },
+  "rewards": {
+    "experience": 500
+  },
+  "sends_telemetry_event": false,
+  "criteria": {
+    "canopycavern:whispering_peaks": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:whispering_peaks"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:mossy_canopy": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:mossy_canopy"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:verdant_grotto": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:verdant_grotto"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:crystal_steppe": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:crystal_steppe"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:amber_caverns": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:amber_caverns"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:elder_bough_grove": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:elder_bough_grove"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:frostspire_crags": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:frostspire_crags"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:windcarved_cliffs": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:windcarved_cliffs"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:luminous_depths": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:luminous_depths"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:sunlit_shallows": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:sunlit_shallows"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:coral_drift": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:coral_drift"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:temperate_sound": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:temperate_sound"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:abyssal_trench": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:abyssal_trench"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:kelpwood_sea": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:kelpwood_sea"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:floe_sea": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:floe_sea"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:meandering_river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:meandering_river"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:frostbound_river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:frostbound_river"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:golden_strand": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:golden_strand"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:frostline_shore": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:frostline_shore"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:wildgrass_plains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:wildgrass_plains"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:sunbaked_savanna": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:sunbaked_savanna"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:dune_expanse": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:dune_expanse"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:rustrock_badlands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:rustrock_badlands"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:oakhollow_woods": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:oakhollow_woods"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:bloomveil_forest": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:bloomveil_forest"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:silverbirch_glade": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:silverbirch_glade"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:blossom_terrace": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:blossom_terrace"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:dapplelight_wood": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:dapplelight_wood"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:ashen_garden": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:ashen_garden"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:spruce_hollow": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:spruce_hollow"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:giant_spruce_reach": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:giant_spruce_reach"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:tanglewild_jungle": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:tanglewild_jungle"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:bamboo_thicket": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:bamboo_thicket"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:bogwater_fen": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:bogwater_fen"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:mangrove_tangle": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:mangrove_tangle"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:snowbound_tundra": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:snowbound_tundra"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:rime_spires": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:rime_spires"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:frostpine_taiga": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:frostpine_taiga"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:hoarfrost_grove": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:hoarfrost_grove"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:powder_slopes": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:powder_slopes"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:glacier_crown": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:glacier_crown"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:slatestone_peaks": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:slatestone_peaks"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:gravel_barrens": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:gravel_barrens"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:windbent_forest": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:windbent_forest"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:gale_savanna": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:gale_savanna"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:mycelium_isles": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:mycelium_isles"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:hushed_depths": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:hushed_depths"
+            }
+          }
+        }
+      }
+    },
+    "canopycavern:sulfur_hollows": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "biomes": "canopycavern:sulfur_hollows"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "canopycavern:whispering_peaks"
+    ],
+    [
+      "canopycavern:mossy_canopy"
+    ],
+    [
+      "canopycavern:verdant_grotto"
+    ],
+    [
+      "canopycavern:crystal_steppe"
+    ],
+    [
+      "canopycavern:amber_caverns"
+    ],
+    [
+      "canopycavern:elder_bough_grove"
+    ],
+    [
+      "canopycavern:frostspire_crags"
+    ],
+    [
+      "canopycavern:windcarved_cliffs"
+    ],
+    [
+      "canopycavern:luminous_depths"
+    ],
+    [
+      "canopycavern:sunlit_shallows"
+    ],
+    [
+      "canopycavern:coral_drift"
+    ],
+    [
+      "canopycavern:temperate_sound"
+    ],
+    [
+      "canopycavern:abyssal_trench"
+    ],
+    [
+      "canopycavern:kelpwood_sea"
+    ],
+    [
+      "canopycavern:floe_sea"
+    ],
+    [
+      "canopycavern:meandering_river"
+    ],
+    [
+      "canopycavern:frostbound_river"
+    ],
+    [
+      "canopycavern:golden_strand"
+    ],
+    [
+      "canopycavern:frostline_shore"
+    ],
+    [
+      "canopycavern:wildgrass_plains"
+    ],
+    [
+      "canopycavern:sunbaked_savanna"
+    ],
+    [
+      "canopycavern:dune_expanse"
+    ],
+    [
+      "canopycavern:rustrock_badlands"
+    ],
+    [
+      "canopycavern:oakhollow_woods"
+    ],
+    [
+      "canopycavern:bloomveil_forest"
+    ],
+    [
+      "canopycavern:silverbirch_glade"
+    ],
+    [
+      "canopycavern:blossom_terrace"
+    ],
+    [
+      "canopycavern:dapplelight_wood"
+    ],
+    [
+      "canopycavern:ashen_garden"
+    ],
+    [
+      "canopycavern:spruce_hollow"
+    ],
+    [
+      "canopycavern:giant_spruce_reach"
+    ],
+    [
+      "canopycavern:tanglewild_jungle"
+    ],
+    [
+      "canopycavern:bamboo_thicket"
+    ],
+    [
+      "canopycavern:bogwater_fen"
+    ],
+    [
+      "canopycavern:mangrove_tangle"
+    ],
+    [
+      "canopycavern:snowbound_tundra"
+    ],
+    [
+      "canopycavern:rime_spires"
+    ],
+    [
+      "canopycavern:frostpine_taiga"
+    ],
+    [
+      "canopycavern:hoarfrost_grove"
+    ],
+    [
+      "canopycavern:powder_slopes"
+    ],
+    [
+      "canopycavern:glacier_crown"
+    ],
+    [
+      "canopycavern:slatestone_peaks"
+    ],
+    [
+      "canopycavern:gravel_barrens"
+    ],
+    [
+      "canopycavern:windbent_forest"
+    ],
+    [
+      "canopycavern:gale_savanna"
+    ],
+    [
+      "canopycavern:mycelium_isles"
+    ],
+    [
+      "canopycavern:hushed_depths"
+    ],
+    [
+      "canopycavern:sulfur_hollows"
+    ]
+  ]
+}

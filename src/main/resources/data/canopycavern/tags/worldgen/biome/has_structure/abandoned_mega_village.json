@@ -7,6 +7,13 @@
     "minecraft:savanna",
     "minecraft:taiga",
     "minecraft:meadow",
-    "minecraft:old_growth_pine_taiga"
+    "minecraft:old_growth_pine_taiga",
+    "canopycavern:wildgrass_plains",
+    "canopycavern:oakhollow_woods",
+    "canopycavern:silverbirch_glade",
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:spruce_hollow",
+    "canopycavern:whispering_peaks",
+    "canopycavern:giant_spruce_reach"
   ]
 }

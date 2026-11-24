@@ -9,6 +9,13 @@
     "minecraft:sparse_jungle",
     "minecraft:badlands",
     "minecraft:forest",
-    "canopycavern:windcarved_cliffs"
+    "canopycavern:windcarved_cliffs",
+    "canopycavern:wildgrass_plains",
+    "canopycavern:crystal_steppe",
+    "canopycavern:sunbaked_savanna",
+    "canopycavern:spruce_hollow",
+    "canopycavern:tanglewild_jungle",
+    "canopycavern:rustrock_badlands",
+    "canopycavern:oakhollow_woods"
   ]
 }

@@ -1,0 +1,169 @@
+{
+  "type": "minecraft:sequence",
+  "sequence": [
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": [
+          "minecraft:frozen_peaks",
+          "canopycavern:glacier_crown"
+        ]
+      },
+      "then_run": "canopycavern:overworld/under_biome_surface/frozen_peaks"
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": [
+          "minecraft:snowy_slopes",
+          "canopycavern:powder_slopes"
+        ]
+      },
+      "then_run": "canopycavern:overworld/under_biome_surface/snowy_slopes"
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": [
+          "minecraft:jagged_peaks",
+          "canopycavern:frostspire_crags"
+        ]
+      },
+      "then_run": "canopycavern:overworld/under_biome_surface/jagged_peaks"
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": [
+          "minecraft:grove",
+          "canopycavern:hoarfrost_grove"
+        ]
+      },
+      "then_run": "canopycavern:overworld/under_biome_surface/grove"
+    },
+    {
+      "type": "minecraft:sequence",
+      "sequence": [
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:stony_peaks",
+              "canopycavern:slatestone_peaks"
+            ]
+          },
+          "then_run": "canopycavern:overworld/biome_surface/stony_peaks"
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:stony_shore",
+              "canopycavern:windcarved_cliffs"
+            ]
+          },
+          "then_run": "canopycavern:overworld/biome_surface/stony_shore"
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:windswept_hills",
+              "canopycavern:windcarved_cliffs"
+            ]
+          },
+          "then_run": "canopycavern:overworld/biome_surface/windswept_hills"
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:warm_ocean",
+              "minecraft:beach",
+              "minecraft:snowy_beach",
+              "canopycavern:sunlit_shallows",
+              "canopycavern:golden_strand",
+              "canopycavern:frostline_shore"
+            ]
+          },
+          "then_run": "canopycavern:overworld/sand_or_sandstone_if_ceiling"
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:desert",
+              "canopycavern:dune_expanse"
+            ]
+          },
+          "then_run": "canopycavern:overworld/sand_or_sandstone_if_ceiling"
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:dripstone_caves",
+              "canopycavern:amber_caverns"
+            ]
+          },
+          "then_run": "canopycavern:overworld/biome_surface/dripstone_caves"
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:sulfur_caves",
+              "canopycavern:sulfur_hollows"
+            ]
+          },
+          "then_run": "canopycavern:overworld/biome_surface/sulfur_caves"
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:biome",
+            "biome_is": [
+              "minecraft:mangrove_swamp",
+              "canopycavern:mangrove_tangle"
+            ]
+          },
+          "then_run": "canopycavern:overworld/biome_surface/mangrove_swamp"
+        }
+      ]
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": [
+          "minecraft:windswept_savanna",
+          "canopycavern:gale_savanna"
+        ]
+      },
+      "then_run": "canopycavern:overworld/under_biome_surface/windswept_savanna"
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": [
+          "minecraft:windswept_gravelly_hills",
+          "canopycavern:gravel_barrens"
+        ]
+      },
+      "then_run": "canopycavern:overworld/under_biome_surface/windswept_gravelly_hills"
+    },
+    "canopycavern:overworld/under_biome_surface/default"
+  ]
+}

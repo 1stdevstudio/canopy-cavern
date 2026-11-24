@@ -3,6 +3,8 @@
   "values": [
     "canopycavern:mossy_canopy",
     "minecraft:flower_forest",
-    "minecraft:old_growth_birch_forest"
+    "minecraft:old_growth_birch_forest",
+    "canopycavern:bloomveil_forest",
+    "canopycavern:elder_bough_grove"
   ]
 }

@@ -39,7 +39,11 @@ public final class CanopyMaterialRules {
 
 	/** Builds Overworld surface/cavern material rules scoped to Canopy Cavern biomes. */
 	public static MaterialRule makeRules(RegistryAccess registryAccess) {
-		HolderGetter<Biome> biomes = registryAccess.lookupOrThrow(Registries.BIOME);
+		return makeRules(registryAccess.lookupOrThrow(Registries.BIOME));
+	}
+
+	/** Same rules from any biome lookup; also used to export them as data for the Canopy preset. */
+	public static MaterialRule makeRules(HolderGetter<Biome> biomes) {
 
 		MaterialRule peaksFloorSurface = MaterialRules.sequence(
 			MaterialRules.ifTrue(

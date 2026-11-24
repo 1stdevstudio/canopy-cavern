@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "canopycavern:abyssal_trench"
+    "canopycavern:abyssal_trench",
+    "canopycavern:floe_sea"
   ]
 }
