@@ -1,6 +1,6 @@
 # Canopy Cavern (Fabric 26.3)
 
-**Canopy Cavern `v0.5.0-beta.33`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, 8 biome kustom & pohon kompleks, samudra dalam, monumen bawah tanah megah, struktur kaverna Nether & pulau luar The End, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
+**Canopy Cavern `v0.6.0-beta.1`** (uji coba; rilis stabil terakhir `v0.4.2`) adalah mod eksplorasi **Vanilla-Plus** (dunia, 8 biome kustom & pohon kompleks, samudra dalam, monumen bawah tanah megah, struktur kaverna Nether & pulau luar The End, sistem iklim mikro, zirah & perlengkapan ekspedisi, buku panduan & *auto-shelter* kooperatif, revamp kota desa vanilla & desa berpenjaga, serta hub spawn server opsional **Canopy Sanctuary**) untuk **Minecraft 26.3 (Fabric Loader)** tanpa mengubah game menjadi RPG.
 
 > **Kompatibilitas Server & Client (`"environment": "*"`)**: Mod ini berjalan penuh di **Fabric Dedicated Server**, **LAN World**, maupun **Singleplayer Client**, dan kompatibel berdampingan dengan mod server Fabric populer seperti **LuckPerms** (izin/permissions), **Chunky** (pre-generasi chunk), serta mod autentikasi server Fabric `26.3`.
 
@@ -100,9 +100,19 @@ Perlu tes manual khusus untuk akses dari gua alami, fondasi di rawa/lereng, navi
 ./gradlew clean test build --no-daemon
 ```
 
-Artefak build beta tersedia di `build/libs/canopycavern-0.5.0-beta.33.jar`.
+Artefak build beta tersedia di `build/libs/canopycavern-0.6.0-beta.1.jar`.
 
 ---
+
+## World Type "Canopy" — Dunia Tanpa Biome Vanilla (`v0.6.0-beta.1`)
+
+- **World Type baru `Canopy`** (Create World → More → World Type). Overworld hanya berisi **48 biome Canopy Cavern**; Nether dan End tetap vanilla. World Type *Default* tetap seperti sebelumnya (vanilla + biome mod via TerraBlender).
+- Tata letak iklim, terrain, sungai, gua, dan ore memakai layout vanilla 26.3 (7.594 titik iklim) yang dipetakan lewat `CanopyBiomeMap`.
+- 39 biome baru: laut & pesisir (Sunlit Shallows, Coral Drift, Temperate Sound, Abyssal Trench, Kelpwood Sea, Floe Sea, Meandering River, Frostbound River, Golden Strand, Frostline Shore), dataran & hutan & rawa & gurun (Wildgrass Plains, Sunbaked Savanna, Dune Expanse, Rustrock Badlands, Oakhollow Woods, Bloomveil Forest, Silverbirch Glade, Blossom Terrace, Dapplelight Wood, Ashen Garden, Spruce Hollow, Giant Spruce Reach, Tanglewild Jungle, Bamboo Thicket, Bogwater Fen, Mangrove Tangle), dingin & gunung & pulau & gua (Snowbound Tundra, Rime Spires, Frostpine Taiga, Hoarfrost Grove, Powder Slopes, Glacier Crown, Slatestone Peaks, Gravel Barrens, Windbent Forest, Gale Savanna, Mycelium Isles, Hushed Depths, Sulfur Hollows).
+- Semua struktur vanilla & mod, spawn mob, surface block (pasir, terracotta, mycelium, mud, powder snow), dan sumber daya survival tetap tersedia; dijaga oleh test otomatis.
+- Advancement baru **Canopy Cartographer** (kunjungi semua biome Canopy) menggantikan *Adventuring Time* di preset ini.
+- **Wajib world baru.** World lama tidak dikonversi.
+- Generator: `tools/worldgen/generate_canopy_biomes.py`, `generate_canopy_material_rules.py`, `propagate_canopy_biome_tags.py`; regenerasi preset: `./gradlew test -Dcanopy.regenPreset=true`.
 
 ## Biome Pegunungan & Tebing Curam (`v0.5.0-beta.33`)
 

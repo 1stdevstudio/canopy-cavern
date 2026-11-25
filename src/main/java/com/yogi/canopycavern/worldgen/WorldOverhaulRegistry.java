@@ -41,12 +41,14 @@ public final class WorldOverhaulRegistry {
 				WorldOverhaulKeys.MOUNTAIN_OUTCROP
 			);
 			BiomeModifications.addFeature(
-				BiomeSelectors.includeByKey(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.MEADOW),
+				BiomeSelectors.includeByKey(Biomes.PLAINS, Biomes.SUNFLOWER_PLAINS, Biomes.MEADOW,
+					ModBiomes.WILDGRASS_PLAINS, ModBiomes.CRYSTAL_STEPPE, ModBiomes.WHISPERING_PEAKS),
 				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
 				WorldOverhaulKeys.PLAINS_FIELDSTONE
 			);
 			BiomeModifications.addFeature(
-				BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.BADLANDS, Biomes.ERODED_BADLANDS, Biomes.WOODED_BADLANDS),
+				BiomeSelectors.includeByKey(Biomes.DESERT, Biomes.BADLANDS, Biomes.ERODED_BADLANDS, Biomes.WOODED_BADLANDS,
+					ModBiomes.DUNE_EXPANSE, ModBiomes.RUSTROCK_BADLANDS),
 				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
 				WorldOverhaulKeys.DESERT_OASIS_BOULDER
 			);
@@ -56,7 +58,7 @@ public final class WorldOverhaulRegistry {
 				WorldOverhaulKeys.SAVANNA_ACACIA_BOULDER
 			);
 			BiomeModifications.addFeature(
-				BiomeSelectors.includeByKey(Biomes.SWAMP, Biomes.MANGROVE_SWAMP),
+				BiomeSelectors.includeByKey(Biomes.SWAMP, Biomes.MANGROVE_SWAMP, ModBiomes.BOGWATER_FEN, ModBiomes.MANGROVE_TANGLE),
 				GenerationStep.Decoration.LOCAL_MODIFICATIONS,
 				WorldOverhaulKeys.SWAMP_PEAT_PATCH
 			);

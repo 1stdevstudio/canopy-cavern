@@ -382,5 +382,7 @@
   "biome.canopycavern.gale_savanna": "Gale Savanna",
   "biome.canopycavern.mycelium_isles": "Mycelium Isles",
   "biome.canopycavern.hushed_depths": "Hushed Depths",
-  "biome.canopycavern.sulfur_hollows": "Sulfur Hollows"
+  "biome.canopycavern.sulfur_hollows": "Sulfur Hollows",
+  "advancements.canopycavern.canopy_cartographer.title": "Canopy Cartographer",
+  "advancements.canopycavern.canopy_cartographer.description": "Visit every Canopy Cavern biome"
 }

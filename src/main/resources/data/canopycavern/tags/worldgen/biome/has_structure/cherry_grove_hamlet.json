@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "minecraft:cherry_grove",
-    "minecraft:meadow"
+    "minecraft:meadow",
+    "canopycavern:blossom_terrace",
+    "canopycavern:whispering_peaks"
   ]
 }
