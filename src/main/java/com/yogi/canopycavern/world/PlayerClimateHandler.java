@@ -319,6 +319,18 @@ public final class PlayerClimateHandler {
 			unlocks.add(recipeKey("ember_canteen"));
 			unlocks.add(recipeKey("seismic_rod"));
 		}
+		if (hasItem(inv, Items.BREAD) || hasItem(inv, Items.DRIED_KELP)) {
+			unlocks.add(recipeKey("trail_rations"));
+		}
+		if (hasItem(inv, Items.PAPER) || hasItem(inv, Items.MOSS_CARPET)) {
+			unlocks.add(recipeKey("herbal_bandage"));
+		}
+		if (hasItem(inv, Items.PHANTOM_MEMBRANE) || hasItem(inv, Items.POPPED_CHORUS_FRUIT)) {
+			unlocks.add(recipeKey("voidwalker_tether"));
+		}
+		if (hasItem(inv, Items.VINE)) {
+			unlocks.add(recipeKey("climbing_vine_coil"));
+		}
 		if (hasItem(inv, ModItems.THERMAL_BOOTS)) {
 			unlocks.add(recipeKey("frostspire_crampons"));
 		}

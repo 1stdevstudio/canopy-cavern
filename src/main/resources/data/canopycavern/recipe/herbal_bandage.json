@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:string",
+    "minecraft:moss_carpet"
+  ],
+  "result": {
+    "id": "canopycavern:herbal_bandage",
+    "count": 2
+  }
+}

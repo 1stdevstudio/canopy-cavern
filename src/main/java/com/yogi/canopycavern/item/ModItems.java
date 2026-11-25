@@ -139,6 +139,36 @@ public final class ModItems {
 		props -> new SeismicRodItem(props.durability(96))
 	);
 
+	public static final Item TRAIL_RATIONS = register(
+		"trail_rations",
+		props -> new DescribedItem(props.food(
+			new net.minecraft.world.food.FoodProperties.Builder().nutrition(8).saturationModifier(0.9F).build(),
+			net.minecraft.world.item.component.Consumable.builder().consumeSeconds(2.4F).build()
+		))
+	);
+	public static final Item HERBAL_BANDAGE = register(
+		"herbal_bandage",
+		props -> new DescribedItem(props.stacksTo(16)
+			.component(net.minecraft.core.component.DataComponents.CONSUMABLE, net.minecraft.world.item.component.Consumable.builder()
+				.consumeSeconds(1.6F)
+				.animation(net.minecraft.world.item.ItemUseAnimation.BRUSH)
+				.sound(net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.WOOL_PLACE))
+				.hasConsumeParticles(false)
+				.onConsume(new net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect(
+					new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.REGENERATION, 200, 0)))
+				.onConsume(new net.minecraft.world.item.consume_effects.RemoveStatusEffectsConsumeEffect(net.minecraft.world.effect.MobEffects.POISON))
+				.build())
+			.component(net.minecraft.core.component.DataComponents.USE_COOLDOWN, new net.minecraft.world.item.component.UseCooldown(15.0F)))
+	);
+	public static final Item VOIDWALKER_TETHER = register(
+		"voidwalker_tether",
+		props -> new DescribedItem(props.stacksTo(4))
+	);
+	public static final Item CLIMBING_VINE_COIL = register(
+		"climbing_vine_coil",
+		props -> new ClimbingVineCoilItem(props.durability(4))
+	);
+
 	public static final CreativeModeTab GENERAL_TAB = Registry.register(
 		BuiltInRegistries.CREATIVE_MODE_TAB,
 		CanopyCavernMod.id("general"),
@@ -577,6 +607,44 @@ public final class ModItems {
 						serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, p.x, p.y, p.z, 2, 0.03, 0.03, 0.03, 0.0);
 					}
 					sendActionBar(player, Component.translatable("item.canopycavern.seismic_rod.resonance"));
+				}
+			}
+			return InteractionResult.SUCCESS;
+		}
+	}
+
+	/** Rolls a hanging vine down a wall face (up to 16 blocks) so a cliff can be climbed and re-climbed. */
+	private static final class ClimbingVineCoilItem extends DescribedItem {
+		ClimbingVineCoilItem(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		public InteractionResult useOn(net.minecraft.world.item.context.UseOnContext context) {
+			Level level = context.getLevel();
+			net.minecraft.core.Direction face = context.getClickedFace();
+			if (face.getAxis().isVertical()) {
+				return InteractionResult.PASS;
+			}
+			BlockPos start = context.getClickedPos().relative(face);
+			java.util.List<BlockPos> column = com.yogi.canopycavern.core.VineColumn.plan(start, 16,
+				pos -> level.getBlockState(pos).isAir(),
+				pos -> net.minecraft.world.level.block.VineBlock.isAcceptableNeighbour(level, pos.relative(face.getOpposite()), face));
+			if (column.isEmpty()) {
+				return InteractionResult.FAIL;
+			}
+			if (level instanceof ServerLevel serverLevel) {
+				Player player = context.getPlayer();
+				var vine = net.minecraft.world.level.block.Blocks.VINE.defaultBlockState()
+					.setValue(net.minecraft.world.level.block.VineBlock.getPropertyForFace(face.getOpposite()), true);
+				for (BlockPos pos : column) {
+					if (player == null || serverLevel.mayInteract(player, pos)) {
+						serverLevel.setBlock(pos, vine, net.minecraft.world.level.block.Block.UPDATE_ALL);
+					}
+				}
+				serverLevel.playSound(null, start, SoundEvents.VINE_PLACE, SoundSource.BLOCKS, 1.0F, 0.9F);
+				if (player != null && !player.isCreative()) {
+					context.getItemInHand().hurtAndBreak(1, player, context.getHand());
 				}
 			}
 			return InteractionResult.SUCCESS;

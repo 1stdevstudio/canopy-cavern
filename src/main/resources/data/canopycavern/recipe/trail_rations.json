@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bread",
+    "minecraft:dried_kelp",
+    "minecraft:sweet_berries",
+    "minecraft:cooked_beef"
+  ],
+  "result": {
+    "id": "canopycavern:trail_rations",
+    "count": 3
+  }
+}
