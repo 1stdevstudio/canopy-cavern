@@ -8,6 +8,20 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SurvivalItemsTest {
+	/** Regression: an invalid crafting category ("tools") made the whole datapack fail to load. */
+	@Test
+	void craftingRecipesUseValidBookCategories() throws Exception {
+		var valid = Set.of("building", "redstone", "equipment", "misc");
+		try (var files = java.nio.file.Files.list(java.nio.file.Path.of("src/main/resources/data/canopycavern/recipe"))) {
+			for (var file : files.toList()) {
+				var json = com.google.gson.JsonParser.parseString(java.nio.file.Files.readString(file)).getAsJsonObject();
+				if (json.get("type").getAsString().startsWith("minecraft:crafting_") && json.has("category")) {
+					assertTrue(valid.contains(json.get("category").getAsString()), file.getFileName() + " category");
+				}
+			}
+		}
+	}
+
 	@Test
 	void vineStopsAtFloorWallGapAndMaxLength() {
 		BlockPos start = new BlockPos(0, 10, 0);
