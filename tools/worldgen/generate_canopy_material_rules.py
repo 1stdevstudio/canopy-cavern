@@ -27,17 +27,19 @@ def biome_map():
     return out
 
 
-def rewrite(node, mapping):
+def rewrite(node, mapping, rule_ids=frozenset()):
     if isinstance(node, dict):
-        node = {k: rewrite(v, mapping) for k, v in node.items()}
+        node = {k: rewrite(v, mapping, rule_ids) for k, v in node.items()}
         if node.get("type") == "minecraft:biome":
             ids = node["biome_is"] if isinstance(node["biome_is"], list) else [node["biome_is"]]
             extra = [mapping[i] for i in ids if i in mapping]
             node["biome_is"] = list(dict.fromkeys(ids + extra))
         return node
     if isinstance(node, list):
-        return [rewrite(v, mapping) for v in node]
-    if isinstance(node, str) and node.startswith("minecraft:overworld"):
+        return [rewrite(v, mapping, rule_ids) for v in node]
+    # Only references to material rules move to the canopycavern namespace; density functions,
+    # noises etc. (e.g. minecraft:overworld/ore_vein/*) must keep pointing at vanilla.
+    if isinstance(node, str) and node in rule_ids:
         return "canopycavern:" + node[len("minecraft:"):]
     return node
 
@@ -47,9 +49,10 @@ def main():
     mapping = biome_map()
     src_root = vdata / "worldgen/material_rule"
     files = [src_root / "overworld.json", *sorted((src_root / "overworld").rglob("*.json"))]
+    rule_ids = {"minecraft:" + f.relative_to(src_root).with_suffix("").as_posix() for f in files}
     for f in files:
         rel = f.relative_to(src_root)
-        data = rewrite(json.loads(f.read_text()), mapping)
+        data = rewrite(json.loads(f.read_text()), mapping, rule_ids)
         if rel.as_posix() == "overworld.json":
             seq = data["sequence"]
             seq.insert(seq.index("canopycavern:overworld/iron_ore_vein") + 1, "canopycavern:overworld/canopy_biomes")

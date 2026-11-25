@@ -150,6 +150,29 @@ class CanopyWorldPresetTest {
 		assertTrue(noise.contains("\"material_rule\": \"canopycavern:overworld\""));
 	}
 
+	/** Regression: the rule copy once renamed vanilla density-function ids and the server refused to load. */
+	@Test
+	void materialRuleReferencesResolve() throws Exception {
+		Path dir = Path.of("src/main/resources/data/canopycavern/worldgen/material_rule");
+		var ref = java.util.regex.Pattern.compile("\"(canopycavern|minecraft):(overworld/[a-z0-9_/]+)\"");
+		try (var files = Files.walk(dir)) {
+			for (Path file : files.filter(f -> f.toString().endsWith(".json")).toList()) {
+				var m = ref.matcher(Files.readString(file));
+				while (m.find()) {
+					String path = m.group(2);
+					if (m.group(1).equals("canopycavern")) {
+						assertTrue(Files.exists(dir.resolve(path + ".json")), file.getFileName() + " -> missing canopycavern:" + path);
+					} else {
+						boolean vanilla = CanopyWorldPresetTest.class.getResource("/data/minecraft/worldgen/density_function/" + path + ".json") != null
+							|| CanopyWorldPresetTest.class.getResource("/data/minecraft/worldgen/material_rule/" + path + ".json") != null
+							|| CanopyWorldPresetTest.class.getResource("/data/minecraft/worldgen/noise/" + path + ".json") != null;
+						assertTrue(vanilla, file.getFileName() + " -> unknown minecraft:" + path);
+					}
+				}
+			}
+		}
+	}
+
 	@Test
 	void everyCanopyBiomeAppearsInPreset() throws Exception {
 		String preset = Files.readString(PRESET);
